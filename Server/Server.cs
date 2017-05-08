@@ -6,9 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Server {
-    class Server : IServer {
-        static void Main(string[] args) {
+    public class Server : IServer {
+        
+    }
 
+    public class Startup {
+        public static void Start() {
+            Server server = new Server();
+
+
+        }
+
+        public static void Main() {
+            Start();
         }
     }
 }
