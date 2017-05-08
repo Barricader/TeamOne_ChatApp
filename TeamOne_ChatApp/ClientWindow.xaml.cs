@@ -21,5 +21,17 @@ namespace TeamOne_ChatApp {
         public MainWindow() {
             InitializeComponent();
         }
+
+        private void ConnectButton_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e) {
+
+        }
     }
 }
