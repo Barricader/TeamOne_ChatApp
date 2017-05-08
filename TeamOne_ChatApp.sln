@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamOne_ChatApp", "TeamOne_ChatApp\TeamOne_ChatApp.csproj", "{D9F0A352-AF4E-4D43-8C60-5A6434A5DABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{C4EF284F-0E44-411F-8A83-C00A888F1F88}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBase", "ChatBase\ChatBase.csproj", "{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{38F0C2E4-79A2-4CFC-8895-36A84F82DB1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{D9F0A352-AF4E-4D43-8C60-5A6434A5DABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9F0A352-AF4E-4D43-8C60-5A6434A5DABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9F0A352-AF4E-4D43-8C60-5A6434A5DABC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4EF284F-0E44-411F-8A83-C00A888F1F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4EF284F-0E44-411F-8A83-C00A888F1F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4EF284F-0E44-411F-8A83-C00A888F1F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4EF284F-0E44-411F-8A83-C00A888F1F88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F0C2E4-79A2-4CFC-8895-36A84F82DB1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F0C2E4-79A2-4CFC-8895-36A84F82DB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F0C2E4-79A2-4CFC-8895-36A84F82DB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F0C2E4-79A2-4CFC-8895-36A84F82DB1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
