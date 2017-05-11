@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TeamOne_ChatApp {
     public class Client : IClient {
         //Test comment 
-        // test comment 2
+        // test comment 2 binah
 
         //Test - Juan Aguilar zzzzzzzz
 
