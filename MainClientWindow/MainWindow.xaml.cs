@@ -23,6 +23,27 @@ namespace MainClientWindow
         public MainWindow()
         {
             InitializeComponent();
+            int roomNumbers = 3;
+
+            for (int i = 0; i < roomNumbers; i++)
+            {
+                System.Windows.Controls.Button newBtn = new Button();
+
+                newBtn.Content = "ROOMNAME " + i.ToString();
+                newBtn.Name = "Button" + i.ToString();
+
+                LeftStackTop.Children.Add(newBtn);
+            }
+
+            for (int i = 0; i < roomNumbers; i++)
+            {
+                System.Windows.Controls.Button newBtn = new Button();
+
+                newBtn.Content = "USERNAME" + i.ToString();
+                newBtn.Name = "Button" + i.ToString();
+
+                LeftStackBottom.Children.Add(newBtn);
+            }
         }
 
     }
