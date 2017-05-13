@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamOne_ChatApp.Models
 {
-    class Room
-    {
+    public class Room
+    {       
     }
 }
