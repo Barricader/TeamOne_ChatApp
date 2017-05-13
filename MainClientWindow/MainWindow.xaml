@@ -25,7 +25,7 @@
                 <RowDefinition Height="8*"/>
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="850" />
+            <TextBox x:Name="messageBox" Grid.Row="1" KeyDown="MessageBoxKeyDown" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="850" />
             <Button Height="50" Width="50" Grid.Row="1">
                 <Button.Template>
                 <ControlTemplate>
