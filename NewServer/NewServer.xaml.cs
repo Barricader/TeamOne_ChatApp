@@ -22,6 +22,8 @@ namespace NewServer {
         private TcpListener tcpListener;
         private Thread listenThread;
         private int connClients = 0;
+        //private List<Thread> clientThreads;
+        private List<TcpClient> clients = new List<TcpClient>();
 
         private delegate void WriteMessageDelegate(string msg);
 
@@ -47,16 +49,17 @@ namespace NewServer {
 
                 // Create thread to handle communication with client
                 connClients++;
-                //labelUsers.Content = "Connected users: " + connClients;
                 labelUsers.Dispatcher.Invoke(() => labelUsers.Content = "Connected users: " + connClients);
 
                 Thread clientThread = new Thread(new ParameterizedThreadStart(ClientCommsHandler));
+                //clientThreads.Add(clientThread);
                 clientThread.Start(client);
             }
         }
 
         private void ClientCommsHandler(object client) {
             TcpClient tcpClient = (TcpClient)client;
+            clients.Add(tcpClient);
             NetworkStream clientStream = tcpClient.GetStream();
 
             byte[] msg = new byte[Constants.BUFFER_SIZE];
@@ -77,13 +80,12 @@ namespace NewServer {
                 if (bytesRead == 0) {
                     // Client disconnected
                     connClients--;
-                    //labelUsers.Content = connClients.ToString();
                     labelUsers.Dispatcher.Invoke(() => labelUsers.Content = "Connected users: " + connClients);
                     break;
                 }
 
                 // Message received
-                ASCIIEncoding encoder = new ASCIIEncoding();
+                UTF8Encoding encoder = new UTF8Encoding();
 
                 // Convert bytes to string and display string
                 string message = encoder.GetString(msg, 0, bytesRead);
@@ -118,12 +120,21 @@ namespace NewServer {
             msgReceived.Dispatcher.Invoke(() => msgReceived.AppendText(msg + Environment.NewLine));
         }
 
-        private void Echo(string msg, ASCIIEncoding encoder, NetworkStream clientStream) {
+        // TODO: send to all clients
+        // TODO: have list of currently connected clients
+        private void Echo(string msg, UTF8Encoding encoder, NetworkStream clientStream) {
             // Echo message back
             byte[] buffer = encoder.GetBytes(msg);
 
-            clientStream.Write(buffer, 0, buffer.Length);
-            clientStream.Flush();
+            // Echo to all dudes
+            foreach (TcpClient client in clients) {
+                client.GetStream().Write(buffer, 0, buffer.Length);
+                client.GetStream().Flush();
+            }
+
+            // Comment echo to all dudes and uncomment this if stuff breaks
+            //clientStream.Write(buffer, 0, buffer.Length);
+            //clientStream.Flush();
         }
     }
 }
