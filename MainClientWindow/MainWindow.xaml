@@ -6,10 +6,33 @@
         xmlns:local="clr-namespace:MainClientWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280">
-    <Grid>
-        
-        <StackPanel>
-            
+    <Grid Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"></ColumnDefinition>
+            <ColumnDefinition Width="75*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0">
+            <Label Background="DarkGray" Content="Connected to: 127.0.0.1 (bind here)"></Label>
         </StackPanel>
+        <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom">
+            <Image Height="300" Width="300"/>
+            <Button Width="150" Content="Log Out"/>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="850" />
+            <Button Height="50" Width="50" Grid.Row="1">
+                <Button.Template>
+                <ControlTemplate>
+
+                </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
     </Grid>
 </Window>
