@@ -22,7 +22,7 @@ namespace NewServer {
         private TcpListener tcpListener;
         private Thread listenThread;
         private int connClients = 0;
-        //private List<Thread> clientThreads;
+        //private List<Thread> clientThreads = new List<Thread>();
         private List<TcpClient> clients = new List<TcpClient>();
 
         private delegate void WriteMessageDelegate(string msg);
@@ -61,9 +61,14 @@ namespace NewServer {
             TcpClient tcpClient = (TcpClient)client;
             clients.Add(tcpClient);
             NetworkStream clientStream = tcpClient.GetStream();
+            int clientID = (clients.IndexOf(tcpClient) + 1);
 
             byte[] msg = new byte[Constants.BUFFER_SIZE];
             int bytesRead;
+
+            // Echo message
+            string welcomeMessage = "You are client " + clientID;
+            SendMessage(welcomeMessage, clientStream);
 
             while (true) {
                 bytesRead = 0;
@@ -77,6 +82,7 @@ namespace NewServer {
                     break;
                 }
 
+                // TODO: make user info label a binding
                 if (bytesRead == 0) {
                     // Client disconnected
                     connClients--;
@@ -89,10 +95,21 @@ namespace NewServer {
 
                 // Convert bytes to string and display string
                 string message = encoder.GetString(msg, 0, bytesRead);
-                WriteMessage(message);
+
+                // User sent kill signal
+                if (message == "~!bye") {
+                    connClients--;
+                    labelUsers.Dispatcher.Invoke(() => labelUsers.Content = "Connected users: " + connClients);
+                    break;
+                }
+
+                clients.IndexOf(tcpClient);
+
+                string newMsg = "Client " + clientID + " says: " + message;
+                WriteMessage(newMsg);
 
                 // Echo message
-                Echo(message, encoder, clientStream);
+                Echo(newMsg, encoder, clientStream);
             }
 
             tcpClient.Close();
@@ -120,8 +137,16 @@ namespace NewServer {
             msgReceived.Dispatcher.Invoke(() => msgReceived.AppendText(msg + Environment.NewLine));
         }
 
-        // TODO: send to all clients
-        // TODO: have list of currently connected clients
+        private void SendMessage(string msg, NetworkStream clientStream) {
+            byte[] buffer = Encoding.UTF8.GetBytes(msg);
+
+            // Echo to all dudes
+            foreach (TcpClient client in clients) {
+                client.GetStream().Write(buffer, 0, buffer.Length);
+                client.GetStream().Flush();
+            }
+        }
+        
         private void Echo(string msg, UTF8Encoding encoder, NetworkStream clientStream) {
             // Echo message back
             byte[] buffer = encoder.GetBytes(msg);
@@ -135,6 +160,20 @@ namespace NewServer {
             // Comment echo to all dudes and uncomment this if stuff breaks
             //clientStream.Write(buffer, 0, buffer.Length);
             //clientStream.Flush();
+        }
+
+        private void Window_Closed(object sender, EventArgs e) {
+            foreach (TcpClient cl in clients) {
+                cl.Close();
+            }
+
+            //foreach (Thread t in clientThreads) {
+            //    t.Join();
+            //}
+
+            //listenThread.Join();
+            tcpListener.Stop();
+            listenThread.Abort();
         }
     }
 }

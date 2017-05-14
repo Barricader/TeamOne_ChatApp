@@ -5,12 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NewChat"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Closed="Window_Closed"
+        Title="MainWindow" Height="550" Width="400">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        
+        <Label x:Name="lblBroadcast"
+               Grid.Row="0"
+               Padding="8"
+               Background="#F0F0F0"/>
         <TextBox x:Name="messageBox"
-                     Width="200"
-                     Height="200"
-                     KeyDown="MessageBoxKeyDown"
-                     />
+                 Grid.Row="1"
+                 KeyDown="MessageBoxKeyDown"/>
     </Grid>
 </Window>

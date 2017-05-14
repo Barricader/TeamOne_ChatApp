@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NewServer"
         mc:Ignorable="d"
+        Closed="Window_Closed"
         Title="New Server" Height="500" Width="400">
     <Grid Name="grid"
           Background="#D0D0D0">
-        <Button Name="startButton"
+        <!--<Button Name="startButton"
                 Content="Start Server"
                 Margin="0 0 140 360"
                 Height="20"
@@ -42,16 +43,16 @@
                 Click="CloseButton_Click"
                 Background="Black"
                 Foreground="White"
-                IsEnabled="False"/>
+                IsEnabled="False"/>-->
 
-        <Label Name="labelStatus"
+        <!--<Label Name="labelStatus"
                Margin="0 0 140 300"
                Content="No connection..."
                Width="120"
                Height="20"
                VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center"
-               Padding="0"/>
+               Padding="0"/>-->
         <Label Name="labelInfo"
                Margin="0 0 0 240"
                Content=""
@@ -68,14 +69,14 @@
                VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center"
                Padding="0"/>
-        <Label Name="labelSend"
+        <!--<Label Name="labelSend"
                Margin="0 100 0 0"
                Width="200"
                Height="20"
                Content="Message to send to the client"
                VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center"
-               Padding="0"/>
+               Padding="0"/>-->
         <Label Name="labelUsers"
                Margin="0 0 0 420"
                Width="200"
@@ -97,11 +98,11 @@
                  Margin="0 0 0 60"
                  TextWrapping="Wrap"
                  Text=""/>
-        <TextBox Name="msgToSend"
+        <!--<TextBox Name="msgToSend"
                  Height="100"
                  Width="240"
                  Margin="0 220 0 0"
                  TextWrapping="Wrap"
-                 Text="Some text..."/>
+                 Text="Some text..."/>-->
     </Grid>
 </Window>
