@@ -17,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+// TODO: only 1 server allowed, don't let another one start if one is already listening
+
 namespace NewServer {
     public partial class Server : Window {
         private TcpListener tcpListener;
@@ -69,7 +71,7 @@ namespace NewServer {
             byte[] msg = new byte[Constants.BUFFER_SIZE];
             int bytesRead;
 
-            // Echo message
+            // Send client their clientID
             string clMsg = "~!client" + clientID;
             SendMessage(clMsg, clientStream);
             Thread.Sleep(150);
@@ -113,8 +115,13 @@ namespace NewServer {
                 // Convert bytes to string and display string
                 string message = encoder.GetString(msg, 0, bytesRead);
 
+                // TODO: split up events to run on their own delegate for easier readability and maintainability
+                // Example: when user sends bye message, run the User_Left(clientID) method
+
                 // User sent kill signal
                 if (message == Constants.CLIENT_BYE_MESSAGE) {
+                    string leaveMsg = "Client " + clientID + " has left...";
+                    Echo(leaveMsg, encoder, clientStream);
                     connClients--;
                     labelUsers.Dispatcher.Invoke(() => labelUsers.Content = "Connected users: " + connClients);
                     clients.Remove(tcpClient);
