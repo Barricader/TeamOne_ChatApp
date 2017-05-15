@@ -22,8 +22,10 @@ namespace NewServer {
         private TcpListener tcpListener;
         private Thread listenThread;
         private int connClients = 0;
-        //private List<Thread> clientThreads = new List<Thread>();
+        private List<Thread> clientThreads = new List<Thread>();
         private List<TcpClient> clients = new List<TcpClient>();
+        private bool isClosing = false;
+        private int nextClientID = 1;
 
         private delegate void WriteMessageDelegate(string msg);
 
@@ -52,7 +54,7 @@ namespace NewServer {
                 labelUsers.Dispatcher.Invoke(() => labelUsers.Content = "Connected users: " + connClients);
 
                 Thread clientThread = new Thread(new ParameterizedThreadStart(ClientCommsHandler));
-                //clientThreads.Add(clientThread);
+                clientThreads.Add(clientThread);
                 clientThread.Start(client);
             }
         }
@@ -61,12 +63,16 @@ namespace NewServer {
             TcpClient tcpClient = (TcpClient)client;
             clients.Add(tcpClient);
             NetworkStream clientStream = tcpClient.GetStream();
-            int clientID = (clients.IndexOf(tcpClient) + 1);
+            //int clientID = (clients.IndexOf(tcpClient) + 1);
+            int clientID = nextClientID++;
 
             byte[] msg = new byte[Constants.BUFFER_SIZE];
             int bytesRead;
 
             // Echo message
+            string clMsg = "~!client" + clientID;
+            SendMessage(clMsg, clientStream);
+            Thread.Sleep(150);
             string welcomeMessage = "You are client " + clientID;
             SendMessage(welcomeMessage, clientStream);
 
@@ -76,9 +82,20 @@ namespace NewServer {
                 try {
                     // Block until message received
                     bytesRead = clientStream.Read(msg, 0, Constants.BUFFER_SIZE);
+                    //bytesRead = clientStream.ReadAsync(msg, 0, Constants.BUFFER_SIZE).Result;
+                }
+                catch (SocketException sockEx) {
+                    if (isClosing) {
+                        // Don't do anything because the server is stopping
+                        break;
+                    }
+                    else {
+                        MessageBox.Show(sockEx.ToString());
+                        break;
+                    }
                 }
                 catch (Exception ex) {
-                    MessageBox.Show(ex.ToString());
+                    //MessageBox.Show(ex.ToString());
                     break;
                 }
 
@@ -97,13 +114,12 @@ namespace NewServer {
                 string message = encoder.GetString(msg, 0, bytesRead);
 
                 // User sent kill signal
-                if (message == "~!bye") {
+                if (message == Constants.CLIENT_BYE_MESSAGE) {
                     connClients--;
                     labelUsers.Dispatcher.Invoke(() => labelUsers.Content = "Connected users: " + connClients);
+                    clients.Remove(tcpClient);
                     break;
                 }
-
-                clients.IndexOf(tcpClient);
 
                 string newMsg = "Client " + clientID + " says: " + message;
                 WriteMessage(newMsg);
@@ -139,12 +155,14 @@ namespace NewServer {
 
         private void SendMessage(string msg, NetworkStream clientStream) {
             byte[] buffer = Encoding.UTF8.GetBytes(msg);
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
 
             // Echo to all dudes
-            foreach (TcpClient client in clients) {
-                client.GetStream().Write(buffer, 0, buffer.Length);
-                client.GetStream().Flush();
-            }
+            //foreach (TcpClient client in clients) {
+            //    client.GetStream().Write(buffer, 0, buffer.Length);
+            //    client.GetStream().Flush();
+            //}
         }
         
         private void Echo(string msg, UTF8Encoding encoder, NetworkStream clientStream) {
@@ -163,17 +181,27 @@ namespace NewServer {
         }
 
         private void Window_Closed(object sender, EventArgs e) {
+            // Send server bye message to clients so they know that the server is shutting down
+
+            //foreach (Thread t in clientThreads) {
+            //    t.Abort();
+            //}
+
+            isClosing = true;
+
             foreach (TcpClient cl in clients) {
+                SendMessage(Constants.SERVER_BYE_MESSAGE, cl.GetStream());
                 cl.Close();
             }
 
-            //foreach (Thread t in clientThreads) {
-            //    t.Join();
-            //}
-
             //listenThread.Join();
+            //listenThread.Interrupt();
             tcpListener.Stop();
             listenThread.Abort();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            isClosing = true;
         }
     }
 }

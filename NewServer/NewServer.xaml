@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:NewServer"
         mc:Ignorable="d"
         Closed="Window_Closed"
+        Closing="Window_Closing"
         Title="New Server" Height="500" Width="400">
     <Grid Name="grid"
           Background="#D0D0D0">

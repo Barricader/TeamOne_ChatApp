@@ -12,7 +12,7 @@
             <RowDefinition Height="80*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        
+
         <Label x:Name="lblBroadcast"
                Grid.Row="0"
                Padding="8"

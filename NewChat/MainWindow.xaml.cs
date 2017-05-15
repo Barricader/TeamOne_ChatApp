@@ -44,16 +44,29 @@ namespace NewChat {
             Int32 bytes = 0;
             string response = "";
 
+            // TODO: if get error, try reconnecting
             // TODO: find a better way to listen, like get an event if stream finds input
             while (true) {
                 Thread.Sleep(100);
 
                 bytes = stream.Read(data, 0, data.Length);
-                response = Encoding.ASCII.GetString(data, 0, bytes);
+                response = Encoding.UTF8.GetString(data, 0, bytes);
 
                 if (response.Length > 0) {
-                    lblBroadcast.Dispatcher.Invoke(() => lblBroadcast.Content = lblBroadcast.Content + Environment.NewLine + response);
-
+                    // Use json here to tell if type of message is not cmd
+                    if (response == "~!goodbye") {
+                        lblBroadcast.Dispatcher.Invoke(() => lblBroadcast.Content = lblBroadcast.Content + Environment.NewLine + "Server has shutdown, closing connection...");
+                        //listenThread.Abort();
+                        client.Close();
+                        break;
+                    }
+                    else if (response.Contains("~!client")) {
+                        response = response.Replace("~!client", "");
+                        Dispatcher.Invoke(() => Title = "Connected to " + serverEP.Address + " | Client " + response); 
+                    }
+                    else {
+                        lblBroadcast.Dispatcher.Invoke(() => lblBroadcast.Content = lblBroadcast.Content + Environment.NewLine + response);
+                    }
                 }
             }
         }
@@ -62,7 +75,7 @@ namespace NewChat {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
                 SendMessage(messageBox.Text);
 
-                if (messageBox.Text == "~!bye") {
+                if (messageBox.Text == Constants.CLIENT_BYE_MESSAGE) {
                     Close();
                 }
 
@@ -71,32 +84,34 @@ namespace NewChat {
         }
 
         private void SendMessage(string msg) {
-            NetworkStream clientStream = client.GetStream();
-            
-            byte[] buffer = Encoding.UTF8.GetBytes(msg);
+            if (client.Connected) {
+                NetworkStream clientStream = client.GetStream();
 
-            clientStream.Write(buffer, 0, buffer.Length);
-            clientStream.Flush();
+                byte[] buffer = Encoding.UTF8.GetBytes(msg);
 
-            // TODO: remove this stuff
-            // Get TcpServer.response
+                clientStream.Write(buffer, 0, buffer.Length);
+                clientStream.Flush();
 
-            // Buffer to store response
-            //byte[] data = new byte[Constants.BUFFER_SIZE];
+                // TODO: remove this stuff
+                // Get TcpServer.response
 
-            //// store ASCII representation
-            //string responseData = "";
+                // Buffer to store response
+                //byte[] data = new byte[Constants.BUFFER_SIZE];
 
-            //// Read first bytes
-            //Int32 bytes = clientStream.Read(data, 0, data.Length);
-            //responseData = Encoding.ASCII.GetString(data, 0, bytes);
+                //// store ASCII representation
+                //string responseData = "";
 
-            ////messageBox.AppendText(Environment.NewLine + "From Server: " + responseData);
-            //messageBox.Dispatcher.Invoke(() => messageBox.AppendText(Environment.NewLine + "From Server: " + responseData));
+                //// Read first bytes
+                //Int32 bytes = clientStream.Read(data, 0, data.Length);
+                //responseData = Encoding.ASCII.GetString(data, 0, bytes);
+
+                ////messageBox.AppendText(Environment.NewLine + "From Server: " + responseData);
+                //messageBox.Dispatcher.Invoke(() => messageBox.AppendText(Environment.NewLine + "From Server: " + responseData));
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e) {
-            string endMsg = "~!bye";
+            string endMsg = Constants.CLIENT_BYE_MESSAGE;
             SendMessage(endMsg);
 
             //listenThread.Suspend();
