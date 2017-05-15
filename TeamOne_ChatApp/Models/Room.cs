@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace TeamOne_ChatApp.Models
 {
-    public class Room
-    {       
+    class Room
+    {
+        public Room(string userName)
+        {
+            Name = userName;
+
+        }
+        private string name;
+        public string Name { get { return name; } private set { name = value; } }
+        public List<User> users = new List<User>();
+        public List<Message> messages = new List<Message>();
+        public override string ToString()
+        {
+            return "Room name: " + Name + "Amount of Users in room: " + users.Count();
+        }
     }
 }
