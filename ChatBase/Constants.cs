@@ -10,5 +10,7 @@ namespace ChatBase {
         public static int BUFFER_SIZE = 4096;
         public static string CLIENT_BYE_MESSAGE = "~!bye";
         public static string SERVER_BYE_MESSAGE = "~!goodbye";
+
+        public delegate void WindowHandler();
     }
 }

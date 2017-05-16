@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using static ChatBase.Constants;
 
 // TODO: make static?
 // TODO: add more comments
@@ -196,6 +197,7 @@ namespace ChatBase {
         private string curMessage = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event WindowHandler windowHandler;
 
         public string Broadcast {
             get => broadcast;
@@ -218,16 +220,6 @@ namespace ChatBase {
                 PropChanged();
             }
         }
-
-        //public MainWindow() {
-        //    InitializeComponent();
-        //    client.Connect(serverEP);
-
-        //    lblBroadcast.Dispatcher.Invoke(() => lblBroadcast.Content = "You have connected to: " + serverEP);
-
-        //    listenThread = new Thread(new ThreadStart(ReadResponse));
-        //    listenThread.Start();
-        //}
 
         public void Start() {
             TryConnect();
@@ -260,7 +252,6 @@ namespace ChatBase {
                 if (response.Length > 0) {
                     // Use json here to tell if type of message is not cmd
                     if (response == "~!goodbye") {
-                        //lblBroadcast.Dispatcher.Invoke(() => lblBroadcast.Content = lblBroadcast.Content + Environment.NewLine + "Server has shutdown, closing connection...");
                         Broadcast += Environment.NewLine + "Server has shutdown, closing connection...";
 
                         //listenThread.Abort();
@@ -270,10 +261,8 @@ namespace ChatBase {
                     else if (response.Contains("~!client")) {
                         response = response.Replace("~!client", "");
                         WindowTitle = "Connected to " + serverEP.Address + " | Client " + response;
-                        //Dispatcher.Invoke(() => Title = "Connected to " + serverEP.Address + " | Client " + response);
                     }
                     else {
-                        //lblBroadcast.Dispatcher.Invoke(() => lblBroadcast.Content = lblBroadcast.Content + Environment.NewLine + response);
                         Broadcast += Environment.NewLine + response;
                     }
                 }
@@ -282,18 +271,15 @@ namespace ChatBase {
 
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                //SendMessage(messageBox.Text);
-                CurMessage = "WutPOEWUT";
                 SendMessage(CurMessage);
-
-                //if (messageBox.Text == Constants.CLIENT_BYE_MESSAGE) {
+                
                 if (CurMessage == Constants.CLIENT_BYE_MESSAGE) {
-                    // TODO: send close message to window
-                    //Close();
+                    // Close the client window if the kill message is sent
+                    Window_Closed(null, null);
+                    windowHandler?.Invoke();
                 }
 
                 CurMessage = "";
-                //messageBox.Dispatcher.Invoke(() => messageBox.Text = "");
             }
         }
 
@@ -305,31 +291,13 @@ namespace ChatBase {
 
                 clientStream.Write(buffer, 0, buffer.Length);
                 clientStream.Flush();
-
-                // TODO: remove this stuff
-                // Get TcpServer.response
-
-                // Buffer to store response
-                //byte[] data = new byte[Constants.BUFFER_SIZE];
-
-                //// store ASCII representation
-                //string responseData = "";
-
-                //// Read first bytes
-                //Int32 bytes = clientStream.Read(data, 0, data.Length);
-                //responseData = Encoding.ASCII.GetString(data, 0, bytes);
-
-                ////messageBox.AppendText(Environment.NewLine + "From Server: " + responseData);
-                //messageBox.Dispatcher.Invoke(() => messageBox.AppendText(Environment.NewLine + "From Server: " + responseData));
             }
         }
 
         public void Window_Closed(object sender, EventArgs e) {
-            string endMsg = Constants.CLIENT_BYE_MESSAGE;
+            string endMsg = CLIENT_BYE_MESSAGE;
             SendMessage(endMsg);
-
-            //listenThread.Suspend();
-            //listenThread.Join();
+            
             listenThread.Abort();
             client.Close();
         }

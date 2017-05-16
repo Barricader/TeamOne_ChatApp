@@ -19,6 +19,6 @@
                Content="{Binding Path=Broadcast}"/>
         <TextBox x:Name="messageBox"
                  Grid.Row="1"
-                 Text="{Binding Path=CurMessage, Mode=TwoWay}"/>
+                 Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>
