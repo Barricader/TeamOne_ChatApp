@@ -21,11 +21,9 @@ using System.Windows.Shapes;
 
 namespace NewServer {
     public partial class ServerWindow : Window {
-        Server server;
-
         public ServerWindow() {
             InitializeComponent();
-            server = new Server();
+            Server server = new Server();
 
             DataContext = server;
 

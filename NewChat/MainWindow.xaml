@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NewChat"
         mc:Ignorable="d"
-        Closed="Window_Closed"
-        Title="MainWindow" Height="550" Width="400">
+        Title="{Binding Path=WindowTitle}" Height="550" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80*"/>
@@ -16,9 +15,10 @@
         <Label x:Name="lblBroadcast"
                Grid.Row="0"
                Padding="8"
-               Background="#F0F0F0"/>
+               Background="#F0F0F0"
+               Content="{Binding Path=Broadcast}"/>
         <TextBox x:Name="messageBox"
                  Grid.Row="1"
-                 KeyDown="MessageBoxKeyDown"/>
+                 Text="{Binding Path=CurMessage, Mode=TwoWay}"/>
     </Grid>
 </Window>
