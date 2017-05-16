@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ChatBase;
 
 namespace Server {
-    public class Server : IServer {
+    public class Server {
 
     }
 }

@@ -38,6 +38,15 @@ namespace NewChat {
             listenThread.Start();
         }
 
+        private void ThreadStart() {
+            TryConnect();
+            ReadResponse();
+        }
+
+        private void TryConnect() {
+            
+        }
+
         private void ReadResponse() {
             NetworkStream stream = client.GetStream();
             byte[] data = new byte[Constants.BUFFER_SIZE];
