@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A47DC4A9-949E-40AD-A361-DB2A9F6CBBE5}</ProjectGuid>
+    <ProjectGuid>{84B55951-EBBE-450D-B844-63BE25505FE2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MainClientWindow</RootNamespace>
-    <AssemblyName>MainClientWindow</AssemblyName>
+    <RootNamespace>RegisterNewAccountWindow</RootNamespace>
+    <AssemblyName>RegisterNewAccountWindow</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -54,7 +54,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Room.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,18 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ChatBase\ChatBase.csproj">
-      <Project>{a27bcb9e-7ead-428b-a29f-eea2c13ad34d}</Project>
-      <Name>ChatBase</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Resource Include="icons\attachment.bmp" />
-    <Resource Include="icons\emoji.bmp" />
-    <Resource Include="icons\photoattachment.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
