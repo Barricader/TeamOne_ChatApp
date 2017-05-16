@@ -1,0 +1,80 @@
+﻿<Window x:Class="RegisterNewAccountWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RegisterNewAccountWindow"
+        mc:Ignorable="d"
+        Title="Register New Account" Height="720" Width="1280">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="40*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Label Content="First Name:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"/>
+            <Label Content="Last Name:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"/>
+            <Label Content="Age:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <ComboBox FontSize="18"
+                      Margin="25 10"
+                      Height="25"
+                      Width="75"
+                      HorizontalAlignment="Left">
+                <ComboBoxItem Content="18"/>
+                <ComboBoxItem Content="19"/>
+                <ComboBoxItem Content="20"/>
+                <ComboBoxItem Content="21"/>
+            </ComboBox>
+            <Label Content="Gender:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"/>
+            <Label Content="Screen Name:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"/>
+            <Label Content="Password:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"/>
+            <Label Content="Confirm Password:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <Label Content="File Upload Here"
+                   Margin="50 50"
+                   Height="400"
+                   Width="400"/>
+            <Button Content="Submit"
+                    Height="50"
+                    Width="200"
+                    Margin="25 5"/>
+            <Button Content="Cancel"
+                    Height="50"
+                    Width="200"
+                    Margin="25 5"/>
+        </StackPanel>
+    </Grid>
+</Window>

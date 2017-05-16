@@ -8,10 +8,9 @@ namespace TeamOne_ChatApp.Models
 {
     class Room
     {
-        public Room(string userName)
+        public Room(string roomName)
         {
-            Name = userName;
-
+            Name = roomName;
         }
         private string name;
         public string Name { get { return name; } private set { name = value; } }
