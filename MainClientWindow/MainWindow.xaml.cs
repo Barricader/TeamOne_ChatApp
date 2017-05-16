@@ -33,6 +33,45 @@ namespace MainClientWindow
 
             int roomNumbers = 3;
 
+            AddRooms(roomNumbers);
+            AddUsers(roomNumbers);
+
+            AddMessages();
+
+
+        }
+
+        private void AddMessages()
+        {
+            //get 25 messages from server
+
+            //
+            //MessagesStackPanel.Add
+            System.Windows.Controls.Grid newGrid = new Grid();
+            MessagesStackPanel.Children.Add(newGrid);
+
+            //foreach message in messagesfrom server(25 loops)
+            for (int i=0; i<25; i++)
+            {
+                newGrid.RowDefinitions.Add(new RowDefinition());
+                //nested grid 
+                System.Windows.Controls.Grid newSubGrid = new Grid();
+                newGrid.Children.Add(newSubGrid);
+                newSubGrid.RowDefinitions.Add(new RowDefinition { Height = System.Windows.GridLength.Auto });
+                newSubGrid.RowDefinitions.Add(new RowDefinition { Height = System.Windows.GridLength.Auto });
+
+                System.Windows.Controls.Label newLabel = new Label();
+                newSubGrid.Children.Add(newLabel);
+                newLabel.Background = System.Windows.Media.Brushes.Red;
+                    
+
+
+            }
+        }
+
+        private void AddRooms(int roomNumbers)
+        {
+            //this will probably be a foreach looping through an array of room options, populating each button with the necessary things
             for (int i = 0; i < roomNumbers; i++)
             {
                 System.Windows.Controls.Button newBtn = new Button();
@@ -42,8 +81,11 @@ namespace MainClientWindow
 
                 LeftStackTop.Children.Add(newBtn);
             }
+        }
 
-            for (int i = 0; i < roomNumbers; i++)
+        private void AddUsers(int connectedUsers)
+        {
+            for (int i = 0; i < connectedUsers; i++)
             {
                 System.Windows.Controls.Button newBtn = new Button();
 
@@ -51,18 +93,6 @@ namespace MainClientWindow
                 newBtn.Name = "Button" + i.ToString();
 
                 LeftStackBottom.Children.Add(newBtn);
-            }
-        }
-        private void MessageBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Enter || e.Key != Key.Return)
-            {
-
-            }
-            else
-            {
-                SendMessage(messageBox.Text);
-                messageBox.Dispatcher.Invoke(() => messageBox.Text = "");
             }
         }
 
@@ -89,6 +119,29 @@ namespace MainClientWindow
 
             //messageBox.AppendText(Environment.NewLine + "From Server: " + responseData);
             //messageBox.Dispatcher.Invoke(() => messageBox.AppendText(Environment.NewLine + "From Server: " + responseData));
+        }
+
+        private void SendMessageButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendMessage(messageBox.Text);
+            messageBox.Text = "";
+            //messageBox.Dispatcher.Invoke(() => messageBox.Text = "");
+        }
+
+        private void FileAttachmentButtonHandler(object sender, RoutedEventArgs e)
+        {
+            //will initiate a window that will push a file to the server from the client
+        }
+
+        private void ImageAttachmentButtonHandler(object sender, RoutedEventArgs e)
+        {
+            //will initiate a window that will push a file to the server from the client
+        }
+
+        private void EmojiAttachmentHandler(object sender, RoutedEventArgs e)
+        {
+            //https://github.com/shine-calendar/EmojiBox
+            //Haven't looked into this but it might be super useful
         }
     }
 }
