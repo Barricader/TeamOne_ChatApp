@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
@@ -76,6 +77,33 @@ namespace ChatBase {
             ReadResponse();
         }
 
+        private void Reconnect() {
+            int curTry = 0;
+            bool succeeded = false;
+
+            while (curTry < RECONNECT_MAX_TRIES && !succeeded) {
+                try {
+                    curTry++;
+                    Broadcast += "TRY " + curTry + ": Attempting to reconnect to " + serverEP + Environment.NewLine;
+                    client.Connect(serverEP);
+                    succeeded = true;
+                } catch (SocketException ex) {
+                    succeeded = false;
+                    Broadcast += "Failed to reconnect to " + serverEP + "... Trying again in " + SECONDS_BETWEEEN_TRIES + " seconds..." + Environment.NewLine;
+                    Thread.Sleep(SECONDS_BETWEEEN_TRIES * 1000);
+                }
+            }
+
+            if (curTry == RECONNECT_MAX_TRIES) {
+                Broadcast += "It seems that the you or the server is having connection issues, please try again later..." + Environment.NewLine;
+                Thread.Sleep(1000);
+                Window_Closed(null, null);
+                windowHandler?.Invoke();
+            }
+
+            Broadcast += "You have reconnected to: " + serverEP + Environment.NewLine;
+        }
+
         private void ReadResponse() {
             NetworkStream stream = client.GetStream();
             byte[] data = new byte[BUFFER_SIZE];
@@ -87,13 +115,20 @@ namespace ChatBase {
             while (true) {
                 Thread.Sleep(100);
 
-                bytes = stream.Read(data, 0, data.Length);
+                try {
+                    bytes = stream.Read(data, 0, data.Length);
+                } catch (IOException ex) {
+                    client.Close();
+                    client = new TcpClient();
+                    Reconnect();
+                    stream = client.GetStream();
+                }
                 response = Encoding.UTF8.GetString(data, 0, bytes);
 
                 if (response.Length > 0) {
                     // Use json here to tell if type of message is not cmd
                     if (response == "~!goodbye") {
-                        Broadcast += Environment.NewLine + "Server has shutdown, closing connection...";
+                        Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
 
                         //listenThread.Abort();
                         client.Close();
