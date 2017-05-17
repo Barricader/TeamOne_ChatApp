@@ -7,8 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Input;
-using static ChatBase.Constants;
 
 // TODO: make static?
 // TODO: add more comments
@@ -179,127 +177,6 @@ namespace ChatBase {
 
         public void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             isClosing = true;
-        }
-
-        private void PropChanged([CallerMemberName] string prop = null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-    }
-
-    // TODO: move classes to own files
-    public class Client : INotifyPropertyChanged {
-        private TcpClient client = new TcpClient();
-        private IPEndPoint serverEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), Constants.PORT);
-        private Thread listenThread;
-
-        private string broadcast = "";
-        private string windowTitle = "";
-        private string curMessage = "";
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event WindowHandler windowHandler;
-
-        public string Broadcast {
-            get => broadcast;
-            set {
-                broadcast = value;
-                PropChanged();
-            }
-        }
-        public string WindowTitle {
-            get => windowTitle;
-            set {
-                windowTitle = value;
-                PropChanged();
-            }
-        }
-        public string CurMessage {
-            get => curMessage;
-            set {
-                curMessage = value;
-                PropChanged();
-            }
-        }
-
-        public void Start() {
-            TryConnect();
-            //ReadResponse();
-            client.Connect(serverEP);
-
-            Broadcast = "You have connected to: " + serverEP;
-            listenThread = new Thread(new ThreadStart(ReadResponse));
-            listenThread.Start();
-        }
-
-        private void TryConnect() {
-
-        }
-
-        private void ReadResponse() {
-            NetworkStream stream = client.GetStream();
-            byte[] data = new byte[Constants.BUFFER_SIZE];
-            Int32 bytes = 0;
-            string response = "";
-
-            // TODO: if get error, try reconnecting
-            // TODO: find a better way to listen, like get an event if stream finds input
-            while (true) {
-                Thread.Sleep(100);
-
-                bytes = stream.Read(data, 0, data.Length);
-                response = Encoding.UTF8.GetString(data, 0, bytes);
-
-                if (response.Length > 0) {
-                    // Use json here to tell if type of message is not cmd
-                    if (response == "~!goodbye") {
-                        Broadcast += Environment.NewLine + "Server has shutdown, closing connection...";
-
-                        //listenThread.Abort();
-                        client.Close();
-                        break;
-                    }
-                    else if (response.Contains("~!client")) {
-                        response = response.Replace("~!client", "");
-                        WindowTitle = "Connected to " + serverEP.Address + " | Client " + response;
-                    }
-                    else {
-                        Broadcast += Environment.NewLine + response;
-                    }
-                }
-            }
-        }
-
-        public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Enter || e.Key == Key.Return) {
-                SendMessage(CurMessage);
-                
-                if (CurMessage == Constants.CLIENT_BYE_MESSAGE) {
-                    // Close the client window if the kill message is sent
-                    Window_Closed(null, null);
-                    windowHandler?.Invoke();
-                }
-
-                CurMessage = "";
-            }
-        }
-
-        private void SendMessage(string msg) {
-            if (client.Connected) {
-                NetworkStream clientStream = client.GetStream();
-
-                byte[] buffer = Encoding.UTF8.GetBytes(msg);
-
-                clientStream.Write(buffer, 0, buffer.Length);
-                clientStream.Flush();
-            }
-        }
-
-        public void Window_Closed(object sender, EventArgs e) {
-            string endMsg = CLIENT_BYE_MESSAGE;
-            SendMessage(endMsg);
-            
-            listenThread.Abort();
-            client.Close();
         }
 
         private void PropChanged([CallerMemberName] string prop = null) {

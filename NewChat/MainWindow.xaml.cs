@@ -17,8 +17,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-// TODO: use IClient
 namespace NewChat {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
