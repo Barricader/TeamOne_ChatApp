@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeamOne_ChatApp.Models
 {
-    class User
+    public class User
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -14,15 +14,16 @@ namespace TeamOne_ChatApp.Models
         public string Gender { get; set; }
         public string ScreenName { get; set; }
         public string Password { get; set; }
-        public User(string firstName, string lastName, int age, string gender, string screenName, string password)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Age = age;
-            Gender = gender;
-            ScreenName = screenName;
-            Password = password;
-        }
+        public string ConfirmPassword { get; set; }
+        //public User(string firstName, string lastName, int age, string gender, string screenName, string password)
+        //{
+        //    FirstName = firstName;
+        //    LastName = lastName;
+        //    Age = age;
+        //    Gender = gender;
+        //    ScreenName = screenName;
+        //    Password = password;
+        //}
         public void CreateMessage()
         {
 
@@ -33,7 +34,7 @@ namespace TeamOne_ChatApp.Models
         }
         public override string ToString()
         {
-            return "Name: " + FirstName + " " + LastName + "\nAge: " + Age + "\nGender: " + Gender + "\nScreenName: " + "\nPassword" + Password;
+            return "Name: " + FirstName + " " + LastName + "\nAge: " + Age + "\nGender: " + Gender + "\nScreenName: " + ScreenName + "\nPassword: " + Password + "\nConfirm Pass:" + ConfirmPassword;
         }
     }
 }
