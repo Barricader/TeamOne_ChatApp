@@ -100,7 +100,9 @@
       <Name>ChatBase</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="test_images\ExampleProfilePic.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="icons\attachment.bmp" />
     <Resource Include="icons\emoji.bmp" />

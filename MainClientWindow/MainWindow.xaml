@@ -16,7 +16,7 @@
             <Label Background="DarkGray" Content="Connected to: 127.0.0.1 (bind here)"></Label>
         </StackPanel>
         <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom">
-            <Image Height="300" Width="300"/>
+            <Image Height="300" Width="300" Source="test_images/ExampleProfilePic.png"/>
             <Button Width="150" Content="Log Out"/>
         </StackPanel>
 
@@ -28,7 +28,7 @@
             </Grid.RowDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="MessagesStackPanel">
-                    <Button Content="Show 25 more messages..."></Button>
+                    <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
                 </StackPanel>
             </ScrollViewer>
             <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" VerticalAlignment="Top" Width="840" />
