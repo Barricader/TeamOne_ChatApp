@@ -109,8 +109,7 @@ namespace ChatBase {
             byte[] data = new byte[BUFFER_SIZE];
             Int32 bytes = 0;
             string response = "";
-
-            // TODO: if get error, try reconnecting
+            
             // TODO: find a better way to listen, like get an event if stream finds input
             while (true) {
                 Thread.Sleep(100);
