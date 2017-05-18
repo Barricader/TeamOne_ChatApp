@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LoginWindow"
+        xmlns:l="clr-namespace:LoginWindow.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+    <!--<Window.Resources>
+        <l:BooltoVisConverter x:Key="converter"/>
+    </Window.Resources>-->
+   
+    
     <StackPanel>
 
         <Grid 
@@ -14,6 +20,9 @@
         Height="315"
         Margin="75"
         >
+            <!--<Grid.Resources>
+                <local:BooltoVisConverter x:Key="BooltoVis"/>
+            </Grid.Resources>-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
@@ -35,7 +44,8 @@
                     FontWeight="Bold"
                     Text="Enter Screen Name Here"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
+                    VerticalAlignment="Center"
+                Visibility="{Binding }"/>
 
             <TextBox Grid.Row="2"
                      Margin="1"
