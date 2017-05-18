@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamOne_ChatApp", "TeamOne_ChatApp\TeamOne_ChatApp.csproj", "{D9F0A352-AF4E-4D43-8C60-5A6434A5DABC}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewChat", "NewChat\NewChat.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterNewAccountWindow", "RegisterNewAccountWindow\RegisterNewAccountWindow.csproj", "{84B55951-EBBE-450D-B844-63BE25505FE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginWindow", "LoginWindow\LoginWindow.csproj", "{62F47638-6CC9-4BE8-84D3-D985B768301E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{11D65D78-AC87-4898-85A9-589505FAF473}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62F47638-6CC9-4BE8-84D3-D985B768301E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62F47638-6CC9-4BE8-84D3-D985B768301E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62F47638-6CC9-4BE8-84D3-D985B768301E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62F47638-6CC9-4BE8-84D3-D985B768301E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D65D78-AC87-4898-85A9-589505FAF473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D65D78-AC87-4898-85A9-589505FAF473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D65D78-AC87-4898-85A9-589505FAF473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D65D78-AC87-4898-85A9-589505FAF473}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
