@@ -25,6 +25,7 @@
                 <RowDefinition Height="25" x:Name="PasswordTextBox"/>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="25" x:Name="LoginButton"/>
+                <RowDefinition Height="25" x:Name="RegisterButton"/>
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0"
                      Margin="1"
@@ -54,6 +55,9 @@
                 
                     />
             <Button Content="Login" Click="LoginButtonHandler_Click" Grid.Row="4"/>
+            <Button Content="Register New Account"
+                    Grid.Row="5"
+                    Click="RegisterAccountButton_Click"/>
 
 
 
