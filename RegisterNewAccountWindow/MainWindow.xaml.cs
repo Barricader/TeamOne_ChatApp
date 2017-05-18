@@ -28,10 +28,12 @@ namespace RegisterNewAccountWindow
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
-        {
+        {           
             bool validPass = ConfirmPassword(password.Text, confirmPassword.Text);
-            if (validPass)
+            bool validInput = InputValidation();
+            if (validPass && !validInput)
             {
+                //Code after user submits valid input
                 User us = new User()
                 {
                     FirstName = firstName1.Text,
@@ -44,10 +46,15 @@ namespace RegisterNewAccountWindow
                 };
                 MessageBox.Show(us.ToString());
             }
-            else
+            else if(!validPass)
             {
-                errorMsg.Content = "Invalid Input";
-            }                                  
+                errorMsg.Content += "Passwords do not match";
+                password.Background = Brushes.Red;
+                confirmPassword.Background = Brushes.Red;
+            }else if (validInput)
+            {
+                errorMsg.Content = "Invalid Input ";
+            }                         
         }
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
@@ -59,7 +66,7 @@ namespace RegisterNewAccountWindow
               "Portable Network Graphic (*.png)|*.png";
             if (op.ShowDialog() == true)
             {
-                userAvatar.Source = new BitmapImage(new Uri(op.FileName));
+                userAvatar.Source = new BitmapImage(new Uri(op.FileName));                
             }
         }
 
@@ -70,13 +77,50 @@ namespace RegisterNewAccountWindow
             return valid;
         }
 
-        private void InputValidation()
+        private bool InputValidation()
         {
-            string test = firstName1.Text.Trim();
-            if (!string.IsNullOrEmpty(test))
+            bool invalidInput = false;
+            if (string.IsNullOrEmpty(firstName1.Text.Trim()))
             {
+                firstName1.Background = Brushes.Red;
+                invalidInput = true;
+            }                
+            if (string.IsNullOrEmpty(lastName.Text.Trim()))
+            {
+                lastName.Background = Brushes.Red;
+                invalidInput = true;
+            }                
+            if (string.IsNullOrEmpty(gender.Text.Trim()))
+            {
+                gender.Background = Brushes.Red;
+                invalidInput = true;
+            }                
+            if (string.IsNullOrEmpty(password.Text.Trim()))
+            {
+                password.Background = Brushes.Red; invalidInput = true;
+            }               
+            if (string.IsNullOrEmpty(confirmPassword.Text.Trim()))
+            {
+                confirmPassword.Background = Brushes.Red;
+                invalidInput = true;
+            }                
+            if (string.IsNullOrEmpty(screenName.Text.Trim()))
+            {
+                screenName.Background = Brushes.Red;
+                invalidInput = true;
+            }                
+            CheckForCorrection();
+            return invalidInput;
+        }
 
-            }
+        private void CheckForCorrection()
+        {
+            if (!string.IsNullOrEmpty(firstName1.Text.Trim())) firstName1.Background = Brushes.White;
+            if (!string.IsNullOrEmpty(lastName.Text.Trim())) lastName.Background = Brushes.White;
+            if (!string.IsNullOrEmpty(gender.Text.Trim())) gender.Background = Brushes.White;
+            if (!string.IsNullOrEmpty(password.Text.Trim())) password.Background = Brushes.White;
+            if (!string.IsNullOrEmpty(confirmPassword.Text.Trim())) confirmPassword.Background = Brushes.White;
+            if (!string.IsNullOrEmpty(screenName.Text.Trim())) screenName.Background = Brushes.White;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
