@@ -60,6 +60,9 @@
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RegisterNewAccountPage.xaml.cs">
+      <DependentUpon>RegisterNewAccountPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Room.cs" />
     <Page Include="ChatPage.xaml">
       <SubType>Designer</SubType>
@@ -81,6 +84,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RegisterNewAccountPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

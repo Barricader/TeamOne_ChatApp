@@ -32,5 +32,10 @@ namespace MainClientWindow
         {
 
         }
+
+        private void RegisterAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("RegisterNewAccountPage.xaml", UriKind.RelativeOrAbsolute));
+        }
     }
 }

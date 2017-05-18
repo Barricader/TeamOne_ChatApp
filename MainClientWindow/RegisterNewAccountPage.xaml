@@ -1,0 +1,109 @@
+﻿<Page x:Class="MainClientWindow.RegisterNewAccountPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MainClientWindow"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="RegisterNewAccountPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="40*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Label Content="First Name:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"
+                     x:Name="firstName1"/>
+            <Label Content="Last Name:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"
+                     x:Name="lastName"/>
+            <Label Content="Age:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <ComboBox FontSize="18"
+                      Margin="25 10"
+                      Height="25"
+                      Width="75"
+                      HorizontalAlignment="Left"
+                      SelectedIndex="0"
+                      x:Name="age">
+                <ComboBoxItem Content="18"/>
+                <ComboBoxItem Content="19"/>
+                <ComboBoxItem Content="20"/>
+                <ComboBoxItem Content="21"/>
+            </ComboBox>
+            <Label Content="Gender:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"
+                     x:Name="gender"/>
+            <Label Content="Screen Name:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"
+                     x:Name="screenName"/>
+            <Label Content="Password:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"
+                     x:Name="password"/>
+            <Label Content="Confirm Password:"
+                   FontSize="18"
+                   Margin="25 5"/>
+            <TextBox FontSize="18"
+                     Margin="25 5"                    
+                     Height="42"
+                     x:Name="confirmPassword"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <Label Content="Avatar"
+                   FontSize="18"
+                   Margin="25 5"
+                   HorizontalAlignment="Center"/>
+            <Border BorderBrush="Black"
+                    BorderThickness="5"
+                    Background="GhostWhite"
+                    Height="350"
+                    Width="350">
+                <Image x:Name="userAvatar"
+                       Source="icons\photoattachment.bmp"/>
+            </Border>
+            <Button Content="Upload Image"
+                    Height="25"
+                    Width="100"
+                    Margin="25 50 25 0"
+                    Click="UploadButton_Click"/>
+            <Label x:Name="errorMsg"
+                   Foreground="Red"
+                   FontSize="18"
+                   HorizontalAlignment="Center"/>
+            <Button Content="Submit"
+                    Height="50"
+                    Width="200"
+                    Margin="25 5"
+                    Click="SubmitButton_Click"/>
+            <Button Content="Cancel"
+                    Height="50"
+                    Width="200"
+                    Margin="25 5"
+                    Click="CloseButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
