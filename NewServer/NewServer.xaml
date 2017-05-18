@@ -8,7 +8,7 @@
     <Grid Name="grid"
           Background="#D0D0D0">
         <Label Name="labelReceive"
-               Margin="0 0 0 180"
+               Margin="0 0 0 320"
                Width="200"
                Height="20"
                Content="Message received from client"
@@ -19,17 +19,19 @@
                Margin="0 0 0 420"
                Width="200"
                Height="20"
-               Content="{Binding Path=ConnClients}"
+               Content="{Binding Path=ConnClients, Converter={StaticResource ResourceKey=connClientsConverter}}"
                VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center"
                Padding="0"/>
 
         <TextBox Name="msgReceived"
-                 IsEnabled="False"
-                 Height="100"
-                 Width="240"
-                 Margin="0 0 0 60"
-                 Text="{Binding Path=MessagesReceived}"
-                 TextWrapping="Wrap"/>
+                     IsEnabled="False"
+                     Height="300"
+                     Width="240"
+                     Margin="0 0 0 0"
+                     Text="{Binding Path=MessagesReceived}"
+                     TextWrapping="Wrap">
+        </TextBox>
+
     </Grid>
 </Window>
