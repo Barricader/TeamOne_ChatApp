@@ -34,6 +34,7 @@
                       Height="25"
                       Width="75"
                       HorizontalAlignment="Left"
+                      SelectedIndex="0"
                       x:Name="age">
                 <ComboBoxItem Content="18"/>
                 <ComboBoxItem Content="19"/>
@@ -79,7 +80,8 @@
                     Background="GhostWhite"
                     Height="350"
                     Width="350">
-                <Image x:Name="userAvatar"/>
+                <Image x:Name="userAvatar"
+                       Source="Images\photoattachment.bmp"/>
             </Border>
             <Button Content="Upload Image"
                     Height="25"
