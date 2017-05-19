@@ -24,14 +24,16 @@
                HorizontalContentAlignment="Center"
                Padding="0"/>
 
-        <TextBox Name="msgReceived"
-                     IsEnabled="False"
-                     Height="300"
-                     Width="240"
-                     Margin="0 0 0 0"
-                     Text="{Binding Path=MessagesReceived}"
-                     TextWrapping="Wrap">
-        </TextBox>
-
+        <ScrollViewer Height="300"
+                      Width="240"
+                      VerticalScrollBarVisibility="Auto">
+            <TextBlock Name="msgReceived"
+                 Background="#C0C0C0"
+                 Padding="4"
+                 TextWrapping="Wrap"
+                 Height="auto"
+                 Width="auto"
+                 Text="{Binding Path=MessagesReceived}"/>
+        </ScrollViewer>
     </Grid>
 </Window>

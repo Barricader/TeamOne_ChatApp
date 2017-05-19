@@ -13,13 +13,14 @@
             <RowDefinition Height="80*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-
-        <TextBlock x:Name="lblBroadcast"
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="lblBroadcast"
                Grid.Row="0"
                Padding="8"
                Background="#F0F0F0"
                TextWrapping="WrapWithOverflow"
                Text="{Binding Path=Broadcast}"/>
+        </ScrollViewer>
         <TextBox x:Name="messageBox"
                  Grid.Row="1"
                  Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
