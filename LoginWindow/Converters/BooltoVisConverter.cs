@@ -12,7 +12,7 @@ namespace LoginWindow.Converters
 {
     class BooltoVisConverter : IValueConverter
     {
-
+       
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool flag = (bool) value;
@@ -25,5 +25,7 @@ namespace LoginWindow.Converters
         {
             throw new NotImplementedException();
         }
+       
+        
     }
 }
