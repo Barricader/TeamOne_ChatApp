@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewChat", "NewChat\NewChat.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterNewAccountWindow", "RegisterNewAccountWindow\RegisterNewAccountWindow.csproj", "{84B55951-EBBE-450D-B844-63BE25505FE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{11D65D78-AC87-4898-85A9-589505FAF473}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBTesting", "DBTesting\DBTesting.csproj", "{E1525E55-4D06-4545-94BC-13D93C33B465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11D65D78-AC87-4898-85A9-589505FAF473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11D65D78-AC87-4898-85A9-589505FAF473}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11D65D78-AC87-4898-85A9-589505FAF473}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11D65D78-AC87-4898-85A9-589505FAF473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1525E55-4D06-4545-94BC-13D93C33B465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1525E55-4D06-4545-94BC-13D93C33B465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1525E55-4D06-4545-94BC-13D93C33B465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1525E55-4D06-4545-94BC-13D93C33B465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

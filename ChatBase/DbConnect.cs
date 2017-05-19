@@ -8,28 +8,46 @@ namespace Database
 {
     class DbConnect
     {
-        static void Main(string[] args)
+        MySqlCommand cmd;
+        MySqlConnection conn;
+        public void connectDB()
         {
             string connectStr = "server=localhost;user=root;database=test;port=3306;password=DarkFantom10;";
-            MySqlConnection conn = new MySqlConnection(connectStr);
+            conn = new MySqlConnection(connectStr);
             try
             {
                 Console.WriteLine("Conneting to database...");
                 conn.Open();
                 string createTable = "create table testCode (swiggity int(15), name char(14))";
-                MySqlCommand cmd = new MySqlCommand(createTable, conn);
+                cmd = new MySqlCommand(createTable, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
                     Console.WriteLine(rdr[0] + "---" + rdr[1]);
                 }
-
+                rdr.Close();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+            
+        }
+        public void createUser()
+        {
+            string user = "testUser";
+            string pass = "password";
+            string dbLocation = "localhost";
+            string createUser = "create user \'$user\'@'localhost' identified by \'$pass\'";
+            cmd = new MySqlCommand(createUser, conn);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr[0] + "---" + rdr[1]);
+            }
+            rdr.Close();
+            conn.Close();
         }
     }
 }
