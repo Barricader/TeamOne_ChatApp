@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 
-// TODO: make static?
-// TODO: add more comments
 namespace ChatBase {
     public class Server : INotifyPropertyChanged {
         // Variables to allow listening
@@ -114,9 +112,6 @@ namespace ChatBase {
                     //MessageBox.Show(ex.ToString());
                     break;
                 }
-                
-                // Messa
-                //UTF8Encoding encoder = new UTF8Encoding();
 
                 // Convert bytes to string and display string
                 string message = Encoding.UTF8.GetString(msg, 0, bytesRead);
@@ -184,10 +179,6 @@ namespace ChatBase {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void Window_Closed(object sender, EventArgs e) {
-            //foreach (Thread t in clientThreads) {
-            //    t.Abort();
-            //}
-
             isClosing = true;
 
             // Send server bye message to clients so they know that the server is shutting down
