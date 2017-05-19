@@ -10,52 +10,45 @@
 
     <StackPanel>
 
-        <Grid 
+        
+            <Grid 
         HorizontalAlignment="Center"
         Width="150"
         Height="315"
         Margin="75"
         >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" x:Name="ScreenNameTextBox"/>
-                <RowDefinition Height="25" x:Name="PasswordLabel"/>
-                <RowDefinition Height="25" x:Name="PasswordTextBox"/>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="25" x:Name="LoginButton"/>
-                <RowDefinition Height="45" x:Name="RegisterButton"/>
-            </Grid.RowDefinitions>
-            <TextBox Grid.Row="0"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25" x:Name="PasswordLabel"/>
+                    <RowDefinition Height="25" x:Name="PasswordTextBox"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25" x:Name="LoginButton"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   Content="User Name"/>
+                <TextBox Grid.Row="1"
                      Margin="1"
                      x:Name="TextBox"
                      Background="Transparent"
                      />
-            <TextBlock
-                    Grid.Row="0"
-                    Foreground="LightSteelBlue"
-                    FontWeight="Bold"
-                    Text="Enter Screen Name Here"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center" />
-
-            <TextBox Grid.Row="2"
+                <Label Grid.Row="2"
+                   HorizontalAlignment="Center"
+                   Content="Password"/>
+                <TextBox Grid.Row="3"
                      Margin="1"
                      Background="Transparent"
                      />
-            <!--Add visibility function-->
-            <TextBlock
-                    Grid.Row="2"
-                FontWeight="Bold"
-                    Foreground="LightSteelBlue"
-                    Text="Enter Password Here"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                
-                    />
-            <Button Content="Login" Click="LoginButtonHandler_Click" Grid.Row="4"/>
-            <Button Content="Register New Account"
+
+                <Button Content="Login" Click="LoginButtonHandler_Click" Grid.Row="4"/>
+
+
+
+                <Button Content="Register New Account"
                     Grid.Row="5"
                     Click="RegisterAccountButton_Click"
                     Height="25"/>
