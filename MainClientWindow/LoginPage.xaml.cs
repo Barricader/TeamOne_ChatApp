@@ -30,12 +30,17 @@ namespace MainClientWindow
         }
         public void SendData()
         {
-
+            this.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void RegisterAccountButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("RegisterNewAccountPage.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void PasswordTextChanged(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
