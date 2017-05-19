@@ -32,28 +32,26 @@ namespace MainClientWindow
             bool validInput = InputValidation();
             if (validPass && !validInput)
             {
-                //Code after user submits valid input
-                User us = new User()
-                {
-                    FirstName = firstName1.Text,
-                    LastName = lastName.Text,
-                    Age = int.Parse(age.Text),
-                    Gender = gender.Text,
-                    ScreenName = screenName.Text,
-                    Password = password.Text,
-                    ConfirmPassword = confirmPassword.Text
-                };
-                MessageBox.Show(us.ToString());
+                //Code after user submits valid input                
             }
-            else if (!validPass)
+            else
             {
-                errorMsg.Content += "Passwords do not match";
+                CreateErrorMessage(validPass, validInput);
+            }           
+        }
+
+        private void CreateErrorMessage(bool pass, bool input)
+        {
+            if (!pass)
+            {
+                errorMsg.Content = "Passwords Do Not Match";
                 password.Background = Brushes.Red;
                 confirmPassword.Background = Brushes.Red;
             }
-            else if (validInput)
+            if (input)
             {
-                errorMsg.Content = "Invalid Input ";
+                if(!pass) errorMsg.Content += " - Invalid Input";
+                if(pass) errorMsg.Content = " Invalid Input ";
             }
         }
 
@@ -97,7 +95,8 @@ namespace MainClientWindow
             }
             if (string.IsNullOrEmpty(password.Text.Trim()))
             {
-                password.Background = Brushes.Red; invalidInput = true;
+                password.Background = Brushes.Red;
+                invalidInput = true;
             }
             if (string.IsNullOrEmpty(confirmPassword.Text.Trim()))
             {
