@@ -28,7 +28,21 @@ namespace MainClientWindow
         {
             InitializeComponent();
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
+            Client client = new Client();
 
+            DataContext = client;
+
+            Closed += client.Window_Closed;
+            //messageBox.KeyDown += client.MessageBoxKeyDown;
+
+            client.windowHandler += CloseWindow;
+
+            client.Start();
+        }
+
+        public void CloseWindow()
+        {
+            Close();
         }
     }
 }
