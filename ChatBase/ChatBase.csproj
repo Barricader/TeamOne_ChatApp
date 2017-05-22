@@ -47,13 +47,10 @@
     <Compile Include="Server.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
-<<<<<<< HEAD
     <Compile Include="DbConnect.cs" />
-=======
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\User.cs" />
->>>>>>> 2b72861130f0c602c54e398a5ea771462029d8b3
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

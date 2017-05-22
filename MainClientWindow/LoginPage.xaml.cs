@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,9 @@ namespace MainClientWindow
         public LoginPage()
         {
             InitializeComponent();
+
+            Client client = (Client)FindResource("client");
+            client.Start();
         }
         public void LoginButtonHandler_Click(Object sender, EventArgs e)
         {
