@@ -7,21 +7,31 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="Chat" >
+    <Page.Resources>
+
+    </Page.Resources>
+
     <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25*"></ColumnDefinition>
             <ColumnDefinition Width="75*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0">
+        <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0" Grid.RowSpan="2">
             <Label Background="DarkGray" Content="Connected to: 127.0.0.1 (bind here)"></Label>
         </StackPanel>
-        <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom">
+        <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom" Margin="0,-20,0,0" Grid.RowSpan="2">
+            <TextBox x:Name="roomNameTextBox" Width="100" Height="20"></TextBox>
+            <Button Width="150" Content="New Room" Click="RoomGenClickHandler"/>
             <Image Height="300" Width="300" Source="test_images/ExampleProfilePic.png"/>
             <Button Width="150" Content="Log Out" Click="LogoutButtonClickHandler"/>
         </StackPanel>
 
-        <Grid Grid.Column="1" >
+        <Grid Grid.Column="1" Grid.RowSpan="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="8*" />
                 <RowDefinition Height="1*"/>
@@ -29,6 +39,7 @@
             </Grid.RowDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="MessagesStackPanel">
+                    <Label Content="Roomname:" FontSize="36" Background="DarkGray" Height="50"></Label>
                     <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
                 </StackPanel>
             </ScrollViewer>

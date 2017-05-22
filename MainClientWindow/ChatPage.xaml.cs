@@ -119,6 +119,16 @@ namespace MainClientWindow
                 Grid.SetColumn(newBtn, 0);
             }
         }
+        
+        private void AddRoom(string roomname)
+        {
+            System.Windows.Controls.Button newBtn = new Button();
+
+            newBtn.Content = roomname;
+
+            LeftStackTop.Children.Add(newBtn);
+            Grid.SetColumn(newBtn, 0);
+        }
 
         private void AddUsers(int connectedUsers)
         {
@@ -178,6 +188,13 @@ namespace MainClientWindow
         private void LogoutButtonClickHandler(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("LoginPage.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void RoomGenClickHandler(object sender, RoutedEventArgs e)
+        {
+            AddRoom(roomNameTextBox.Text);
+            //Will add new table to database
+            
         }
     }
 }
