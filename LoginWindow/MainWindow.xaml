@@ -4,10 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LoginWindow"
+        xmlns:cnv="clr-namespace:LoginWindow.Converters"
+        xmlns:v="clr-namespace:LoginWindow.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <v:HintView/>
+    </Window.Resources>
+   
+    
     <StackPanel>
-
+        <StackPanel.Resources>
+            <cnv:BooltoVisConverter x:Key="BooltoVis"/>
+        </StackPanel.Resources>
         <Grid 
         HorizontalAlignment="Center"
         Width="150"
@@ -35,13 +44,20 @@
                     FontWeight="Bold"
                     Text="Enter Screen Name Here"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
+                    VerticalAlignment="Center"
+                    Visibility="{Binding Path=ShowButton , Converter={StaticResource BooltoVis}}"
+                />
 
             <TextBox Grid.Row="2"
                      Margin="1"
                      ContentElement.PreviewTextInput=""
                      Background="Transparent"
                      />
+            <Button
+                Content="Test"
+                />
+
+
             <!--Add visibility function-->
             <TextBlock
                     Grid.Row="2"

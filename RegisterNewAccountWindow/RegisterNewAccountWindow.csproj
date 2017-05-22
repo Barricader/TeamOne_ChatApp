@@ -94,12 +94,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TeamOne_ChatApp\TeamOne_ChatApp.csproj">
-      <Project>{d9f0a352-af4e-4d43-8c60-5a6434a5dabc}</Project>
-      <Name>TeamOne_ChatApp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\photoattachment.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
