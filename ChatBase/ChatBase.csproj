@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -46,9 +47,13 @@
     <Compile Include="Server.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
+<<<<<<< HEAD
+    <Compile Include="DbConnect.cs" />
+=======
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\User.cs" />
+>>>>>>> 2b72861130f0c602c54e398a5ea771462029d8b3
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
