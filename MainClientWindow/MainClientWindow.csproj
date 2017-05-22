@@ -57,6 +57,7 @@
     <Compile Include="ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooltoVisConverter.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -64,6 +65,7 @@
       <DependentUpon>RegisterNewAccountPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Room.cs" />
+    <Compile Include="Views\HintView.cs" />
     <Page Include="ChatPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

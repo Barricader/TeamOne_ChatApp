@@ -36,12 +36,12 @@
                       Height="25"
                       Width="75"
                       HorizontalAlignment="Left"
-                      SelectedIndex="0"
-                      x:Name="age">
+                      SelectedIndex="0">
                 <ComboBoxItem Content="18"/>
                 <ComboBoxItem Content="19"/>
                 <ComboBoxItem Content="20"/>
                 <ComboBoxItem Content="21"/>
+                <ComboBoxItem Content="22"/>
             </ComboBox>
             <Label Content="Gender:"
                    FontSize="18"

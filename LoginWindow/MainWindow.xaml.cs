@@ -26,6 +26,7 @@ namespace LoginWindow
         }
         public void LoginButtonHandler_Click(Object sender, EventArgs e)
         {
+
             SendData();
         }
         public void SendData()
