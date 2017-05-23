@@ -43,7 +43,7 @@
                     <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
                 </StackPanel>
             </ScrollViewer>
-            <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" VerticalAlignment="Top" Width="840" />
+            <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" VerticalAlignment="Top" Width="840" KeyDown="MessageBoxKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button x:Name="SendMessageButton" HorizontalAlignment="Right" Grid.Row="1" Content="Send Message" Margin="10,10,10,0" Click="SendMessageButton_Click"/>
             <DockPanel LastChildFill="True" Grid.Row="2" Margin="15,0,0,0">
                 <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">

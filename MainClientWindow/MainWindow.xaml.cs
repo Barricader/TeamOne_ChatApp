@@ -38,7 +38,7 @@ namespace MainClientWindow
             //DataContext = client;
 
             //Closed += client.Window_Closed;
-            //messageBox.KeyDown += client.MessageBoxKeyDown;
+            
 
             //client.windowHandler += CloseWindow;
 

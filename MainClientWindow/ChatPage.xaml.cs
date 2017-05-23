@@ -28,7 +28,16 @@ namespace MainClientWindow
         {
             InitializeComponent();
             GeneratePage();
+            Client mainclient = (Client)FindResource("client");
+            messageBox.KeyDown += mainclient.MessageBoxKeyDown;
+            mainclient.msgReceived += GotMessage;
         }
+
+        private void GotMessage(string msg)
+        {
+            
+        }
+
         private void GeneratePage()
         {
             //int is rooms in db 
@@ -151,7 +160,7 @@ namespace MainClientWindow
 
         private void SendMessage(string msg)
         {
-            
+            MainClientWindow.
         }
 
         private void SendMessageButton_Click(object sender, RoutedEventArgs e)
@@ -195,12 +204,21 @@ namespace MainClientWindow
         {
             AddRoom(roomNameTextBox.Text);
             //Will add new table to database
-            clearRoom();
+            
         }
         
         private void clearRoom()
         {
             MessagesStackPanel.Children.Clear();
+        }
+
+        private void MessageBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                SendMessage()
+                e.Handled = true;
+            }
         }
     }
 }
