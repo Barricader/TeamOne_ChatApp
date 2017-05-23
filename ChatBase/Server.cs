@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBase.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
@@ -153,6 +154,12 @@ namespace ChatBase {
         /// <param name="msg">Message to send</param>
         /// <param name="clientStream">Client stream to send to</param>
         private void SendMessage(string msg, NetworkStream clientStream) {
+            Packet p = new Packet("Message", msg);
+
+            string newMsg = p.ToJsonString();
+
+            Console.WriteLine(newMsg);
+
             byte[] buffer = Encoding.UTF8.GetBytes(msg);
             clientStream.Write(buffer, 0, buffer.Length);
             clientStream.Flush();
