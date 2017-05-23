@@ -40,7 +40,13 @@ namespace MainClientWindow
 
         private void PasswordTextChanged(object sender, RoutedEventArgs e)
         {
+            
+            PassHint.Visibility = Visibility.Collapsed;
+        }
 
+        private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            UserNameTextBlock.Visibility = Visibility.Collapsed;
         }
     }
 }
