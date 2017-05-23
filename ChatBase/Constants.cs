@@ -14,5 +14,6 @@ namespace ChatBase {
         public static string SERVER_BYE_MESSAGE = "~!goodbye";
 
         public delegate void WindowHandler();
+        public delegate void MessageReceived(string msg);
     }
 }

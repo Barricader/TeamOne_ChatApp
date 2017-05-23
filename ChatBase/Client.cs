@@ -20,9 +20,11 @@ namespace ChatBase {
         private string broadcast = "";
         private string windowTitle = "";
         private string curMessage = "";
+        private string serverMessage = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event WindowHandler windowHandler;
+        public event MessageReceived msgReceived;
 
         public string Broadcast {
             get => broadcast;
@@ -43,6 +45,15 @@ namespace ChatBase {
             set {
                 curMessage = value;
                 PropChanged();
+            }
+        }
+
+        public string ServerMessage {
+            get => serverMessage;
+            set {
+                serverMessage = value;
+                //msgRcdEvent?.Invoke(serverMessage);
+                msgReceived(serverMessage);
             }
         }
 
@@ -135,6 +146,7 @@ namespace ChatBase {
                     }
                     else {
                         Broadcast += Environment.NewLine + response;
+                        ServerMessage = Environment.NewLine + response;
                         // client got server message here
                     }
                 }

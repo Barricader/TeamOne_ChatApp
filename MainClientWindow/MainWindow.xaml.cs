@@ -28,16 +28,29 @@ namespace MainClientWindow
         {
             InitializeComponent();
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
-            Client client = new Client();
-
-            DataContext = client;
-
-            Closed += client.Window_Closed;
-            //messageBox.KeyDown += client.MessageBoxKeyDown;
-
-            client.windowHandler += CloseWindow;
-
+            Client client = (Client)FindResource("client");
             client.Start();
+
+            client.msgReceived += GotMessage;   // event that gets called when server sends a message
+
+            //Client client = new Client();
+
+            //DataContext = client;
+
+            //Closed += client.Window_Closed;
+            messageBox.KeyDown += client.MessageBoxKeyDown;
+
+            //client.windowHandler += CloseWindow;
+
+            //client.Start();
+        }
+
+        private void GotMessage(string msg) {
+            Console.WriteLine(msg);
+        }
+
+        private void newMsg(string msg) {
+            Console.WriteLine(msg);
         }
 
         public void CloseWindow()
