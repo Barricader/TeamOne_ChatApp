@@ -8,6 +8,8 @@ namespace Database
 {
     class DbConnect
     {
+        //here is the link to the msi needed to use these commands.
+        //https://dev.mysql.com/get/Downloads/Connector-Net/mysql-connector-net-6.9.9.msi
         MySqlCommand cmd;
         MySqlConnection conn;
         public void connectDB()
