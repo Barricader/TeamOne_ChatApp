@@ -33,7 +33,7 @@ namespace MainClientWindow
             bool validInput = InputValidation();
             if (validPass && !validInput)
             {
-                //Code after user submits valid input                
+                //Researched how to read links from a textbox and did some testing on it             
             }
             else
             {
