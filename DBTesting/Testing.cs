@@ -11,12 +11,17 @@ namespace DBTesting
     {
         static void Main(string[] args)
         {
+            string user = "testUsername";
+            string pass = "password";
+            string dbLocation = "localhost";
+
             Testing t = new Testing();
             t.connectDB();
-            t.createUser();
+            t.createUser(user, pass);
         }
         MySqlCommand cmd;
         MySqlConnection conn;
+        
         public void connectDB()
         {
             string connectStr = "server=localhost;user=root;database=test;port=3306;password=DarkFantom10;";
@@ -32,20 +37,30 @@ namespace DBTesting
             }
 
         }
-        public void createUser()
+        public void createUser(string username, string pass)
         {
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            string user = "set @username = 'testUser'";
-            string pass = "set @pass = 'password'";
-            string dbLocation = "localhost";
             string createUser = "create user @username @'localhost' identified by @pass";
-            cmd = new MySqlCommand(user, conn);
+            cmd = new MySqlCommand(createUser, conn);
+            cmd.Parameters.Add(new MySqlParameter("@username", username));
+            cmd.Parameters.Add(new MySqlParameter("@pass", pass));
+            //cmd.Parameters.Add(new MySqlParameter("@dbLocation", dbLocation));
+            MySqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
                 Console.WriteLine(rdr[0] + "---" + rdr[1]);
             }
             rdr.Close();
-            conn.Close();
+
+            string userPermissions = "grant select, insert on test.* from @username@'localhost'";
+            cmd = new MySqlCommand(userPermissions, conn);
+            cmd.Parameters.Add(new MySqlParameter("@username", username));
+            rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                Console.WriteLine(rdr[0] + "---" + rdr[1]);
+            }
+            rdr.Close();
+
         }
     }
 }
