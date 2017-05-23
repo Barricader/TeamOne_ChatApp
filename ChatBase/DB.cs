@@ -1,28 +1,31 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace DBTesting
+using MySql.Data.MySqlClient;
+namespace Database
 {
-    class Testing
+    class DB
     {
+        //here is the link to the msi needed to use these commands.
+        //https://dev.mysql.com/get/Downloads/Connector-Net/mysql-connector-net-6.9.9.msi
+
+        MySqlCommand cmd;
+        MySqlConnection conn;
+        MySqlDataReader rdr;
         static void Main(string[] args)
         {
             string user = "testUsername";
             string pass = "password";
             string dbLocation = "localhost";
 
-            Testing t = new Testing();
+            DB t = new DB();
             t.connectDB();
             t.createUser(user, pass);
             //t.dropUser(user, pass);
         }
-        MySqlCommand cmd;
-        MySqlConnection conn;
-        MySqlDataReader rdr;
+        
         public void connectDB()
         {
             string connectStr = "server=localhost;user=root;database=test;port=3306;password=DarkFantom10;";
@@ -55,7 +58,7 @@ namespace DBTesting
             string userPermissions = "grant select, insert on test.* to @username @'localhost'";
             cmd = new MySqlCommand(userPermissions, conn);
             cmd.Parameters.Add(new MySqlParameter("@username", username));
-            
+
             rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
@@ -70,7 +73,7 @@ namespace DBTesting
             cmd = new MySqlCommand(dropUser, conn);
             cmd.Parameters.Add(new MySqlParameter("@username", username));
             rdr = cmd.ExecuteReader();
-            while(rdr.Read())
+            while (rdr.Read())
             {
                 Console.WriteLine(rdr[0] + "---" + rdr[1]);
             }
