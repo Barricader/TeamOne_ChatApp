@@ -52,7 +52,7 @@ namespace DBTesting
             }
             rdr.Close();
 
-            string userPermissions = "grant select, insert on test.* to @username @'localhost'";
+            string userPermissions = "grant select, insert, create on test.* to @username @'localhost'";
             cmd = new MySqlCommand(userPermissions, conn);
             cmd.Parameters.Add(new MySqlParameter("@username", username));
             
