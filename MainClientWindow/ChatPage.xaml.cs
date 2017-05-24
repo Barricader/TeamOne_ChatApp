@@ -56,6 +56,7 @@ namespace MainClientWindow
             }
         }
 
+
         private void AddSingleMessage(string message)
         {
             System.Windows.Controls.Grid newGrid = new Grid();

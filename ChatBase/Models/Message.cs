@@ -26,6 +26,7 @@ namespace TeamOne_ChatApp.Models
             return "Owner: " + Owner + "Content: " + Content + "Owning room: " + OwningRoom;
         }
 
+
     }
     
 }
