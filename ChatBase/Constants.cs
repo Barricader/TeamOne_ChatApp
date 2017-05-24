@@ -1,9 +1,5 @@
 ﻿using ChatBase.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatBase {
     public static class Constants {
@@ -12,18 +8,20 @@ namespace ChatBase {
         public static int RECONNECT_MAX_TRIES = 10;
         public static int SECONDS_BETWEEEN_TRIES = 5;
 
-        public static Dictionary<string, string> SERVER_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Server", "YES" } };
-        public static Dictionary<string, string> CLIENT_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Client", "YES" } };
+        //public static Dictionary<string, string> SERVER_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Server", "YES" } };
+        //public static Dictionary<string, string> CLIENT_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Client", "YES" } };
 
         // TODO: set Message to Goodbye
-        public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Message, "Goodbye", SERVER_AUTHENTICATED);
-        public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Message, "Goodbye", CLIENT_AUTHENTICATED);
+        //public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Goodbye, "Server", SERVER_AUTHENTICATED);
+        //public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Goodbye, "Client", CLIENT_AUTHENTICATED);
+        public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Goodbye, "Server");
+        public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Goodbye, "Client");
 
         public static Packet MESSAGE_TEMPLATE = new Packet(PacketType.Message, "");
         public static Packet CLIENT_ID_TEMPLATE = new Packet(PacketType.ClientID, "");
 
-        public static string CLIENT_BYE_MESSAGE = "~!bye";
-        public static string SERVER_BYE_MESSAGE = "~!goodbye";
+        //public static string CLIENT_BYE_MESSAGE = "~!bye";
+        //public static string SERVER_BYE_MESSAGE = "~!goodbye";
 
         public delegate void WindowHandler();
         public delegate void MessageReceived(string msg);

@@ -12,7 +12,7 @@ namespace Database
         //https://dev.mysql.com/get/Downloads/Connector-Net/mysql-connector-net-6.9.9.msi
         MySqlCommand cmd;
         MySqlConnection conn;
-        public void connectDB()
+        public void ConnectDB()
         {
             string connectStr = "server=localhost;user=root;database=test;port=3306;password=DarkFantom10;";
             conn = new MySqlConnection(connectStr);
@@ -36,7 +36,7 @@ namespace Database
             }
             
         }
-        public void createUser()
+        public void CreateUser()
         {
             string user = "testUser";
             string pass = "password";

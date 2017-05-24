@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
 namespace ChatBase.Models {
     public enum PacketType {
         Message,
         ClientID,
+        Goodbye,
         Null        // SHould never happen
     };
 
@@ -46,13 +48,45 @@ namespace ChatBase.Models {
 
             return jsonString;
         }
-
+        
+        /// <summary>
+        /// Deprecated! DO NOT USE!
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
         public static Packet JsonToPacket(string json) {
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
             Packet p = (Packet)jss.Deserialize(json, typeof(Packet));
             
             return p;
+        }
+
+        /// <summary>
+        /// Convert json string to Packet object
+        /// </summary>
+        /// <param name="json">Json string to convert</param>
+        /// <param name="packet">Packet object to use</param>
+        /// <returns>If conversion was successful then return true, else return false</returns>
+        public static bool JsonToPacket(string json, out Packet packet) {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            bool result = true;
+            Packet p = new Packet();
+            packet = null;
+
+            try {
+                p = (Packet)jss.Deserialize(json, typeof(Packet));
+            } catch (ArgumentException ex) {
+                // Incorrect json format
+                result = false;
+                Console.WriteLine("ERROR: " + ex);
+            }
+
+            if (result) {
+                packet = p;
+            }
+
+            return result;
         }
     }
 }

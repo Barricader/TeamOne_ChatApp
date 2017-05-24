@@ -21,7 +21,9 @@ namespace ChatBase {
         private List<TcpClient> clients = new List<TcpClient>();
         private int nextClientID = 1;
 
-        private bool isClosing = false;
+        //private bool isClosing = false;
+        private List<bool> clientListening = new List<bool>();
+        private bool isClosing = true;
         private string messagesReceived = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -80,26 +82,22 @@ namespace ChatBase {
             TcpClient tcpClient = (TcpClient)client;
             NetworkStream clientStream = tcpClient.GetStream();
             int clientID = nextClientID++;
+            clientListening.Add(true);
 
             byte[] msg = new byte[Constants.BUFFER_SIZE];
             int bytesRead;
 
             // Send client their clientID
             Packet cidMessage = Constants.CLIENT_ID_TEMPLATE.AlterContent(clientID.ToString());
-            Console.WriteLine(cidMessage.ToJsonString());
-            //Console.WriteLine(cidMessage.ToJsonString());
             SendPacket(cidMessage, clientStream);
-            Thread.Sleep(150);
 
-            string clMsg = "~!client" + clientID;
-            SendMessage(clMsg, clientStream);
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
             string welcomeMessage = "You are client " + clientID + Environment.NewLine;
-            SendMessage(welcomeMessage, clientStream);
+            SendPacket(Constants.MESSAGE_TEMPLATE.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
             // Listen for client response
-            while (true) {
+            while (clientListening[clientID-1]) {
                 bytesRead = 0;
 
                 try {
@@ -123,27 +121,41 @@ namespace ChatBase {
                 // Convert bytes to string and display string
                 string message = Encoding.UTF8.GetString(msg, 0, bytesRead);
 
-                // TODO: split up message events to run on their own delegate for easier readability and maintainability
-                // Example: when user sends bye message, run the User_Left(clientID) method
-
-                // User sent kill signal
-                if (message == Constants.CLIENT_BYE_MESSAGE) {
-                    string leaveMsg = "Client " + clientID + " has left...";
-                    Broadcast(leaveMsg);
-                    WriteMessage(leaveMsg);
-                    ConnClients--;
-                    clients.Remove(tcpClient);
-                    break;
+                //Packet tempPacket;
+                if (Packet.JsonToPacket(message, out Packet tempPacket)) {
+                    ReadPacket(tempPacket, tcpClient, clientID);
                 }
-
-                string newMsg = "Client " + clientID + " says: " + message;
-                WriteMessage(newMsg);
-
-                // Send message to all clients
-                Broadcast(newMsg);
+                else {
+                    Console.WriteLine("ERROR: INVLAID JSON... MESSAGE: {0}", message);
+                }
             }
 
             tcpClient.Close();
+        }
+
+        /// <summary>
+        /// Read a received Packet and perform action based on type
+        /// </summary>
+        /// <param name="json">Json string of Packet</param>
+        private void ReadPacket(Packet p, TcpClient tcpClient, int clientID) {
+            switch (p.Type) {
+                case PacketType.Message:
+                    Packet newPacket = Constants.MESSAGE_TEMPLATE.AlterContent("Client " + clientID + " says: " + p.Content);
+                    Broadcast(newPacket);      // Broadcast message to all clients
+                    WriteMessage(newPacket.Content);
+                    break;
+                case PacketType.Goodbye:
+                    Packet leaveMsg = Constants.MESSAGE_TEMPLATE.AlterContent("Client " + clientID + " has left...");
+                    Broadcast(leaveMsg);
+                    WriteMessage(leaveMsg.Content);
+                    ConnClients--;
+                    clients.Remove(tcpClient);
+                    clientListening[clientID-1] = false;
+                    break;
+                default:
+                    Console.WriteLine("ERROR: wrong packet type........... Content: {0]", p.Content);
+                    break;
+            }
         }
 
         /// <summary>
@@ -157,7 +169,8 @@ namespace ChatBase {
         /// <summary>
         /// Send a packet to a client
         /// </summary>
-        /// <param name="cidMessage"></param>
+        /// <param name="packet">Packet to send</param>
+        /// <param name="clientStream">Client to send to</param>
         private void SendPacket(Packet packet, NetworkStream clientStream) {
             string json = packet.ToJsonString();
 
@@ -167,35 +180,13 @@ namespace ChatBase {
         }
 
         /// <summary>
-        /// Send message to specific client
+        /// Send packet to all connected clients
         /// </summary>
-        /// <param name="msg">Message to send</param>
-        /// <param name="clientStream">Client stream to send to</param>
-        private void SendMessage(string msg, NetworkStream clientStream) {
-            //Packet p = new Packet("Message", msg);
-            Packet p = Constants.MESSAGE_TEMPLATE.AlterContent(msg);
-
-            string newMsg = p.ToJsonString();
-
-            Console.WriteLine(newMsg);
-
-            byte[] buffer = Encoding.UTF8.GetBytes(msg);
-            clientStream.Write(buffer, 0, buffer.Length);
-            clientStream.Flush();
-        }
-
-        /// <summary>
-        /// Send message to all connected clients
-        /// </summary>
-        /// <param name="msg"></param>
-        private void Broadcast(string msg) {
-            // Echo message back
-            byte[] buffer = Encoding.UTF8.GetBytes(msg);
-
+        /// <param name="p">Packet to send</param>
+        private void Broadcast(Packet p) {
             // Echo to all dudes
             foreach (TcpClient client in clients) {
-                client.GetStream().Write(buffer, 0, buffer.Length);
-                client.GetStream().Flush();
+                SendPacket(p, client.GetStream());
             }
         }
 
@@ -209,7 +200,7 @@ namespace ChatBase {
 
             // Send server bye message to clients so they know that the server is shutting down
             foreach (TcpClient cl in clients) {
-                SendMessage(Constants.SERVER_BYE_MESSAGE, cl.GetStream());
+                SendPacket(Constants.SERVER_BYE_PACKET, cl.GetStream());
                 cl.Close();
             }
             

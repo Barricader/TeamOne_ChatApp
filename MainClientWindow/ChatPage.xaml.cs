@@ -24,18 +24,30 @@ namespace MainClientWindow
     /// </summary>
     public partial class Chat : Page
     {
+        MainWindow main;
         public Chat()
         {
             InitializeComponent();
             GeneratePage();
+
             Client mainclient = (Client)FindResource("client");
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
-            mainclient.msgReceived += GotMessage;
+            mainclient.MsgReceived += GotMessage;
+
+            main = Application.Current.MainWindow as MainWindow;
+
+            main.Closed += mainclient.Window_Closed;
+            mainclient.WindowHandler += CloseWindow;
+
+        }
+
+        private void CloseWindow() {
+            main.Close();
         }
 
         private void GotMessage(string msg)
         {
-            
+            Console.WriteLine("SERVER SAID: {0}\n", msg);
         }
 
         private void GeneratePage()
@@ -59,11 +71,11 @@ namespace MainClientWindow
 
         private void AddSingleMessage(string message)
         {
-            System.Windows.Controls.Grid newGrid = new Grid();
+            Grid newGrid = new Grid();
             MessagesStackPanel.Children.Add(newGrid);
             newGrid.RowDefinitions.Add(new RowDefinition());
             //nested grid 
-            System.Windows.Controls.Grid newSubGrid = new Grid();
+            Grid newSubGrid = new Grid();
             newGrid.Children.Add(newSubGrid);
             newSubGrid.RowDefinitions.Add(new RowDefinition { Height = new System.Windows.GridLength(50) });
             newSubGrid.RowDefinitions.Add(new RowDefinition { Height = System.Windows.GridLength.Auto });
@@ -72,19 +84,19 @@ namespace MainClientWindow
             //Populate the top subrow with profile pic, and username and timestamp
 
             //This will get the profile picture from the owner of the message 
-            System.Windows.Controls.Image profPic = new Image();
+            Image profPic = new Image();
             BitmapImage profileImage = new BitmapImage(new Uri("test_images/ExampleProfilePic.png", UriKind.Relative));
             profPic.Source = profileImage;
             profPic.Height = 45;
             profPic.Width = 45;
-            profPic.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            profPic.HorizontalAlignment = HorizontalAlignment.Left;
 
-            System.Windows.Controls.Label userTimestamp = new Label();
-            userTimestamp.Content = "USERNAME @ TIMESTAMP";
-            userTimestamp.Margin = new System.Windows.Thickness(50, 13, 0, 0);
-            userTimestamp.Foreground = System.Windows.Media.Brushes.DarkGray;
-            userTimestamp.FontSize = 12;
-
+            Label userTimestamp = new Label() {
+                Content = "USERNAME @ TIMESTAMP",
+                Margin = new Thickness(50, 13, 0, 0),
+                Foreground = Brushes.DarkGray,
+                FontSize = 12
+            };
             newSubGrid.Children.Add(profPic);
             newSubGrid.Children.Add(userTimestamp);
             Grid.SetRow(profPic, 0);
@@ -93,9 +105,10 @@ namespace MainClientWindow
             //The content portion will get the type of the message from the message (whether it be an image, message or file) and create a new object accordingly and add it to the 
 
             //if type is string 
-            System.Windows.Controls.Label contentLabel = new Label();
-            contentLabel.Background = System.Windows.Media.Brushes.Blue;
-            contentLabel.Content = message;
+            Label contentLabel = new Label() {
+                Background = Brushes.Blue,
+                Content = message
+            };
             newSubGrid.Children.Add(contentLabel);
             Grid.SetRow(contentLabel, 1);
             //else if type is image
@@ -121,11 +134,10 @@ namespace MainClientWindow
             //there probably needs to be a notify method that will append a (1) after the roomname
             for (int i = 0; i < roomNumbers; i++)
             {
-                System.Windows.Controls.Button newBtn = new Button();
-
-                newBtn.Content = "ROOMNAME " + i.ToString();
-                newBtn.Name = "Button" + i.ToString();
-
+                Button newBtn = new Button() {
+                    Content = "ROOMNAME " + i.ToString(),
+                    Name = "Button" + i.ToString()
+                };
                 LeftStackTop.Children.Add(newBtn);
                 Grid.SetColumn(newBtn, 0);
             }
@@ -133,10 +145,9 @@ namespace MainClientWindow
         
         private void AddRoom(string roomname)
         {
-            System.Windows.Controls.Button newBtn = new Button();
-
-            newBtn.Content = roomname;
-
+            Button newBtn = new Button() {
+                Content = roomname
+            };
             LeftStackTop.Children.Add(newBtn);
             Grid.SetColumn(newBtn, 0);
         }
@@ -151,11 +162,10 @@ namespace MainClientWindow
 
         private void AddSingleUser()
         {
-            System.Windows.Controls.Button newBtn = new Button();
-
-            newBtn.Content = "USERNAME";
-            newBtn.Name = "Button";
-
+            Button newBtn = new Button() {
+                Content = "USERNAME",
+                Name = "Button"
+            };
             LeftStackBottom.Children.Add(newBtn);
         }
 
@@ -208,7 +218,7 @@ namespace MainClientWindow
             
         }
         
-        private void clearRoom()
+        private void ClearRoom()
         {
             MessagesStackPanel.Children.Clear();
         }
