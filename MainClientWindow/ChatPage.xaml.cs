@@ -160,7 +160,7 @@ namespace MainClientWindow
 
         private void SendMessage(string msg)
         {
-            MainClientWindow.
+            //MainClientWindow.
         }
 
         private void SendMessageButton_Click(object sender, RoutedEventArgs e)
@@ -216,8 +216,8 @@ namespace MainClientWindow
         {
             if (e.Key == Key.Return)
             {
-                SendMessage()
-                e.Handled = true;
+                //SendMessage()
+                //e.Handled = true;
             }
         }
     }

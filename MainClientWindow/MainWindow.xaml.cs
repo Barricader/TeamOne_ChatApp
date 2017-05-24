@@ -46,7 +46,7 @@ namespace MainClientWindow
         }
 
         private void GotMessage(string msg) {
-            Console.WriteLine(msg);
+            //Console.WriteLine(msg);
         }
 
         private void newMsg(string msg) {

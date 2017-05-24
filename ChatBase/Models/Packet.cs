@@ -1,47 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Web.Script.Serialization;
 
 namespace ChatBase.Models {
-    [DataContract]
+    public enum PacketType {
+        Message,
+        ClientID,
+        Null        // SHould never happen
+    };
+
     public class Packet {
-        [DataMember]
-        public string Type { get; set; }
-        [DataMember]
+        //public string Type { get; set; }
+        public PacketType Type { get; set; }
         public string Content { get; set; }
-        [DataMember]
         public Dictionary<string, string> Args { get; set; }
 
-        public Packet(string type, string content) {
+        public Packet () {
+            Type = PacketType.Null;
+            Content = "";
+            Args = new Dictionary<string, string>();
+        }
+
+        public Packet(PacketType type, string content) {
             Type = type;
             Content = content;
             Args = new Dictionary<string, string>();
         }
 
-        public Packet(string type, string content, Dictionary<string, string> args) {
+        public Packet(PacketType type, string content, Dictionary<string, string> args) {
             Type = type;
             Content = content;
             Args = args;
         }
 
+        public Packet AlterContent(string content) {
+            Content = content;
+
+            return this;
+        }
+
         public string ToJsonString() {
-            DataContractJsonSerializer jSerializer = new DataContractJsonSerializer(typeof(Packet));
+            JavaScriptSerializer jss = new JavaScriptSerializer();
             string jsonString = "";
 
-            MemoryStream stream = new MemoryStream();
-            StreamReader sr = new StreamReader(stream);
-
-            jSerializer.WriteObject(stream, this);
-            stream.Position = 0;
-
-            jsonString = sr.ReadToEnd();
+            jsonString = jss.Serialize(this);
 
             return jsonString;
+        }
+
+        public static Packet JsonToPacket(string json) {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            Packet p = (Packet)jss.Deserialize(json, typeof(Packet));
+            
+            return p;
         }
     }
 }

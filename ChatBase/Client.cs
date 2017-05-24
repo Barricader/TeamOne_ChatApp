@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBase.Models;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -132,6 +133,10 @@ namespace ChatBase {
 
                 // If a message was recieved then do stuff
                 if (response.Length > 0) {
+                    if (response[0] == '{') {
+                        //Console.WriteLine("yay JSON");
+                        ReadPacket(response);
+                    }
                     // TODO: Use json here to tell if type of message is not cmd
                     if (response == SERVER_BYE_MESSAGE) {
                         Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
@@ -170,6 +175,16 @@ namespace ChatBase {
 
                 CurMessage = "";
             }
+        }
+
+        private void ReadPacket(string json) {
+            Packet p = Packet.JsonToPacket(json);
+
+            if (p.Type == PacketType.ClientID) {
+
+            }
+
+            Console.WriteLine(p.Type);
         }
 
         /// <summary>

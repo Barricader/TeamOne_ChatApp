@@ -15,8 +15,12 @@ namespace ChatBase {
         public static Dictionary<string, string> SERVER_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Server", "YES" } };
         public static Dictionary<string, string> CLIENT_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Client", "YES" } };
 
-        public static Packet SERVER_BYE_PACKET = new Packet("Message", "Goodbye", SERVER_AUTHENTICATED);
-        public static Packet CLIENT_BYE_PACKET = new Packet("Message", "Goodbye", CLIENT_AUTHENTICATED);
+        // TODO: set Message to Goodbye
+        public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Message, "Goodbye", SERVER_AUTHENTICATED);
+        public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Message, "Goodbye", CLIENT_AUTHENTICATED);
+
+        public static Packet MESSAGE_TEMPLATE = new Packet(PacketType.Message, "");
+        public static Packet CLIENT_ID_TEMPLATE = new Packet(PacketType.ClientID, "");
 
         public static string CLIENT_BYE_MESSAGE = "~!bye";
         public static string SERVER_BYE_MESSAGE = "~!goodbye";

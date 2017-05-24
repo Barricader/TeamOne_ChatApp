@@ -85,6 +85,12 @@ namespace ChatBase {
             int bytesRead;
 
             // Send client their clientID
+            Packet cidMessage = Constants.CLIENT_ID_TEMPLATE.AlterContent(clientID.ToString());
+            Console.WriteLine(cidMessage.ToJsonString());
+            //Console.WriteLine(cidMessage.ToJsonString());
+            SendPacket(cidMessage, clientStream);
+            Thread.Sleep(150);
+
             string clMsg = "~!client" + clientID;
             SendMessage(clMsg, clientStream);
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
@@ -149,12 +155,25 @@ namespace ChatBase {
         }
 
         /// <summary>
+        /// Send a packet to a client
+        /// </summary>
+        /// <param name="cidMessage"></param>
+        private void SendPacket(Packet packet, NetworkStream clientStream) {
+            string json = packet.ToJsonString();
+
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            clientStream.Write(buffer, 0, buffer.Length);
+            clientStream.Flush();
+        }
+
+        /// <summary>
         /// Send message to specific client
         /// </summary>
         /// <param name="msg">Message to send</param>
         /// <param name="clientStream">Client stream to send to</param>
         private void SendMessage(string msg, NetworkStream clientStream) {
-            Packet p = new Packet("Message", msg);
+            //Packet p = new Packet("Message", msg);
+            Packet p = Constants.MESSAGE_TEMPLATE.AlterContent(msg);
 
             string newMsg = p.ToJsonString();
 
