@@ -7,8 +7,17 @@ namespace ChatBase.Models {
         Message,
         ClientID,
         Goodbye,
+        RequestRoom,
+        RequestMessage,
+        RequestUser,
+        RequestDetails,
         Null        // SHould never happen
     };
+
+    // Request rooms
+    // Request messages (25 is a good baseline)
+    // Request current users
+    // Request login details
 
     public class Packet {
         //public string Type { get; set; }
@@ -47,19 +56,6 @@ namespace ChatBase.Models {
             jsonString = jss.Serialize(this);
 
             return jsonString;
-        }
-        
-        /// <summary>
-        /// Deprecated! DO NOT USE!
-        /// </summary>
-        /// <param name="json"></param>
-        /// <returns></returns>
-        public static Packet JsonToPacket(string json) {
-            JavaScriptSerializer jss = new JavaScriptSerializer();
-
-            Packet p = (Packet)jss.Deserialize(json, typeof(Packet));
-            
-            return p;
         }
 
         /// <summary>

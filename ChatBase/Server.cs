@@ -141,6 +141,8 @@ namespace ChatBase {
             switch (p.Type) {
                 case PacketType.Message:
                     Packet newPacket = Constants.MESSAGE_TEMPLATE.AlterContent("Client " + clientID + " says: " + p.Content);
+                    newPacket.Args["Owner"] = clientID.ToString();
+                    newPacket.Args["Room"] = 0.ToString();
                     Broadcast(newPacket);      // Broadcast message to all clients
                     WriteMessage(newPacket.Content);
                     break;
@@ -153,7 +155,7 @@ namespace ChatBase {
                     clientListening[clientID-1] = false;
                     break;
                 default:
-                    Console.WriteLine("ERROR: wrong packet type........... Content: {0]", p.Content);
+                    Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
                     break;
             }
         }
