@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChatBase.Models;
 
 namespace MainClientWindow
 {
@@ -24,18 +26,28 @@ namespace MainClientWindow
     /// </summary>
     public partial class Chat : Page
     {
+        Client mainclient;
+        public List<List<Message>> testRoomMessageList = new List<List<Message>>();
+        ChatBase.Models.Room techRoom = new ChatBase.Models.Room("Tech");
         public Chat()
         {
             InitializeComponent();
             GeneratePage();
-            Client mainclient = (Client)FindResource("client");
+            mainclient = (Client)FindResource("client");
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
             mainclient.msgReceived += GotMessage;
+            DataContext = mainclient;
+
+            testRoomMessageList.Add(new List<Message>());
+            for (int i = 0; i < 10; i++)
+            {
+                testRoomMessageList[0].Add(new Message(new User { FirstName = "Test ", LastName="User " + i }, techRoom, String.Format("Message{0}", i));
+            }
         }
 
         private void GotMessage(string msg)
         {
-            
+            AddSingleMessage(msg);
         }
 
         private void GeneratePage()
@@ -44,21 +56,37 @@ namespace MainClientWindow
             AddRooms(3);
             //int is connected users
             AddUsers(3);
-            AddMessages();
+            AddMessages("tech");
         }
 
-        private void AddMessages()
-        {
+        private void AddMessages(string roomname)
+        {   
             //foreach message in messages from server(25 loops)
-            for (int i = 0; i < 25; i++)
+            if (roomname == "all")
             {
-                AddSingleMessage("Single Message");
+            //make request to server to get first 25 messages from each room.
+            //append each to the roomMessageList
+            //foreachroom
+                //roomMessageList.Add(new List<ChatBase.Models.Message>());
+                //forloop of 25 messages in array from server
+                //because it wont be a jumbled mess of x amount of messages.
+                //add to list[i]
             }
+            else
+            {
+                //nothin here yet
+                //will get the room name from a the rooms list
+                //and then populate it with the messages within that room.
+            }
+                        
         }
 
         private void AddSingleMessage(string message)
         {
+
+           
             System.Windows.Controls.Grid newGrid = new Grid();
+            MessagesStackPanel.Dispatcher.Invoke(() => MessagesStackPanel.Children.Add(newGrid));
             MessagesStackPanel.Children.Add(newGrid);
             newGrid.RowDefinitions.Add(new RowDefinition());
             //nested grid 
@@ -66,7 +94,6 @@ namespace MainClientWindow
             newGrid.Children.Add(newSubGrid);
             newSubGrid.RowDefinitions.Add(new RowDefinition { Height = new System.Windows.GridLength(50) });
             newSubGrid.RowDefinitions.Add(new RowDefinition { Height = System.Windows.GridLength.Auto });
-
 
             //Populate the top subrow with profile pic, and username and timestamp
 
@@ -128,6 +155,10 @@ namespace MainClientWindow
                 LeftStackTop.Children.Add(newBtn);
                 Grid.SetColumn(newBtn, 0);
             }
+            System.Windows.Controls.Button techRoomButton = new Button();
+            techRoomButton.Content = "Technology_TEST";
+            LeftStackTop.Children.Add(techRoomButton);
+            Grid.SetColumn(techRoomButton, 0);
         }
         
         private void AddRoom(string roomname)
@@ -160,14 +191,12 @@ namespace MainClientWindow
 
         private void SendMessage(string msg)
         {
-            MainClientWindow.
+            Console.WriteLine("stdsag");
         }
 
         private void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
             SendMessage(messageBox.Text);
-
-            messageBox.Dispatcher.Invoke(() => messageBox.Text = "");
             AddSingleMessage("Added Message");
                 
         }
@@ -183,7 +212,7 @@ namespace MainClientWindow
         }
 
         private void EmojiAttachmentHandler(object sender, RoutedEventArgs e)
-        {
+        { 
             //https://github.com/shine-calendar/EmojiBox
             //Haven't looked into this but it might be super useful
 
@@ -192,7 +221,7 @@ namespace MainClientWindow
 
         private void AddMessagesButtonHandler(object sender, RoutedEventArgs e)
         {
-            AddMessages();
+            AddMessages("all");
         }
 
         private void LogoutButtonClickHandler(object sender, RoutedEventArgs e)
@@ -212,13 +241,8 @@ namespace MainClientWindow
             MessagesStackPanel.Children.Clear();
         }
 
-        private void MessageBoxKeyDown(object sender, KeyEventArgs e)
+        public void MBKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
-            {
-                SendMessage()
-                e.Handled = true;
-            }
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TeamOne_ChatApp.Models
+namespace ChatBase.Models
 {
-    class Message
+    public class Message
     {
         public Message(User owner, Room room, string content)
         {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace TeamOne_ChatApp.Models
+namespace ChatBase.Models
 {
     public class User
     {
