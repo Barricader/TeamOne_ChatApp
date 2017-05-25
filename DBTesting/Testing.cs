@@ -17,8 +17,9 @@ namespace DBTesting
 
             Testing t = new Testing();
             t.connectDB();
-            t.createUser(user, pass);
+            //t.createUser(user, pass);
             //t.dropUser(user, pass);
+            t.addTable();
         }
         MySqlCommand cmd;
         MySqlConnection conn;
@@ -64,9 +65,27 @@ namespace DBTesting
             rdr.Close();
             conn.Close();
         }
+        public void addTable()
+        {
+            string dbCheck = "create table testTable (name char(20), date char(15));";
+            cmd = new MySqlCommand(dbCheck, conn);
+            rdr = cmd.ExecuteReader();
+            try
+            {
+                while (rdr.Read())
+                {
+                    Console.WriteLine(rdr.GetString(0));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+        }
         public void dropUser(string username, string pass)
         {
-            string dropUser = "drop user @username @'localhost'";
+            string dropUser = "drop user @username @'localhost';";
             cmd = new MySqlCommand(dropUser, conn);
             cmd.Parameters.Add(new MySqlParameter("@username", username));
             rdr = cmd.ExecuteReader();
