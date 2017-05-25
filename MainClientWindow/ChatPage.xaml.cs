@@ -41,7 +41,7 @@ namespace MainClientWindow
             testRoomMessageList.Add(new List<Message>());
             for (int i = 0; i < 10; i++)
             {
-                testRoomMessageList[0].Add(new Message(new User { FirstName = "Test ", LastName="User " + i }, techRoom, String.Format("Message{0}", i));
+                testRoomMessageList[0].Add(new Message(new User { FirstName = "Test ", LastName="User " + i }, techRoom, String.Format("Message{0}", i)));
             }
         }
 
@@ -84,7 +84,7 @@ namespace MainClientWindow
         private void AddSingleMessage(string message)
         {
 
-           
+           /*
             System.Windows.Controls.Grid newGrid = new Grid();
             MessagesStackPanel.Dispatcher.Invoke(() => MessagesStackPanel.Children.Add(newGrid));
             MessagesStackPanel.Children.Add(newGrid);
@@ -139,7 +139,9 @@ namespace MainClientWindow
             //contentLabel.Content = "Invalid Content";
             //newSubGrid.Children.Add(contentLabel);
             //Grid.SetRow(contentLabel, 1);
-        }
+            */    
+    }
+
 
         private void AddRooms(int roomNumbers)
         {
