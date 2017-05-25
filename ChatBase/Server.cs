@@ -20,11 +20,14 @@ namespace ChatBase {
         private List<Thread> clientThreads = new List<Thread>();
         private List<TcpClient> clients = new List<TcpClient>();
         private int nextClientID = 1;
-
-        //private bool isClosing = false;
         private List<bool> clientListening = new List<bool>();
-        private bool isClosing = true;
+        private bool isClosing = false;
         private string messagesReceived = "";
+
+        // Room and user stuff
+        // TODO: implement users and rooms
+        private List<TeamOne_ChatApp.Models.Room> rooms = new List<TeamOne_ChatApp.Models.Room>();
+        private List<TeamOne_ChatApp.Models.User> users = new List<TeamOne_ChatApp.Models.User>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -51,6 +54,8 @@ namespace ChatBase {
             tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), Constants.PORT);
             listenThread = new Thread(new ThreadStart(ListenForClients));
             listenThread.Start();
+
+            rooms.Add(new TeamOne_ChatApp.Models.Room("General"));
         }
 
         /// <summary>

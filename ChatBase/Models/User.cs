@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 
-namespace TeamOne_ChatApp.Models
-{
-    public class User
-    {
+namespace TeamOne_ChatApp.Models {
+    public class User {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
@@ -26,16 +19,13 @@ namespace TeamOne_ChatApp.Models
         //    ScreenName = screenName;
         //    Password = password;
         //}
-        public void CreateMessage()
-        {
+        public void CreateMessage() {
 
         }
-        public void JoinRoom()
-        {
+        public void JoinRoom() {
 
         }
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Name: " + FirstName + " " + LastName + "\nAge: " + Age + "\nGender: " + Gender + "\nScreenName: " + ScreenName + "\nPassword: " + Password + "\nConfirm Pass:" + ConfirmPassword;
         }
     }

@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TeamOne_ChatApp.Models
-{
-    class Room
-    {
-        public Room(string roomName)
-        {
-            Name = roomName;
+namespace TeamOne_ChatApp.Models {
+    class Room {
+        public string Name { get; set; }
+        public List<User> Users { get; set; }
+        public List<Message> Messages { get; set; }
+
+        public Room(string name) {
+            Name = name;
+            Users = new List<User>();
+            Messages = new List<Message>();
         }
-        private string name;
-        public string Name { get { return name; } private set { name = value; } }
-        public List<User> users = new List<User>();
-        public List<Message> messages = new List<Message>();
-        public override string ToString()
-        {
-            return "Room name: " + Name + "Amount of Users in room: " + users.Count();
+
+        public override string ToString() {
+            return $"Room name: {Name}, Amount of users in room: {Users.Count()}, Amount of messages: {Messages.Count()}";
         }
     }
 }
