@@ -7,6 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <cb:Client x:Key="client"/>
+            <BooleanToVisibilityConverter x:Key="boolToVisibility"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

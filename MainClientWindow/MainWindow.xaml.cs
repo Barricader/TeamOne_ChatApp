@@ -27,11 +27,13 @@ namespace MainClientWindow
         public MainWindow()
         {
             InitializeComponent();
-            mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
+
             Client client = (Client)FindResource("client");
             client.Start();
 
-            client.msgReceived += GotMessage;   // event that gets called when server sends a message
+            mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
+
+            //client.msgReceived += GotMessage;   // event that gets called when server sends a message
 
             //Client client = new Client();
 
@@ -46,7 +48,7 @@ namespace MainClientWindow
         }
 
         private void GotMessage(string msg) {
-            Console.WriteLine(msg);
+            //Console.WriteLine(msg);
         }
 
         private void newMsg(string msg) {

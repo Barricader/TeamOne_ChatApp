@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBase.Models;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -21,10 +22,11 @@ namespace ChatBase {
         private string windowTitle = "";
         private string curMessage = "";
         private string serverMessage = "";
+        private bool isRunning = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event WindowHandler windowHandler;
-        public event MessageReceived msgReceived;
+        public event WindowHandler WindowHandler;
+        public event MessageReceived MsgReceived;
 
         public string Broadcast {
             get => broadcast;
@@ -53,7 +55,8 @@ namespace ChatBase {
             set {
                 serverMessage = value;
                 //msgRcdEvent?.Invoke(serverMessage);
-                msgReceived(serverMessage);
+                //msgReceived(serverMessage);
+                MsgReceived?.Invoke(serverMessage);
             }
         }
 
@@ -80,6 +83,7 @@ namespace ChatBase {
             int curTry = 0;
             bool succeeded = false;
 
+            // TODO: have main client UI show reconnect progress
             // Reconnect until we hit the max amount of tries
             while (curTry < RECONNECT_MAX_TRIES && !succeeded) {
                 try {
@@ -99,7 +103,7 @@ namespace ChatBase {
                 Broadcast += "It seems that the you or the server is having connection issues, please try again later..." + Environment.NewLine;
                 Thread.Sleep(1000);
                 Window_Closed(null, null);
-                windowHandler?.Invoke();
+                WindowHandler?.Invoke();
             }
 
             Broadcast += "You have connected to: " + serverEP + Environment.NewLine;
@@ -115,7 +119,7 @@ namespace ChatBase {
             string response = "";
             
             // TODO: find a better way to listen, like get an event if stream finds input
-            while (true) {
+            while (isRunning) {
                 Thread.Sleep(100);  // Sleep for a bit, save some cpu cycles
 
                 try {
@@ -132,22 +136,9 @@ namespace ChatBase {
 
                 // If a message was recieved then do stuff
                 if (response.Length > 0) {
-                    // TODO: Use json here to tell if type of message is not cmd
-                    if (response == SERVER_BYE_MESSAGE) {
-                        Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
-                        
-                        client.Close();
-                        break;
-                    }
-                    else if (response.Contains("~!client")) {
-                        // Server is giving us our client ID
-                        response = response.Replace("~!client", "");
-                        WindowTitle = "Connected to " + serverEP.Address + " | Client " + response;
-                    }
-                    else {
-                        Broadcast += Environment.NewLine + response;
-                        ServerMessage = Environment.NewLine + response;
-                        // client got server message here
+                    // If the response is a valid packet, read it
+                    if (Packet.JsonToPacket(response, out Packet tempPacket)) {
+                        ReadPacket(tempPacket);
                     }
                 }
             }
@@ -160,27 +151,53 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                SendMessage(CurMessage);
+                //SendMessage(CurMessage);
+                //SendPacket(MESSAGE_TEMPLATE.AlterContent(CurMessage));
 
-                if (CurMessage == CLIENT_BYE_MESSAGE) {
-                    // Close the client window if the kill message is sent
-                    Window_Closed(null, null);
-                    windowHandler?.Invoke();
-                }
+                // TODO: probably don't want client to be able to kill connection with a message??
+                // TODO: change packet to GOODBYE???
+                //if (CurMessage == CLIENT_BYE_MESSAGE) {
+                //    // Close the client window if the kill message is sent
+                //    Window_Closed(null, null);
+                //    windowHandler?.Invoke();
+                //}
 
+                SendPacket(MESSAGE_PACKET.AlterContent(CurMessage));
                 CurMessage = "";
             }
         }
 
         /// <summary>
-        /// Send a message to the server
+        /// Read a received Packet and perform action based on type
         /// </summary>
-        /// <param name="msg">Message to send</param>
-        private void SendMessage(string msg) {
+        /// <param name="json">Json string of Packet</param>
+        private void ReadPacket(Packet p) {
+            switch (p.Type) {
+                case PacketType.ClientID:
+                    WindowTitle = "Connected to " + serverEP.Address + " | Client " + p.Content;
+                    break;
+                case PacketType.Message:
+                    Broadcast += Environment.NewLine + p.Content;
+                    ServerMessage = p.Content;
+                    break;
+                case PacketType.Goodbye:
+                    Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
+                    Console.WriteLine("RIP SERVER");
+                    client.Close();
+                    isRunning = false;
+                    break;
+                default:
+                    Console.WriteLine("ERROR: wrong packet type........... Content: {0]", p.Content);
+                    break;
+            }
+        }
+
+        private void SendPacket(Packet p) {
             if (client.Connected) {
                 NetworkStream clientStream = client.GetStream();
+                string json = p.ToJsonString();
 
-                byte[] buffer = Encoding.UTF8.GetBytes(msg);
+                byte[] buffer = Encoding.UTF8.GetBytes(json);
 
                 clientStream.Write(buffer, 0, buffer.Length);
                 clientStream.Flush();
@@ -193,8 +210,7 @@ namespace ChatBase {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void Window_Closed(object sender, EventArgs e) {
-            string endMsg = CLIENT_BYE_MESSAGE;
-            SendMessage(endMsg);
+            SendPacket(CLIENT_BYE_PACKET);
 
             listenThread.Abort();
             client.Close();
