@@ -198,7 +198,7 @@ namespace MainClientWindow
             //https://github.com/shine-calendar/EmojiBox
             //Haven't looked into this but it might be super useful
 
-
+            //Researching and testing how to put Emojis in a richtextbox 
         }
 
         private void AddMessagesButtonHandler(object sender, RoutedEventArgs e)
