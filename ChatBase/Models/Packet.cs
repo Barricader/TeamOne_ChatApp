@@ -10,14 +10,9 @@ namespace ChatBase.Models {
         RequestRoom,
         RequestMessage,
         RequestUser,
-        RequestDetails,
-        Null        // SHould never happen
+        RequestLogin,
+        Null        // Should never happen
     };
-
-    // Request rooms
-    // Request messages (25 is a good baseline)
-    // Request current users
-    // Request login details
 
     public class Packet {
         //public string Type { get; set; }

@@ -8,21 +8,19 @@ namespace ChatBase {
         public static int RECONNECT_MAX_TRIES = 10;
         public static int SECONDS_BETWEEEN_TRIES = 5;
 
-        //public static Dictionary<string, string> SERVER_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Server", "YES" } };
-        //public static Dictionary<string, string> CLIENT_AUTHENTICATED = new Dictionary<string, string>() { { "Authentic_Client", "YES" } };
         public static Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } };
 
-        // TODO: set Message to Goodbye
-        //public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Goodbye, "Server", SERVER_AUTHENTICATED);
-        //public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Goodbye, "Client", CLIENT_AUTHENTICATED);
         public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Goodbye, "Server");
         public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Goodbye, "Client");
-
-        public static Packet MESSAGE_TEMPLATE = new Packet(PacketType.Message, "", MESSAGE_ARGS);
-        public static Packet CLIENT_ID_TEMPLATE = new Packet(PacketType.ClientID, "");
-
-        //public static string CLIENT_BYE_MESSAGE = "~!bye";
-        //public static string SERVER_BYE_MESSAGE = "~!goodbye";
+        public static Packet MESSAGE_PACKET = new Packet(PacketType.Message, "", MESSAGE_ARGS);
+        public static Packet CLIENT_ID_PACKET = new Packet(PacketType.ClientID, "");
+        public static Packet REQUEST_ROOM_PACKET = new Packet(PacketType.RequestRoom, "");
+        /// <summary>
+        /// Should have comma-delimited message ids
+        /// </summary>
+        public static Packet REQUEST_MESSAGE_PACKET = new Packet(PacketType.RequestMessage, "");
+        public static Packet REQUEST_USER_PACKET = new Packet(PacketType.RequestUser, "");
+        public static Packet REQUEST_LOGIN_PACKET = new Packet(PacketType.RequestLogin, "");
 
         public delegate void WindowHandler();
         public delegate void MessageReceived(string msg);
