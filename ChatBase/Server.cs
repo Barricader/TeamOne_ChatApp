@@ -88,12 +88,12 @@ namespace ChatBase {
             int bytesRead;
 
             // Send client their clientID
-            Packet cidMessage = Constants.CLIENT_ID_TEMPLATE.AlterContent(clientID.ToString());
+            Packet cidMessage = Constants.CLIENT_ID_PACKET.AlterContent(clientID.ToString());
             SendPacket(cidMessage, clientStream);
 
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
             string welcomeMessage = "You are client " + clientID + Environment.NewLine;
-            SendPacket(Constants.MESSAGE_TEMPLATE.AlterContent(welcomeMessage), clientStream);
+            SendPacket(Constants.MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
             // Listen for client response
@@ -140,14 +140,14 @@ namespace ChatBase {
         private void ReadPacket(Packet p, TcpClient tcpClient, int clientID) {
             switch (p.Type) {
                 case PacketType.Message:
-                    Packet newPacket = Constants.MESSAGE_TEMPLATE.AlterContent("Client " + clientID + " says: " + p.Content);
+                    Packet newPacket = Constants.MESSAGE_PACKET.AlterContent("Client " + clientID + " says: " + p.Content);
                     newPacket.Args["Owner"] = clientID.ToString();
                     newPacket.Args["Room"] = 0.ToString();
                     Broadcast(newPacket);      // Broadcast message to all clients
                     WriteMessage(newPacket.Content);
                     break;
                 case PacketType.Goodbye:
-                    Packet leaveMsg = Constants.MESSAGE_TEMPLATE.AlterContent("Client " + clientID + " has left...");
+                    Packet leaveMsg = Constants.MESSAGE_PACKET.AlterContent("Client " + clientID + " has left...");
                     Broadcast(leaveMsg);
                     WriteMessage(leaveMsg.Content);
                     ConnClients--;

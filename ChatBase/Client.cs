@@ -162,7 +162,7 @@ namespace ChatBase {
                 //    windowHandler?.Invoke();
                 //}
 
-                SendPacket(MESSAGE_TEMPLATE.AlterContent(CurMessage));
+                SendPacket(MESSAGE_PACKET.AlterContent(CurMessage));
                 CurMessage = "";
             }
         }
