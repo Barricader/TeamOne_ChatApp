@@ -11,7 +11,10 @@ namespace ChatBase.Models {
         RequestMessage,
         RequestUser,
         RequestLogin,
-        Null        // Should never happen
+        RoomResponse,
+        UserJoined,
+        RoomCreated,
+        Null            // Should never happen
     };
 
     public class Packet {
@@ -60,6 +63,12 @@ namespace ChatBase.Models {
         /// <param name="packet">Packet object to use</param>
         /// <returns>If conversion was successful then return true, else return false</returns>
         public static bool JsonToPacket(string json, out Packet packet) {
+            Console.WriteLine(json);
+            // Heal string if first { is not there
+            if (json[0] == '"') {
+                json = "{" + json;
+            }
+
             JavaScriptSerializer jss = new JavaScriptSerializer();
             bool result = true;
             Packet p = new Packet();

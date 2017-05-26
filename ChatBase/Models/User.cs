@@ -1,7 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace ChatBase.Models
-{
+namespace ChatBase.Models {
     public class User
     {
         public string FirstName { get; set; }
@@ -12,6 +11,15 @@ namespace ChatBase.Models
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public BitmapImage Avatar { get; set; }
+        public Room CurRoom { get; set; }
+
+        public User() {
+
+        }
+
+        public User(string screenName) {
+            ScreenName = screenName;
+        }
         //public User(string firstName, string lastName, int age, string gender, string screenName, string password)
         //{
         //    FirstName = firstName;

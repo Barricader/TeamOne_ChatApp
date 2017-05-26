@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ChatBase.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ChatBase.Models {

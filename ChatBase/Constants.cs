@@ -8,7 +8,7 @@ namespace ChatBase {
         public static int RECONNECT_MAX_TRIES = 10;
         public static int SECONDS_BETWEEEN_TRIES = 5;
 
-        public static Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } };
+        public static Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } , { "Timestamp", "" } };
 
         public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Goodbye, "Server");
         public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Goodbye, "Client");
@@ -21,6 +21,9 @@ namespace ChatBase {
         public static Packet REQUEST_MESSAGE_PACKET = new Packet(PacketType.RequestMessage, "");
         public static Packet REQUEST_USER_PACKET = new Packet(PacketType.RequestUser, "");
         public static Packet REQUEST_LOGIN_PACKET = new Packet(PacketType.RequestLogin, "");
+        public static Packet ROOM_RESPONSE_PACKET = new Packet(PacketType.RoomResponse, "");
+        public static Packet USER_JOINED_PACKET = new Packet(PacketType.UserJoined, "");
+        public static Packet ROOM_CREATED_PACKET = new Packet(PacketType.RoomCreated, "");
 
         public delegate void WindowHandler();
         public delegate void MessageReceived(string msg);

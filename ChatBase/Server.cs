@@ -55,7 +55,10 @@ namespace ChatBase {
             listenThread = new Thread(new ThreadStart(ListenForClients));
             listenThread.Start();
 
-            rooms.Add(new ChatBase.Models.Room("General"));
+            // TODO: make a delay between messages (AKA method that has a thread with a counter that counts milliseconds between messages)
+            Thread.Sleep(0);
+            CreateRoom("General");
+            //rooms.Add(new Room("General"));
         }
 
         /// <summary>
@@ -84,6 +87,8 @@ namespace ChatBase {
         /// </summary>
         /// <param name="client">TcpClient to listen to</param>
         private void ClientCommsHandler(object client) {
+            Thread.Sleep(50);
+
             TcpClient tcpClient = (TcpClient)client;
             NetworkStream clientStream = tcpClient.GetStream();
             int clientID = nextClientID++;
@@ -100,6 +105,10 @@ namespace ChatBase {
             string welcomeMessage = "You are client " + clientID + Environment.NewLine;
             SendPacket(Constants.MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
+
+            Thread.Sleep(150);
+            //users.Add(new User("Client " + clientID));
+            UserJoined(new User("Client " + clientID));
 
             // Listen for client response
             while (clientListening[clientID-1]) {
@@ -159,6 +168,10 @@ namespace ChatBase {
                     clients.Remove(tcpClient);
                     clientListening[clientID-1] = false;
                     break;
+                case PacketType.RequestRoom:
+                    SendRooms(tcpClient);
+                    WriteMessage("Sending rooms to client " + clientID);
+                    break;
                 default:
                     Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
                     break;
@@ -191,6 +204,7 @@ namespace ChatBase {
         /// </summary>
         /// <param name="p">Packet to send</param>
         private void Broadcast(Packet p) {
+            // TODO: Add new arg called timestamp before sending messages to users
             // Echo to all dudes
             foreach (TcpClient client in clients) {
                 SendPacket(p, client.GetStream());
@@ -222,6 +236,44 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             isClosing = true;
+        }
+
+        public void SendRooms(TcpClient client) {
+            string roomList= "";
+
+            foreach (Room r in rooms) {
+                roomList = r.Name + ",";
+            }
+
+            roomList = roomList.Substring(0, roomList.Length - 1);
+
+            SendPacket(Constants.ROOM_RESPONSE_PACKET.AlterContent(roomList), client.GetStream());
+        }
+
+        public void UserJoined(User u) {
+            users.Add(new User("Client " + u.ScreenName));
+
+            foreach (TcpClient cl in clients) {
+                SendPacket(Constants.USER_JOINED_PACKET.AlterContent(u.ScreenName), cl.GetStream());
+            }
+        }
+
+        public void CreateRoom(string name) {
+            bool taken = false;
+
+            foreach (Room r in rooms) {
+                if (r.Name == name) {
+                    taken = true;
+                }
+            }
+
+            if (!taken) {
+                rooms.Add(new Room(name));
+
+                foreach (TcpClient cl in clients) {
+                    SendPacket(Constants.ROOM_CREATED_PACKET.AlterContent(name), cl.GetStream());
+                }
+            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatBase.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,7 @@ namespace ChatBase.Models {
         }
 
 
+        // TODO: packet to message converter
     }
 
 }

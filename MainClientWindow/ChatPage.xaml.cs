@@ -49,9 +49,9 @@ namespace MainClientWindow
             
         }
 
-        private void CloseWindow() {
-            //main.Close();
-        }
+        //private void CloseWindow() {
+        //    main.Close();
+        //}
 
         private void GotMessage(string msg)
         {
@@ -218,6 +218,8 @@ namespace MainClientWindow
             //Haven't looked into this but it might be super useful
 
             //Researching and testing how to put Emojis in a richtextbox 
+            //Continueing to research and test Emojis
+                //Testing in another WPF application
         }
 
         private void AddMessagesButtonHandler(object sender, RoutedEventArgs e)
