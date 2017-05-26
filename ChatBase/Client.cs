@@ -18,8 +18,8 @@ namespace ChatBase {
         private IPEndPoint serverEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), PORT);
         private Thread listenThread;
 
-        private TeamOne_ChatApp.Models.User user;
-        private List<TeamOne_ChatApp.Models.Room> rooms = new List<TeamOne_ChatApp.Models.Room>();
+        private User user;
+        private List<Room> rooms = new List<Room>();
 
         // Variables that change UI
         private string broadcast = "";
@@ -186,7 +186,7 @@ namespace ChatBase {
             switch (p.Type) {
                 case PacketType.ClientID:
                     WindowTitle = "Connected to " + serverEP.Address + " | Client " + p.Content;
-                    user = new TeamOne_ChatApp.Models.User("Client " + p.Content);
+                    user = new User("Client " + p.Content);
                     break;
                 case PacketType.Message:
                     Broadcast += Environment.NewLine + p.Content;
@@ -202,7 +202,7 @@ namespace ChatBase {
 
                     foreach (string roomName in roomNames) {
                         if (roomName != "" && roomName != " " && roomName != "\n") {
-                            rooms.Add(new TeamOne_ChatApp.Models.Room(roomName));
+                            rooms.Add(new Room(roomName));
                         }
                     }
 
@@ -214,7 +214,7 @@ namespace ChatBase {
                 case PacketType.RoomCreated:
                     // Handle new rooms here
                     if (p.Content != "" && p.Content != " " && p.Content != "\n") {
-                        rooms.Add(new TeamOne_ChatApp.Models.Room(p.Content));
+                        rooms.Add(new Room(p.Content));
                     }
 
                     if (user.CurRoom == null) {

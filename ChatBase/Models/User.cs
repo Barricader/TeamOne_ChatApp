@@ -1,7 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace ChatBase.Models
-{
+namespace ChatBase.Models {
     public class User
     {
         public string FirstName { get; set; }

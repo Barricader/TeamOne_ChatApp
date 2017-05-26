@@ -26,8 +26,8 @@ namespace ChatBase {
 
         // Room and user stuff
         // TODO: implement users and rooms
-        private List<TeamOne_ChatApp.Models.Room> rooms = new List<TeamOne_ChatApp.Models.Room>();
-        private List<TeamOne_ChatApp.Models.User> users = new List<TeamOne_ChatApp.Models.User>();
+        private List<Room> rooms = new List<Room>();
+        private List<User> users = new List<User>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -58,7 +58,7 @@ namespace ChatBase {
             // TODO: make a delay between messages (AKA method that has a thread with a counter that counts milliseconds between messages)
             Thread.Sleep(0);
             CreateRoom("General");
-            //rooms.Add(new TeamOne_ChatApp.Models.Room("General"));
+            //rooms.Add(new Room("General"));
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace ChatBase {
             WriteMessage("Client " + clientID + " has connected!");
 
             Thread.Sleep(150);
-            //users.Add(new TeamOne_ChatApp.Models.User("Client " + clientID));
-            UserJoined(new TeamOne_ChatApp.Models.User("Client " + clientID));
+            //users.Add(new User("Client " + clientID));
+            UserJoined(new User("Client " + clientID));
 
             // Listen for client response
             while (clientListening[clientID-1]) {
@@ -241,7 +241,7 @@ namespace ChatBase {
         public void SendRooms(TcpClient client) {
             string roomList= "";
 
-            foreach (TeamOne_ChatApp.Models.Room r in rooms) {
+            foreach (Room r in rooms) {
                 roomList = r.Name + ",";
             }
 
@@ -250,8 +250,8 @@ namespace ChatBase {
             SendPacket(Constants.ROOM_RESPONSE_PACKET.AlterContent(roomList), client.GetStream());
         }
 
-        public void UserJoined(TeamOne_ChatApp.Models.User u) {
-            users.Add(new TeamOne_ChatApp.Models.User("Client " + u.ScreenName));
+        public void UserJoined(User u) {
+            users.Add(new User("Client " + u.ScreenName));
 
             foreach (TcpClient cl in clients) {
                 SendPacket(Constants.USER_JOINED_PACKET.AlterContent(u.ScreenName), cl.GetStream());
@@ -261,14 +261,14 @@ namespace ChatBase {
         public void CreateRoom(string name) {
             bool taken = false;
 
-            foreach (TeamOne_ChatApp.Models.Room r in rooms) {
+            foreach (Room r in rooms) {
                 if (r.Name == name) {
                     taken = true;
                 }
             }
 
             if (!taken) {
-                rooms.Add(new TeamOne_ChatApp.Models.Room(name));
+                rooms.Add(new Room(name));
 
                 foreach (TcpClient cl in clients) {
                     SendPacket(Constants.ROOM_CREATED_PACKET.AlterContent(name), cl.GetStream());

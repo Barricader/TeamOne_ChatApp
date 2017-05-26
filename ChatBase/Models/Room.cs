@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ChatBase.Models;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace TeamOne_ChatApp.Models {
+namespace ChatBase.Models {
     public class Room {
         public string Name { get; set; }
         public List<User> Users { get; set; }
