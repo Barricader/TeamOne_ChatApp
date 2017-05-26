@@ -14,7 +14,7 @@ namespace TeamOne_ChatApp.Models {
 
     // TODO: emoji static class that links strings to images EX. ':smiley:' -> Image smiley
 
-    class Message {
+    public class Message {
         public Message(User owner, Room room, string content) {
             Owner = owner;
             OwningRoom = room;

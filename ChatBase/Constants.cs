@@ -21,6 +21,9 @@ namespace ChatBase {
         public static Packet REQUEST_MESSAGE_PACKET = new Packet(PacketType.RequestMessage, "");
         public static Packet REQUEST_USER_PACKET = new Packet(PacketType.RequestUser, "");
         public static Packet REQUEST_LOGIN_PACKET = new Packet(PacketType.RequestLogin, "");
+        public static Packet ROOM_RESPONSE_PACKET = new Packet(PacketType.RoomResponse, "");
+        public static Packet USER_JOINED_PACKET = new Packet(PacketType.UserJoined, "");
+        public static Packet ROOM_CREATED_PACKET = new Packet(PacketType.RoomCreated, "");
 
         public delegate void WindowHandler();
         public delegate void MessageReceived(string msg);

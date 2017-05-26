@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace TeamOne_ChatApp.Models {
-    class Room {
+    public class Room {
         public string Name { get; set; }
         public List<User> Users { get; set; }
         public List<Message> Messages { get; set; }

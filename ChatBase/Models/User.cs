@@ -10,6 +10,11 @@ namespace TeamOne_ChatApp.Models {
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public BitmapImage Avatar { get; set; }
+        public Room CurRoom { get; set; }
+
+        public User(string screenName) {
+            ScreenName = screenName;
+        }
         //public User(string firstName, string lastName, int age, string gender, string screenName, string password)
         //{
         //    FirstName = firstName;

@@ -1,5 +1,6 @@
 ﻿using ChatBase.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -16,6 +17,9 @@ namespace ChatBase {
         private TcpClient client = new TcpClient();
         private IPEndPoint serverEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), PORT);
         private Thread listenThread;
+
+        private TeamOne_ChatApp.Models.User user;
+        private List<TeamOne_ChatApp.Models.Room> rooms = new List<TeamOne_ChatApp.Models.Room>();
 
         // Variables that change UI
         private string broadcast = "";
@@ -107,6 +111,9 @@ namespace ChatBase {
             }
 
             Broadcast += "You have connected to: " + serverEP + Environment.NewLine;
+
+            // TODO: send room request
+            SendPacket(REQUEST_ROOM_PACKET);
         }
 
         /// <summary>
@@ -162,7 +169,11 @@ namespace ChatBase {
                 //    windowHandler?.Invoke();
                 //}
 
-                SendPacket(MESSAGE_PACKET.AlterContent(CurMessage));
+                Packet p = MESSAGE_PACKET.AlterContent(CurMessage);
+                p.Args["User"] = user.ScreenName;
+                p.Args["Room"] = user.CurRoom.Name;
+
+                SendPacket(p);
                 CurMessage = "";
             }
         }
@@ -175,6 +186,7 @@ namespace ChatBase {
             switch (p.Type) {
                 case PacketType.ClientID:
                     WindowTitle = "Connected to " + serverEP.Address + " | Client " + p.Content;
+                    user = new TeamOne_ChatApp.Models.User("Client " + p.Content);
                     break;
                 case PacketType.Message:
                     Broadcast += Environment.NewLine + p.Content;
@@ -182,12 +194,39 @@ namespace ChatBase {
                     break;
                 case PacketType.Goodbye:
                     Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
-                    Console.WriteLine("RIP SERVER");
                     client.Close();
                     isRunning = false;
                     break;
+                case PacketType.RoomResponse:
+                    string[] roomNames = p.Content.Split(',');
+
+                    foreach (string roomName in roomNames) {
+                        if (roomName != "" && roomName != " " && roomName != "\n") {
+                            rooms.Add(new TeamOne_ChatApp.Models.Room(roomName));
+                        }
+                    }
+
+                    if (user.CurRoom == null) {
+                        user.CurRoom = rooms[0];
+                    }
+
+                    break;
+                case PacketType.RoomCreated:
+                    // Handle new rooms here
+                    if (p.Content != "" && p.Content != " " && p.Content != "\n") {
+                        rooms.Add(new TeamOne_ChatApp.Models.Room(p.Content));
+                    }
+
+                    if (user.CurRoom == null) {
+                        user.CurRoom = rooms[0];
+                    }
+                    break;
+                case PacketType.UserJoined:
+                    // Keep track of users here
+                    Console.WriteLine("NEW USER: " + p.Content);
+                    break;
                 default:
-                    Console.WriteLine("ERROR: wrong packet type........... Content: {0]", p.Content);
+                    Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
                     break;
             }
         }
