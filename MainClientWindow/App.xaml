@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MainClientWindow"
              xmlns:cb="clr-namespace:ChatBase;assembly=ChatBase"
+             xmlns:converters="clr-namespace:MainClientWindow.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <cb:Client x:Key="client"/>
             <BooleanToVisibilityConverter x:Key="boolToVisibility"/>
+            <converters:NewMessagestoVisConverter x:Key="NotificationToVisibility"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

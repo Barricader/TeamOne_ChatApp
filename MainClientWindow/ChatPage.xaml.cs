@@ -42,6 +42,10 @@ namespace MainClientWindow
             ChatBase.Models.Room securityRoom = new ChatBase.Models.Room("Security");
             ChatBase.Models.Room randomRoom = new ChatBase.Models.Room("Random");
 
+            randomRoom.NewMessages = 3;
+            securityRoom.NewMessages = 15;
+
+
             roomList.Add(techRoom);
             roomList.Add(securityRoom);
             roomList.Add(randomRoom);
@@ -64,7 +68,10 @@ namespace MainClientWindow
         private void GotMessage(string msg)
         {
             AddSingleMessage(msg);
+            //get roomname and add notification
+            //room.NewMessages++;
         }
+
 
         private void GeneratePage()
         {
@@ -204,11 +211,11 @@ namespace MainClientWindow
                 {
                     if (r.Name == roomName)
                     {
+                        r.NewMessages = 0;
                         AddMessages(r);
                     }
-                    
                 }
-                //MessageBox.Show(notificationDock.Children.OfType<Button>().FirstOrDefault().Content.GetType().ToString());
+
             }
         }
 
@@ -220,6 +227,7 @@ namespace MainClientWindow
             {
                 if (r.Name == roomName)
                 {
+                    r.NewMessages = 0;
                     AddMessages(r);
                 }
 

@@ -24,8 +24,8 @@
                         <DockPanel>
                             <Button Content="{Binding Path=Name}" Click="SwitchRoomButton" Width="290"/>
                             <Grid>
-                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" ></Ellipse>
-                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="1" MouseDown="NotificationMouseDown"/>
+                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding Path=NewMessages, Converter={StaticResource NotificationToVisibility}, UpdateSourceTrigger=PropertyChanged}"></Ellipse>
+                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=NewMessages}" Visibility="{Binding Path=NewMessages, Converter={StaticResource NotificationToVisibility}, UpdateSourceTrigger=PropertyChanged}" MouseDown="NotificationMouseDown"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>

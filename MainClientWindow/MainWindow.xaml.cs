@@ -1,6 +1,7 @@
 ﻿using ChatBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
 
 namespace MainClientWindow
 {
@@ -33,6 +35,17 @@ namespace MainClientWindow
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
 
+            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            ni.Icon = new System.Drawing.Icon("../../icons/icon.ico");
+            ni.Visible = true;
+            ni.Click +=
+                delegate (object sender, EventArgs args)
+                {
+                    this.Show();
+                    this.WindowState = WindowState.Normal;
+                };
+
+
             //client.msgReceived += GotMessage;   // event that gets called when server sends a message
 
             //Client client = new Client();
@@ -40,7 +53,7 @@ namespace MainClientWindow
             //DataContext = client;
 
             //Closed += client.Window_Closed;
-            
+
 
             //client.windowHandler += CloseWindow;
 
@@ -58,6 +71,11 @@ namespace MainClientWindow
         public void CloseWindow()
         {
             Close();
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace ChatBase.Models {
         public string Name { get; set; }
         public List<User> Users { get; set; }
         public List<Message> Messages { get; set; }
+        public int NewMessages { get; set; }
 
         public Room(string name) {
             Name = name;
