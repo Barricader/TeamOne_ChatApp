@@ -26,8 +26,8 @@ namespace ChatBase {
 
         // Room and user stuff
         // TODO: implement users and rooms
-        private List<TeamOne_ChatApp.Models.Room> rooms = new List<TeamOne_ChatApp.Models.Room>();
-        private List<TeamOne_ChatApp.Models.User> users = new List<TeamOne_ChatApp.Models.User>();
+        private List<ChatBase.Models.Room> rooms = new List<ChatBase.Models.Room>();
+        private List<ChatBase.Models.User> users = new List<ChatBase.Models.User>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -55,7 +55,7 @@ namespace ChatBase {
             listenThread = new Thread(new ThreadStart(ListenForClients));
             listenThread.Start();
 
-            rooms.Add(new TeamOne_ChatApp.Models.Room("General"));
+            rooms.Add(new ChatBase.Models.Room("General"));
         }
 
         /// <summary>

@@ -27,26 +27,30 @@ namespace MainClientWindow
     public partial class Chat : Page
     {
         Client mainclient;
-        public List<List<Message>> testRoomMessageList = new List<List<Message>>();
-        ChatBase.Models.Room techRoom = new ChatBase.Models.Room("Tech");
+        public List<Message> testMessageList = new List<Message>();
+        public List<ChatBase.Models.Room> roomList = new List<ChatBase.Models.Room>();
         public Chat()
         {
             InitializeComponent();
-            GeneratePage();
             mainclient = (Client)FindResource("client");
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
-            mainclient.msgReceived += GotMessage;
+            mainclient.MsgReceived += GotMessage;
             DataContext = mainclient;
 
-            testRoomMessageList.Add(new List<Message>());
+
+            ChatBase.Models.Room techRoom = new ChatBase.Models.Room("Tech");
+            roomList.Add(techRoom);
             for (int i = 0; i < 10; i++)
             {
-                testRoomMessageList[0].Add(new Message(new User { FirstName = "Test ", LastName="User " + i }, techRoom, String.Format("Message{0}", i)));
+                testMessageList.Add(new Message(new User { FirstName = "Test", LastName="User " + i }, techRoom, String.Format("Message{0}", i), DateTime.Now));
             }
+
+            GeneratePage();
+            
         }
 
         private void CloseWindow() {
-            main.Close();
+            //main.Close();
         }
 
         private void GotMessage(string msg)
@@ -60,29 +64,20 @@ namespace MainClientWindow
             AddRooms(3);
             //int is connected users
             AddUsers(3);
-            AddMessages("tech");
+            AddMessages(roomList[0]);
         }
-
-        private void AddMessages(string roomname)
-        {   
-            //foreach message in messages from server(25 loops)
-            if (roomname == "all")
+        private void AddMessages(ChatBase.Models.Room roomname)
+        {
+            List<Message> roomMessagesList = new List<Message>(); 
+            var roomMessages = from m in testMessageList
+                                where m.OwningRoom == roomname
+                                select m;
+            foreach (Message m in roomMessages)
             {
-            //make request to server to get first 25 messages from each room.
-            //append each to the roomMessageList
-            //foreachroom
-                //roomMessageList.Add(new List<ChatBase.Models.Message>());
-                //forloop of 25 messages in array from server
-                //because it wont be a jumbled mess of x amount of messages.
-                //add to list[i]
+                roomMessagesList.Add(m);
             }
-            else
-            {
-                //nothin here yet
-                //will get the room name from a the rooms list
-                //and then populate it with the messages within that room.
-            }
-                        
+            MessagesItemControl.ItemsSource = roomMessagesList;
+            
         }
 
 
@@ -151,6 +146,7 @@ namespace MainClientWindow
 
         private void AddRooms(int roomNumbers)
         {
+            //Roomnames cannot have commas in it.
             //this will probably be a foreach looping through an array of rooms, populating each button with the room name
             //there probably needs to be a notify method that will append a (1) after the roomname
             for (int i = 0; i < roomNumbers; i++)
@@ -226,7 +222,7 @@ namespace MainClientWindow
 
         private void AddMessagesButtonHandler(object sender, RoutedEventArgs e)
         {
-            AddMessages("all");
+            //Will ping server for 25 more messages based on button pressed.
         }
 
         private void LogoutButtonClickHandler(object sender, RoutedEventArgs e)

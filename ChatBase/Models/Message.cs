@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TeamOne_ChatApp.Models {
+namespace ChatBase.Models {
     public enum MessageType {
         String,
         Image,
@@ -14,12 +14,12 @@ namespace TeamOne_ChatApp.Models {
 
     // TODO: emoji static class that links strings to images EX. ':smiley:' -> Image smiley
 
-    class Message {
-        public Message(User owner, Room room, string content) {
+    public class Message {
+        public Message(User owner, Room room, string content, DateTime timestamp) {
             Owner = owner;
             OwningRoom = room;
             Content = content;
-
+            MessageTimeStamp = timestamp;
         }
         private User owner;
         public User Owner { get { return owner; } private set { owner = value; } }
@@ -28,6 +28,7 @@ namespace TeamOne_ChatApp.Models {
         private string content;
         public string Content { get { return content; } set { content = value; } }
         public MessageType Type { get; set; }
+        public DateTime MessageTimeStamp { get; set; }
         public override string ToString() {
             return $"Type: {Type}, Owner: {Owner}, Room: {OwningRoom}, Content: {Content}";
         }

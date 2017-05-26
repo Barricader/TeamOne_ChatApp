@@ -15,7 +15,7 @@ namespace NewChat {
             Closed += client.Window_Closed;
             messageBox.KeyDown += client.MessageBoxKeyDown;
 
-            client.windowHandler += CloseWindow;
+            client.WindowHandler += CloseWindow;
 
             client.Start();
         }

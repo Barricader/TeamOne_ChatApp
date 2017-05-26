@@ -19,6 +19,9 @@
 
         <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0" Grid.RowSpan="2">
             <Label Background="DarkGray" Content="Connected to: 127.0.0.1 (bind here)"></Label>
+            <ComboBox x:Name="RoomsComboBox" Height="20">
+
+            </ComboBox>
         </StackPanel>
         <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom" Margin="0,-20,0,0" Grid.RowSpan="2">
             <TextBox x:Name="roomNameTextBox" Width="100" Height="20"></TextBox>
@@ -37,6 +40,27 @@
                 <StackPanel x:Name="MessagesStackPanel">
                     <Label Content="Roomname:" FontSize="36" Background="DarkGray" Height="50"></Label>
                     <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
+                    <ItemsControl x:Name="MessagesItemControl">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25"></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Grid.Row="0">
+                                        <Image></Image>
+                                        <Label Foreground="AliceBlue" Content="{Binding Path=Owner}"></Label>
+                                        <Label Foreground="AliceBlue" Content="at"/>
+                                        <Label Foreground="AliceBlue" Content="{Binding Path=MessageTimeStamp}"></Label>
+
+
+                                    </DockPanel>
+                                    <Label Grid.Row="1" Content="{Binding Path=Content}" Foreground="AliceBlue"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
             <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" VerticalAlignment="Top" Width="840" KeyDown="MBKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
