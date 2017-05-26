@@ -16,12 +16,21 @@
             <ColumnDefinition Width="25*"></ColumnDefinition>
             <ColumnDefinition Width="75*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
         <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0" Grid.RowSpan="2">
-            <Label Background="DarkGray" Content="Connected to: 127.0.0.1 (bind here)"></Label>
-            <ComboBox x:Name="RoomsComboBox" Height="20">
-
-            </ComboBox>
+            <Label x:Name="ConnectionLabel" Background="DarkGray" Content="Connected to:"></Label>
+            <ItemsControl x:Name="RoomsListView">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Button Content="{Binding Path=Name}" Click="SwitchRoomButton" Width="290"/>
+                            <Grid>
+                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" ></Ellipse>
+                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="1" MouseDown="NotificationMouseDown"/>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
         <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom" Margin="0,-20,0,0" Grid.RowSpan="2">
             <TextBox x:Name="roomNameTextBox" Width="100" Height="20"></TextBox>
@@ -32,39 +41,41 @@
 
         <Grid Grid.Column="1" Grid.RowSpan="2" >
             <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
                 <RowDefinition Height="8*" />
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel x:Name="MessagesStackPanel">
-                    <Label Content="Roomname:" FontSize="36" Background="DarkGray" Height="50"></Label>
-                    <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
+            <StackPanel Grid.Row="0">
+                <Label Content="{Binding ElementName=RoomsListView, Path=SelectionBoxItem}" FontSize="30" Background="DarkGray" Height="40"></Label>
+                <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="MessagesStackPanel" VerticalAlignment="Bottom" Background="AliceBlue">
                     <ItemsControl x:Name="MessagesItemControl">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25"></RowDefinition>
-                                        <RowDefinition></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <DockPanel Grid.Row="0">
-                                        <Image></Image>
-                                        <Label Foreground="AliceBlue" Content="{Binding Path=Owner}"></Label>
-                                        <Label Foreground="AliceBlue" Content="at"/>
-                                        <Label Foreground="AliceBlue" Content="{Binding Path=MessageTimeStamp}"></Label>
-
-
-                                    </DockPanel>
-                                    <Label Grid.Row="1" Content="{Binding Path=Content}" Foreground="AliceBlue"/>
-                                </Grid>
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25"></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <DockPanel Grid.Row="0" Background="AliceBlue">
+                                            <Label Content="{Binding Path=Owner}"></Label>
+                                            <Label Content="at"/>
+                                            <Label Content="{Binding Path=MessageTimeStamp}"></Label>
+                                        </DockPanel>
+                                        <Label Grid.Row="1" Background="AliceBlue" Content="{Binding Path=Content}" />
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
-            <TextBox x:Name="messageBox" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" VerticalAlignment="Top" Width="840" KeyDown="MBKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <DockPanel LastChildFill="True" Grid.Row="2" Margin="15,0,0,0">
+            <TextBox x:Name="messageBox" Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Width="245" KeyDown="MBKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0">
                 <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">
                     <Button.Template>
                         <ControlTemplate>

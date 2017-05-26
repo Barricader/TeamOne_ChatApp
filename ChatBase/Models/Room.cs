@@ -15,7 +15,8 @@ namespace ChatBase.Models {
         }
 
         public override string ToString() {
-            return $"Room name: {Name}, Amount of users in room: {Users.Count()}, Amount of messages: {Messages.Count()}";
+            return Name;
+            //return $"Room name: {Name}, Amount of users in room: {Users.Count()}, Amount of messages: {Messages.Count()}";
         }
     }
 }
