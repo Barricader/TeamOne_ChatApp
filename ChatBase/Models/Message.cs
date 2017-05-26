@@ -34,6 +34,7 @@ namespace ChatBase.Models {
         }
 
 
+        // TODO: packet to message converter
     }
 
 }

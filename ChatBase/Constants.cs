@@ -8,7 +8,7 @@ namespace ChatBase {
         public static int RECONNECT_MAX_TRIES = 10;
         public static int SECONDS_BETWEEEN_TRIES = 5;
 
-        public static Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } };
+        public static Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } , { "Timestamp", "" } };
 
         public static Packet SERVER_BYE_PACKET = new Packet(PacketType.Goodbye, "Server");
         public static Packet CLIENT_BYE_PACKET = new Packet(PacketType.Goodbye, "Client");

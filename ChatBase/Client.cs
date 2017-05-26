@@ -19,7 +19,8 @@ namespace ChatBase {
         private Thread listenThread;
 
         private User user;
-        private List<Room> rooms = new List<Room>();
+        public List<Room> rooms = new List<Room>();
+        public List<User> users = new List<User>();
 
         // Variables that change UI
         private string broadcast = "";

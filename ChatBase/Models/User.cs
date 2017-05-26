@@ -13,6 +13,10 @@ namespace ChatBase.Models {
         public BitmapImage Avatar { get; set; }
         public Room CurRoom { get; set; }
 
+        public User() {
+
+        }
+
         public User(string screenName) {
             ScreenName = screenName;
         }

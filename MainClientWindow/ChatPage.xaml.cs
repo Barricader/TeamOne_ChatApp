@@ -35,19 +35,19 @@ namespace MainClientWindow
             GeneratePage();
             mainclient = (Client)FindResource("client");
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
-            mainclient.msgReceived += GotMessage;
+            mainclient.MsgReceived += GotMessage;
             DataContext = mainclient;
 
             testRoomMessageList.Add(new List<Message>());
             for (int i = 0; i < 10; i++)
             {
-                testRoomMessageList[0].Add(new Message(new User { FirstName = "Test ", LastName="User " + i }, techRoom, String.Format("Message{0}", i)));
+                testRoomMessageList[0].Add(new Message(new User { ScreenName = "test_user", FirstName = "Test ", LastName="User " + i }, techRoom, String.Format("Message{0}", i)));
             }
         }
 
-        private void CloseWindow() {
-            main.Close();
-        }
+        //private void CloseWindow() {
+        //    main.Close();
+        //}
 
         private void GotMessage(string msg)
         {
