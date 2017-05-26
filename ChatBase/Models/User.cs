@@ -1,7 +1,9 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace TeamOne_ChatApp.Models {
-    public class User {
+namespace ChatBase.Models
+{
+    public class User
+    {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
