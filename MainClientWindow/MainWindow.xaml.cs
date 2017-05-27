@@ -18,16 +18,13 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 
-namespace MainClientWindow
-{
+namespace MainClientWindow {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
-    {
+    public partial class MainWindow : Window {
 
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
 
             Client client = (Client)FindResource("client");
@@ -66,10 +63,11 @@ namespace MainClientWindow
 
         private void newMsg(string msg) {
             Console.WriteLine(msg);
+            Closed += client.Window_Closed;
+            client.WindowHandler += CloseWindow;
         }
 
-        public void CloseWindow()
-        {
+        public void CloseWindow() {
             Close();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
