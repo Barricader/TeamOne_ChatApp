@@ -107,8 +107,8 @@ namespace ChatBase {
             WriteMessage("Client " + clientID + " has connected!");
 
             Thread.Sleep(150);
-            //users.Add(new User("Client " + clientID));
             UserJoined(new User("Client " + clientID));
+            users[clientID - 1].CurRoom = rooms[0];
 
             // Listen for client response
             while (clientListening[clientID-1]) {
@@ -135,7 +135,6 @@ namespace ChatBase {
                 // Convert bytes to string and display string
                 string message = Encoding.UTF8.GetString(msg, 0, bytesRead);
 
-                //Packet tempPacket;
                 if (Packet.JsonToPacket(message, out Packet tempPacket)) {
                     ReadPacket(tempPacket, tcpClient, clientID);
                 }
@@ -238,6 +237,10 @@ namespace ChatBase {
             isClosing = true;
         }
 
+        /// <summary>
+        /// Sends a list of available rooms to the client
+        /// </summary>
+        /// <param name="client"></param>
         public void SendRooms(TcpClient client) {
             string roomList= "";
 
@@ -250,6 +253,10 @@ namespace ChatBase {
             SendPacket(Constants.ROOM_RESPONSE_PACKET.AlterContent(roomList), client.GetStream());
         }
 
+        /// <summary>
+        /// User has joined the server, let all the other users know
+        /// </summary>
+        /// <param name="u"></param>
         public void UserJoined(User u) {
             users.Add(new User("Client " + u.ScreenName));
 
@@ -258,6 +265,10 @@ namespace ChatBase {
             }
         }
 
+        /// <summary>
+        /// The server has created a room, let all the users know
+        /// </summary>
+        /// <param name="name"></param>
         public void CreateRoom(string name) {
             bool taken = false;
 
