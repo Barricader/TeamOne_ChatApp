@@ -164,6 +164,7 @@ namespace MainClientWindow
             //Researching and testing how to put Emojis in a richtextbox 
             //Continueing to research and test Emojis
             //Testing in another WPF application
+            //This emoji thing is taking a lot longer than I thought
         }
 
         private void AddMessagesButtonHandler(object sender, RoutedEventArgs e)
