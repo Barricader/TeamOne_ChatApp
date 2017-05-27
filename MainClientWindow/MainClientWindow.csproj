@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,6 +60,7 @@
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooltoVisConverter.cs" />
+    <Compile Include="Converters\NewMessagestoVisConverter.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Emojis\1f62c.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

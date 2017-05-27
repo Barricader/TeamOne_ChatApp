@@ -16,11 +16,11 @@ namespace ChatBase.Models {
     // TODO: emoji static class that links strings to images EX. ':smiley:' -> Image smiley
 
     public class Message {
-        public Message(User owner, Room room, string content) {
+        public Message(User owner, Room room, string content, DateTime timestamp) {
             Owner = owner;
             OwningRoom = room;
             Content = content;
-
+            MessageTimeStamp = timestamp;
         }
         private User owner;
         public User Owner { get { return owner; } private set { owner = value; } }
@@ -29,6 +29,7 @@ namespace ChatBase.Models {
         private string content;
         public string Content { get { return content; } set { content = value; } }
         public MessageType Type { get; set; }
+        public DateTime MessageTimeStamp { get; set; }
         public override string ToString() {
             return $"Type: {Type}, Owner: {Owner}, Room: {OwningRoom}, Content: {Content}";
         }

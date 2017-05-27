@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Input;
 using static ChatBase.Constants;
 
+
 namespace ChatBase {
     public class Client : INotifyPropertyChanged {
         // Variables that allow listening to server

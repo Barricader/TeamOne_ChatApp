@@ -35,8 +35,11 @@ namespace ChatBase.Models {
         public void JoinRoom() {
 
         }
-        public override string ToString() {
-            return "Name: " + FirstName + " " + LastName + "\nAge: " + Age + "\nGender: " + Gender + "\nScreenName: " + ScreenName + "\nPassword: " + Password + "\nConfirm Pass:" + ConfirmPassword;
+        public override string ToString()
+        {
+            //I'm not sure how to do this? I need to bind it to chatpage.xaml and it calls this methoad.  All I want is the First + Last name
+            //Let me know 
+             return FirstName + " " + LastName;
         }
     }
 }

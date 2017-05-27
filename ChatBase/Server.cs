@@ -26,8 +26,8 @@ namespace ChatBase {
 
         // Room and user stuff
         // TODO: implement users and rooms
-        private List<Room> rooms = new List<Room>();
-        private List<User> users = new List<User>();
+        private List<ChatBase.Models.Room> rooms = new List<ChatBase.Models.Room>();
+        private List<ChatBase.Models.User> users = new List<ChatBase.Models.User>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -7,6 +7,7 @@ namespace ChatBase.Models {
         public string Name { get; set; }
         public List<User> Users { get; set; }
         public List<Message> Messages { get; set; }
+        public int NewMessages { get; set; }
 
         public Room(string name) {
             Name = name;
@@ -15,7 +16,8 @@ namespace ChatBase.Models {
         }
 
         public override string ToString() {
-            return $"Room name: {Name}, Amount of users in room: {Users.Count()}, Amount of messages: {Messages.Count()}";
+            return Name;
+            //return $"Room name: {Name}, Amount of users in room: {Users.Count()}, Amount of messages: {Messages.Count()}";
         }
     }
 }
