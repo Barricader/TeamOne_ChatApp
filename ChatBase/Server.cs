@@ -172,6 +172,10 @@ namespace ChatBase {
                     SendRooms(tcpClient);
                     WriteMessage("Sending rooms to client " + clientID);
                     break;
+                case PacketType.JoinRoomRequest:
+                    Packet joinRoomPacket = Constants.REQUEST_JOIN_ROOM.AlterContent("Client " + clientID + "Has Joined Room");
+                    WriteMessage(joinRoomPacket.Content);
+                    break;
                 default:
                     Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
                     break;
