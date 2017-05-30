@@ -212,5 +212,25 @@ namespace MainClientWindow
 
             }
         }
+
+        private void Emoji1ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u263a");
+        }
+
+        private void Emoji2ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u2639");
+        }
+
+        private void Emoji3ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u2764");
+        }
+
+        private void Emoji4ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u2620");
+        }
     }
 }
