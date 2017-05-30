@@ -101,6 +101,9 @@ namespace ChatBase {
             Packet cidMessage = Constants.CLIENT_ID_PACKET.AlterContent(clientID.ToString());
             SendPacket(cidMessage, clientStream);
 
+            Thread.Sleep(150);
+            SendRooms(tcpClient);
+
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
             string welcomeMessage = "You are client " + clientID + Environment.NewLine;
             SendPacket(Constants.MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
