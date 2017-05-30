@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MainClientWindow"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="557.908" d:DesignWidth="1064.369"
       Title="Chat" >
     <Grid Background="Black">
         <Grid.RowDefinitions>
@@ -17,15 +17,14 @@
             <ColumnDefinition Width="75*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0" Grid.RowSpan="2">
-            <Label x:Name="ConnectionLabel" Background="DarkGray" Content="Connected to:"></Label>
             <ItemsControl x:Name="RoomsListView">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DockPanel>
                             <Button Content="{Binding Path=Name}" Click="SwitchRoomButton" Width="290"/>
                             <Grid>
-                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding Path=NewMessages, Converter={StaticResource NotificationToVisibility}, UpdateSourceTrigger=PropertyChanged}"></Ellipse>
-                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=NewMessages}" Visibility="{Binding Path=NewMessages, Converter={StaticResource NotificationToVisibility}, UpdateSourceTrigger=PropertyChanged}" MouseDown="NotificationMouseDown"/>
+                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding NewMessages, Converter={StaticResource NotificationToVisibility}}"></Ellipse>
+                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding NewMessages}" Visibility="{Binding NewMessages, Converter={StaticResource NotificationToVisibility}}" MouseDown="NotificationMouseDown"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -101,22 +100,30 @@
                     <ColumnDefinition Width="25*"/>
                     <ColumnDefinition Width="25*"/>
                 </Grid.ColumnDefinitions>
-                <ToggleButton Content="Emoji 1"
+                <ToggleButton Content="&#x263a;"
+                              Background="Beige"
+                              FontSize="24"
+                              Height="50"
+                              Grid.Column="0"
+                              Click="Emoji1ToggleButton_Click"/>
+                <ToggleButton Content="&#x2639;"
                               Background="Beige"
                               Height="50"
-                              Grid.Column="0"/>
-                <ToggleButton Content="Emoji 2"
+                              FontSize="24"
+                              Grid.Column="1"
+                              Click="Emoji2ToggleButton_Click"/>
+                <ToggleButton Content="&#x2764;"
                               Background="Beige"
                               Height="50"
-                              Grid.Column="1"/>
-                <ToggleButton Content="Emoji 3"
+                              FontSize="24"
+                              Grid.Column="2"
+                              Click="Emoji3ToggleButton_Click"/>
+                <ToggleButton Content="&#x2620;"                            
                               Background="Beige"
                               Height="50"
-                              Grid.Column="2"/>
-                <ToggleButton Content="Emoji 4"
-                              Background="Beige"
-                              Height="50"
-                              Grid.Column="3"/>
+                              FontSize="24"
+                              Grid.Column="3"
+                              Click="Emoji4ToggleButton_Click"/>
             </Grid>
         </Grid>
     </Grid>

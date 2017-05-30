@@ -52,7 +52,6 @@ namespace MainClientWindow {
             //}
 
             GeneratePage();
-
         }
 
         private void ClearQueue() {
@@ -83,6 +82,12 @@ namespace MainClientWindow {
             }
             //get roomname and add notification
             //room.NewMessages++;
+            /*
+            for (int i = 0; i < 5; i++)
+            {
+                testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, roomList[0], String.Format("Message{0}", i), DateTime.Now));
+            }
+            */
         }
 
 
@@ -117,7 +122,7 @@ namespace MainClientWindow {
             //Roomnames cannot have commas in it.
             //this will probably be a foreach looping through an array of rooms, populating each button with the room name
             //there probably needs to be a notify method that will append a (1) after the roomname
-            RoomsListView.ItemsSource = roomList;
+            RoomsListView.ItemsSource = mainclient.rooms;
         }
 
         private void AddRoom(ChatBase.Models.Room room) {
@@ -165,6 +170,7 @@ namespace MainClientWindow {
             //Researching and testing how to put Emojis in a richtextbox 
             //Continueing to research and test Emojis
             //Testing in another WPF application
+            //This emoji thing is taking a lot longer than I thought
         }
 
         private void AddMessagesButtonHandler(object sender, RoutedEventArgs e) {
@@ -175,21 +181,18 @@ namespace MainClientWindow {
             this.NavigationService.Navigate(new Uri("LoginPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void RoomGenClickHandler(object sender, RoutedEventArgs e) {
-            //AddRoom(roomNameTextBox.Text);
+        private void RoomGenClickHandler(object sender, RoutedEventArgs e)
+        {
+            AddRoom(new ChatBase.Models.Room(roomNameTextBox.Text));
             //Will add new table to database
-
         }
 
         private void ClearRoom() {
             MessagesStackPanel.Children.Clear();
         }
 
-        public void MBKeyDown(object sender, KeyEventArgs e) {
-        }
-
-        private void RoomsListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            //AddMessages((ChatBase.Models.Room)RoomsListView.SelectedItem);
+        public void MBKeyDown(object sender, KeyEventArgs e)
+        {
         }
 
         private void NotificationMouseDown(object sender, MouseButtonEventArgs e) {
@@ -220,6 +223,26 @@ namespace MainClientWindow {
                 }
 
             }
+        }
+
+        private void Emoji1ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u263a");
+        }
+
+        private void Emoji2ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u2639");
+        }
+
+        private void Emoji3ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u2764");
+        }
+
+        private void Emoji4ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            messageBox.AppendText("\u2620");
         }
     }
 }

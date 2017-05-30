@@ -96,5 +96,11 @@
   <ItemGroup>
     <Resource Include="Images\photoattachment.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChatBase\ChatBase.csproj">
+      <Project>{a27bcb9e-7ead-428b-a29f-eea2c13ad34d}</Project>
+      <Name>ChatBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
