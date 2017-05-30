@@ -15,6 +15,7 @@ namespace ChatBase {
         public static Packet MESSAGE_PACKET = new Packet(PacketType.Message, "", MESSAGE_ARGS);
         public static Packet CLIENT_ID_PACKET = new Packet(PacketType.ClientID, "");
         public static Packet REQUEST_ROOM_PACKET = new Packet(PacketType.RequestRoom, "");
+        public static Packet REQUEST_JOIN_ROOM = new Packet(PacketType.JoinRoomRequest, "");
         /// <summary>
         /// Should have comma-delimited message ids
         /// </summary>
@@ -24,6 +25,7 @@ namespace ChatBase {
         public static Packet ROOM_RESPONSE_PACKET = new Packet(PacketType.RoomResponse, "");
         public static Packet USER_JOINED_PACKET = new Packet(PacketType.UserJoined, "");
         public static Packet ROOM_CREATED_PACKET = new Packet(PacketType.RoomCreated, "");
+        public static Packet JOIN_ROOM_RESPONSE = new Packet(PacketType.JoinRoomResponse, "");
 
         public delegate void WindowHandler();
         public delegate void MessageReceived(string msg);

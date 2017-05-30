@@ -33,7 +33,8 @@ namespace ChatBase.Models {
 
         }
         public void JoinRoom() {
-
+            
+            
         }
         public override string ToString()
         {

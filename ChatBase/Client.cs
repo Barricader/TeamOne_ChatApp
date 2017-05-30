@@ -227,6 +227,9 @@ namespace ChatBase {
                     // Keep track of users here
                     Console.WriteLine("NEW USER: " + p.Content);
                     break;
+                case PacketType.JoinRoomResponse:
+                    user.CurRoom = rooms[int.Parse(p.Content)];
+                    break;
                 default:
                     Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
                     break;
