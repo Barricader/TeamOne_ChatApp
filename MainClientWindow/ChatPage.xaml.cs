@@ -26,9 +26,11 @@ namespace MainClientWindow
     /// </summary>
     public partial class Chat : Page
     {
-        Client mainclient;
+        
         public List<Message> testMessageList = new List<Message>();
-        public List<ChatBase.Models.Room> roomList = new List<ChatBase.Models.Room>();
+        public List<ChatBase.Models.Room> roomList;
+        Client mainclient;
+
         public Chat()
         {
             InitializeComponent();
@@ -36,40 +38,21 @@ namespace MainClientWindow
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
             mainclient.MsgReceived += GotMessage;
             DataContext = mainclient;
-
-
-            ChatBase.Models.Room techRoom = new ChatBase.Models.Room("Tech");
-            ChatBase.Models.Room securityRoom = new ChatBase.Models.Room("Security");
-            ChatBase.Models.Room randomRoom = new ChatBase.Models.Room("Random");
-
-            randomRoom.NewMessages = 3;
-            securityRoom.NewMessages = 15;
-
-
-            roomList.Add(techRoom);
-            roomList.Add(securityRoom);
-            roomList.Add(randomRoom);
-            for (int i = 0; i < 10; i++)
-            {
-                testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, techRoom, String.Format("Message{0}", i), DateTime.Now));
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, securityRoom, String.Format("Message{0}", i), DateTime.Now));
-            }
+            roomList = mainclient.rooms;
             GeneratePage();
-
         }
-
-        //private void CloseWindow() {
-        //    main.Close();
-        //}
 
         private void GotMessage(string msg)
         {
             AddSingleMessage(msg);
             //get roomname and add notification
             //room.NewMessages++;
+            /*
+            for (int i = 0; i < 5; i++)
+            {
+                testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, roomList[0], String.Format("Message{0}", i), DateTime.Now));
+            }
+            */
         }
 
 
@@ -79,7 +62,7 @@ namespace MainClientWindow
             AddRooms();
             //int is connected users
             AddUsers(3);
-            AddMessages(roomList[0]);
+            //AddMessages(roomList[0]);
         }
         private void AddMessages(ChatBase.Models.Room roomname)
         {
@@ -98,7 +81,7 @@ namespace MainClientWindow
 
         private void AddSingleMessage(string message)
         {
-
+            
 
         }
 
@@ -108,12 +91,13 @@ namespace MainClientWindow
             //Roomnames cannot have commas in it.
             //this will probably be a foreach looping through an array of rooms, populating each button with the room name
             //there probably needs to be a notify method that will append a (1) after the roomname
-            RoomsListView.ItemsSource = roomList;
+            RoomsListView.ItemsSource = mainclient.rooms;
         }
 
         private void AddRoom(ChatBase.Models.Room room)
         {
             roomList.Add(room);
+            RoomsListView.ItemsSource = roomList;
         }
 
         private void AddUsers(int connectedUsers)
@@ -178,9 +162,8 @@ namespace MainClientWindow
 
         private void RoomGenClickHandler(object sender, RoutedEventArgs e)
         {
-            //AddRoom(roomNameTextBox.Text);
+            AddRoom(new ChatBase.Models.Room(roomNameTextBox.Text));
             //Will add new table to database
-
         }
 
         private void ClearRoom()
@@ -190,11 +173,6 @@ namespace MainClientWindow
 
         public void MBKeyDown(object sender, KeyEventArgs e)
         {
-        }
-
-        private void RoomsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //AddMessages((ChatBase.Models.Room)RoomsListView.SelectedItem);
         }
 
         private void NotificationMouseDown(object sender, MouseButtonEventArgs e)

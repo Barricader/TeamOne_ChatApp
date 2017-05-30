@@ -17,15 +17,14 @@
             <ColumnDefinition Width="75*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0" Grid.RowSpan="2">
-            <Label x:Name="ConnectionLabel" Background="DarkGray" Content="Connected to:"></Label>
             <ItemsControl x:Name="RoomsListView">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DockPanel>
                             <Button Content="{Binding Path=Name}" Click="SwitchRoomButton" Width="290"/>
                             <Grid>
-                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding Path=NewMessages, Converter={StaticResource NotificationToVisibility}, UpdateSourceTrigger=PropertyChanged}"></Ellipse>
-                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=NewMessages}" Visibility="{Binding Path=NewMessages, Converter={StaticResource NotificationToVisibility}, UpdateSourceTrigger=PropertyChanged}" MouseDown="NotificationMouseDown"/>
+                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding NewMessages, Converter={StaticResource NotificationToVisibility}}"></Ellipse>
+                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding NewMessages}" Visibility="{Binding NewMessages, Converter={StaticResource NotificationToVisibility}}" MouseDown="NotificationMouseDown"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>

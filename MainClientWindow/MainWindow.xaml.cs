@@ -44,8 +44,7 @@ namespace MainClientWindow
                     this.Show();
                     this.WindowState = WindowState.Normal;
                 };
-
-
+            //ni.ContextMenu.MenuItems.Add("Exit", ExitApp);
             //client.msgReceived += GotMessage;   // event that gets called when server sends a message
 
             //Client client = new Client();
@@ -60,6 +59,10 @@ namespace MainClientWindow
             //client.Start();
         }
 
+        private void ExitApp(object sender, EventArgs e)
+        {
+
+        }
         private void GotMessage(string msg) {
             //Console.WriteLine(msg);
         }
