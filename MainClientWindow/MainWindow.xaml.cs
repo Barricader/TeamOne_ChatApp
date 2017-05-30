@@ -1,6 +1,7 @@
 ﻿using ChatBase;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MainClientWindow {
     /// <summary>
@@ -15,7 +16,7 @@ namespace MainClientWindow {
             client.Start();
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
-
+            
             System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon() {
                 Icon = new System.Drawing.Icon("../../icons/icon.ico"),
                 Visible = true
@@ -26,17 +27,17 @@ namespace MainClientWindow {
                     Show();
                     WindowState = WindowState.Normal;
                 };
-
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
+
         }
 
         public void CloseWindow() {
             Close();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            e.Cancel = true;
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
             this.Hide();
         }
     }

@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:MainClientWindow"
         mc:Ignorable="d"
         DataContext="{StaticResource client}"
-        Title="{Binding Path=WindowTitle}" Height="720" Width="1280" ResizeMode="NoResize" Closing="Window_Closing">
+        Title="{Binding Path=WindowTitle}" Height="720" Width="1280" ResizeMode="CanMinimize" StateChanged="Window_StateChanged">
     <Frame x:Name="mainframe" NavigationUIVisibility="Hidden"></Frame>
 </Window>
