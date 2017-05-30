@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
@@ -19,7 +20,7 @@ namespace ChatBase {
         private IPEndPoint serverEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), PORT);
         private Thread listenThread;
 
-        private User user;
+        public User user;
         public List<Room> rooms = new List<Room>();
         public List<User> users = new List<User>();
 
@@ -27,12 +28,14 @@ namespace ChatBase {
         private string broadcast = "";
         private string windowTitle = "";
         private string curMessage = "";
-        private string serverMessage = "";
+        private Message serverMessage = null;
         private bool isRunning = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event WindowHandler WindowHandler;
         public event MessageReceived MsgReceived;
+        public event RoomAdded RoomHandler;
+        public event HasRoom HasRoomEvent;
 
         public string Broadcast {
             get => broadcast;
@@ -56,7 +59,7 @@ namespace ChatBase {
             }
         }
 
-        public string ServerMessage {
+        public Message ServerMessage {
             get => serverMessage;
             set {
                 serverMessage = value;
@@ -113,8 +116,7 @@ namespace ChatBase {
             }
 
             Broadcast += "You have connected to: " + serverEP + Environment.NewLine;
-
-            // TODO: send room request
+            
             SendPacket(REQUEST_ROOM_PACKET);
         }
 
@@ -129,7 +131,7 @@ namespace ChatBase {
             
             // TODO: find a better way to listen, like get an event if stream finds input
             while (isRunning) {
-                Thread.Sleep(100);  // Sleep for a bit, save some cpu cycles
+                Thread.Sleep(50);  // Sleep for a bit, save some cpu cycles
 
                 try {
                     bytes = stream.Read(data, 0, data.Length);  // Read stream
@@ -172,9 +174,9 @@ namespace ChatBase {
                 //}
 
                 Packet p = MESSAGE_PACKET.AlterContent(CurMessage);
-                p.Args["User"] = user.ScreenName;
+                p.Args["Owner"] = user.ScreenName;
                 p.Args["Room"] = user.CurRoom.Name;
-
+                
                 SendPacket(p);
                 CurMessage = "";
             }
@@ -192,7 +194,11 @@ namespace ChatBase {
                     break;
                 case PacketType.Message:
                     Broadcast += Environment.NewLine + p.Content;
-                    ServerMessage = p.Content;
+                    Room room = user.CurRoom;
+                    if (p.Args["Room"] != "") {
+                        room = rooms.Where(r => r.Name == p.Args["Room"]).ElementAt(0);
+                    }
+                    ServerMessage = new Message(user, room, p.Content, new DateTime());  // TODO: get screen name and siplay in messages
                     break;
                 case PacketType.Goodbye:
                     Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
@@ -205,18 +211,21 @@ namespace ChatBase {
                     foreach (string roomName in roomNames) {
                         if (roomName != "" && roomName != " " && roomName != "\n") {
                             rooms.Add(new Room(roomName));
+
+                            RoomHandler?.Invoke(rooms[rooms.Count - 1]);
                         }
                     }
 
                     if (user.CurRoom == null) {
                         user.CurRoom = rooms[0];
+                        HasRoomEvent?.Invoke();
                     }
-
                     break;
                 case PacketType.RoomCreated:
                     // Handle new rooms here
                     if (p.Content != "" && p.Content != " " && p.Content != "\n") {
                         rooms.Add(new Room(p.Content));
+                        RoomHandler?.Invoke(rooms[rooms.Count - 1]);
                     }
 
                     if (user.CurRoom == null) {

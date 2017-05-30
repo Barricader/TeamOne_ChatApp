@@ -106,7 +106,7 @@ namespace ChatBase {
             SendPacket(Constants.MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
-            Thread.Sleep(150);
+            Thread.Sleep(120);
             UserJoined(new User("Client " + clientID));
             users[clientID - 1].CurRoom = rooms[0];
 
@@ -154,8 +154,9 @@ namespace ChatBase {
             switch (p.Type) {
                 case PacketType.Message:
                     Packet newPacket = Constants.MESSAGE_PACKET.AlterContent("Client " + clientID + " says: " + p.Content);
-                    newPacket.Args["Owner"] = clientID.ToString();
-                    newPacket.Args["Room"] = 0.ToString();
+                    newPacket.Args["Owner"] = p.Args["Owner"];
+                    Console.WriteLine(p.Args["Owner"]);
+                    newPacket.Args["Room"] = p.Args["Room"];
                     Broadcast(newPacket);      // Broadcast message to all clients
                     WriteMessage(newPacket.Content);
                     break;

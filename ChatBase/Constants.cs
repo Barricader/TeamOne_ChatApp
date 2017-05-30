@@ -28,6 +28,8 @@ namespace ChatBase {
         public static Packet JOIN_ROOM_RESPONSE = new Packet(PacketType.JoinRoomResponse, "");
 
         public delegate void WindowHandler();
-        public delegate void MessageReceived(string msg);
+        public delegate void MessageReceived(Message msg);
+        public delegate void RoomAdded(Room room);
+        public delegate void HasRoom();
     }
 }
