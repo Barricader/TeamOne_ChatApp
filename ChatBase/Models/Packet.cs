@@ -14,13 +14,13 @@ namespace ChatBase.Models {
         RequestUser,
         RequestLogin,
         RoomResponse,
+        UserResponse,
         UserJoined,
         RoomCreated,
         Null            // Should never happen
     };
 
     public class Packet {
-        //public string Type { get; set; }
         public PacketType Type { get; set; }
         public string Content { get; set; }
         public Dictionary<string, string> Args { get; set; }

@@ -8,7 +8,7 @@
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="RegisterNewAccountPage">
 
-    <Grid>
+    <Grid Background="MediumPurple">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60*"/>
             <ColumnDefinition Width="40*"/>
@@ -20,14 +20,16 @@
             <TextBox FontSize="18"
                      Margin="25 5"                    
                      Height="42"
-                     x:Name="firstName1"/>
+                     x:Name="firstName1"
+                     Background="GhostWhite"/>
             <Label Content="Last Name:"
                    FontSize="18"
                    Margin="25 5"/>
             <TextBox FontSize="18"
                      Margin="25 5"                    
                      Height="42"
-                     x:Name="lastName"/>
+                     x:Name="lastName"
+                     Background="GhostWhite"/>
             <Label Content="Age:"
                    FontSize="18"
                    Margin="25 5"/>
@@ -49,47 +51,51 @@
             <TextBox FontSize="18"
                      Margin="25 5"                    
                      Height="42"
-                     x:Name="gender"/>
+                     x:Name="gender"
+                     Background="GhostWhite"/>
             <Label Content="Screen Name:"
                    FontSize="18"
                    Margin="25 5"/>
             <TextBox FontSize="18"
                      Margin="25 5"                    
                      Height="42"
-                     x:Name="screenName"/>
+                     x:Name="screenName"
+                     Background="GhostWhite"/>
             <Label Content="Password:"
                    FontSize="18"
                    Margin="25 5"/>
             <TextBox FontSize="18"
                      Margin="25 5"                    
                      Height="42"
-                     x:Name="password"/>
+                     x:Name="password"
+                     Background="GhostWhite"/>
             <Label Content="Confirm Password:"
                    FontSize="18"
                    Margin="25 5"/>
             <TextBox FontSize="18"
                      Margin="25 5"                    
                      Height="42"
-                     x:Name="confirmPassword"/>
+                     x:Name="confirmPassword"
+                     Background="GhostWhite"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
             <Label Content="Avatar"
                    FontSize="18"
                    Margin="25 5"
                    HorizontalAlignment="Center"/>
-            <Border BorderBrush="Black"
-                    BorderThickness="5"
-                    Background="GhostWhite"
+            <Border BorderBrush="GhostWhite"
+                    BorderThickness="5"                   
                     Height="350"
                     Width="350">
                 <Image x:Name="userAvatar"
-                       Source="icons\photoattachment.bmp"/>
+                       Source="icons\defaultAvatar.png"/>
             </Border>
             <Button Content="Upload Image"
                     Height="25"
                     Width="100"
                     Margin="25 50 25 0"
-                    Click="UploadButton_Click"/>
+                    Click="UploadButton_Click"
+                    Background="CornflowerBlue"/>
             <Label x:Name="errorMsg"
                    Foreground="Red"
                    FontSize="18"
@@ -98,12 +104,14 @@
                     Height="50"
                     Width="200"
                     Margin="25 5"
-                    Click="SubmitButton_Click"/>
+                    Click="SubmitButton_Click"
+                    Background="CornflowerBlue"/>
             <Button Content="Cancel"
                     Height="50"
                     Width="200"
                     Margin="25 5"
-                    Click="CloseButton_Click"/>
+                    Click="CloseButton_Click"
+                    Background="CornflowerBlue"/>
         </StackPanel>
     </Grid>
 </Page>

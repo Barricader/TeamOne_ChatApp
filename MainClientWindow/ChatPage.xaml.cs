@@ -47,7 +47,6 @@ namespace MainClientWindow {
         private void GotMessage(Message msg) {
             if (msg.OwningRoom == null) {
                 msgQueue.Add(msg);
-                //msg.OwningRoom = roomList[0];
             }
             else {
                 testMessageList.Add(msg);
@@ -59,14 +58,6 @@ namespace MainClientWindow {
                     AddMessages(msg.OwningRoom);
                 }
             }
-            //get roomname and add notification
-            //room.NewMessages++;
-            /*
-            for (int i = 0; i < 5; i++)
-            {
-                testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, roomList[0], String.Format("Message{0}", i), DateTime.Now));
-            }
-            */
         }
 
 
@@ -128,16 +119,6 @@ namespace MainClientWindow {
                 Name = "Button"
             };
             LeftStackBottom.Children.Add(newBtn);
-        }
-
-        private void SendMessage(string msg) {
-            Console.WriteLine("stdsag");
-        }
-
-        private void SendMessageButton_Click(object sender, RoutedEventArgs e) {
-            SendMessage(messageBox.Text);
-            //AddSingleMessage("Added Message");
-
         }
 
         private void FileAttachmentButtonHandler(object sender, RoutedEventArgs e) {

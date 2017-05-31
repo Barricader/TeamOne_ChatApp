@@ -5,9 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MainClientWindow"
       mc:Ignorable="d" 
-      d:DesignHeight="557.908" d:DesignWidth="1064.369"
+      d:DesignHeight="567.808" d:DesignWidth="1064.369"
       Title="Chat" >
-    <Grid Background="Black">
+    <Grid Background="MediumPurple">
         <Grid.RowDefinitions>
             <RowDefinition Height="0*"/>
             <RowDefinition/>
@@ -16,7 +16,7 @@
             <ColumnDefinition Width="25*"></ColumnDefinition>
             <ColumnDefinition Width="75*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="LeftStackTop" Background="DarkGray" Grid.Column="0" Grid.RowSpan="2">
+        <StackPanel x:Name="LeftStackTop" Background="MediumPurple" Grid.Column="0" Grid.RowSpan="2">
             <ItemsControl x:Name="RoomsListView">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -47,9 +47,8 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <Label Content="{Binding ElementName=RoomsListView, Path=SelectionBoxItem}" FontSize="30" Background="DarkGray" Height="40"></Label>
-                <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
             </StackPanel>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="GhostWhite">
                 <StackPanel x:Name="MessagesStackPanel" VerticalAlignment="Bottom" Background="AliceBlue">
                     <ItemsControl x:Name="MessagesItemControl">
                         <ItemsControl.ItemTemplate>
@@ -61,9 +60,9 @@
                                             <RowDefinition></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <DockPanel Grid.Row="0" Background="AliceBlue">
-                                            <Label Content="{Binding Path=Owner}"></Label>
-                                            <Label Content="at"/>
-                                            <Label Content="{Binding Path=MessageTimeStamp}"></Label>
+                                            <Label FontWeight="Bold" Content="{Binding Path=Owner.ScreenName}"></Label>
+                                            <!--<Label Content="at"/>-->
+                                            <Label Content="{Binding Path=TimeStamp}"></Label>
                                         </DockPanel>
                                         <Label Grid.Row="1" Background="AliceBlue" Content="{Binding Path=Content}" />
                                     </Grid>
@@ -73,8 +72,8 @@
                     </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
-            <TextBox x:Name="messageBox" Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Width="245" KeyDown="MBKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0">
+            <TextBox x:Name="messageBox" Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Width="445" KeyDown="MBKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="MediumPurple" BorderThickness="5" Background="GhostWhite"/>
+            <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0" Background="MediumPurple">
                 <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">
                     <Button.Template>
                         <ControlTemplate>
@@ -93,33 +92,34 @@
                     <Image Source="icons/emoji.bmp"/>
                 </ToggleButton>
             </DockPanel>
-            <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={StaticResource boolToVisibility}}">
+            <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={StaticResource boolToVisibility}}"
+                  Background="MediumPurple">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="25*"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
                 <ToggleButton Content="&#x263a;"
-                              Background="Beige"
+                              Background="CornflowerBlue"
                               FontSize="24"
                               Height="50"
                               Grid.Column="0"
                               Click="Emoji1ToggleButton_Click"/>
                 <ToggleButton Content="&#x2639;"
-                              Background="Beige"
+                              Background="CornflowerBlue"
                               Height="50"
                               FontSize="24"
                               Grid.Column="1"
                               Click="Emoji2ToggleButton_Click"/>
                 <ToggleButton Content="&#x2764;"
-                              Background="Beige"
+                              Background="CornflowerBlue"
                               Height="50"
                               FontSize="24"
                               Grid.Column="2"
                               Click="Emoji3ToggleButton_Click"/>
                 <ToggleButton Content="&#x2620;"                            
-                              Background="Beige"
+                              Background="CornflowerBlue"
                               Height="50"
                               FontSize="24"
                               Grid.Column="3"
