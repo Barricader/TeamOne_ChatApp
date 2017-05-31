@@ -46,7 +46,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <Label Content="{Binding ElementName=RoomsListView, Path=SelectionBoxItem}" FontSize="30" Background="DarkGray" Height="40"></Label>
+                <Label Content="{Binding ElementName=RoomsListView, Path=SelectionBoxItem}" FontSize="30" Height="40"></Label>
             </StackPanel>
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="GhostWhite">
                 <StackPanel x:Name="MessagesStackPanel" VerticalAlignment="Bottom" Background="AliceBlue">
