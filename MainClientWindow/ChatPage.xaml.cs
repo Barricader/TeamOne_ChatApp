@@ -24,33 +24,12 @@ namespace MainClientWindow {
             mainclient = (Client)FindResource("client");
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
             mainclient.MsgReceived += GotMessage;
+            RoomGenerationButton.Click += mainclient.RoomGenerationButtonClick;
             DataContext = mainclient;
 
-            //roomList = mainclient.rooms;
-
-            ChatBase.Models.Room techRoom = new ChatBase.Models.Room("Tech");
-            ChatBase.Models.Room securityRoom = new ChatBase.Models.Room("Security");
-            ChatBase.Models.Room randomRoom = new ChatBase.Models.Room("Random");
-            
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
-
-            //randomRoom.NewMessages = 3;
-            //securityRoom.NewMessages = 15;
-
-
-            //roomList.Add(techRoom);
-            //roomList.Add(securityRoom);
-            //roomList.Add(randomRoom);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, techRoom, String.Format("Message{0}", i), DateTime.Now));
-            //}
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, securityRoom, String.Format("Message{0}", i), DateTime.Now));
-            //}
-
+            
             GeneratePage();
         }
 
@@ -118,7 +97,13 @@ namespace MainClientWindow {
 
         private void AddRoom(ChatBase.Models.Room room) {
             roomList.Add(room);
-            //RoomsListView.ItemsSource = roomList;
+
+            string roomstring = "";
+            foreach(ChatBase.Models.Room r in roomList)
+            {
+                roomstring += r.Name;
+            }
+            MessageBox.Show(roomstring);
             RoomsListView.Dispatcher.Invoke(() => RoomsListView.ItemsSource = roomList);
         }
 

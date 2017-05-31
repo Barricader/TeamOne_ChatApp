@@ -32,9 +32,9 @@
             </ItemsControl>
         </StackPanel>
         <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom" Margin="0,-20,0,0" Grid.RowSpan="2">
-            <TextBox x:Name="roomNameTextBox" Width="100" Height="20" Background="GhostWhite"></TextBox>
-            <Button Width="150" Content="New Room" Click="RoomGenClickHandler" Background="CornflowerBlue"/>
-            <Image Height="300" Width="300" Source="test_images/ExampleProfilePic.png"/>
+            <TextBox x:Name="roomNameTextBox" Text="{Binding Path=CurRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Height="20" Background="GhostWhite"></TextBox>
+            <Button x:Name="RoomGenerationButton" Width="150" Content="New Room" Click="RoomGenClickHandler" Background="CornflowerBlue"/>
+            <Image Height="300" Width="300" Source="icons/defaultAvatar.png"/>
             <Button Width="150" Content="Log Out" Click="LogoutButtonClickHandler" Background="CornflowerBlue"/>
         </StackPanel>
 
@@ -73,7 +73,7 @@
                 </StackPanel>
             </ScrollViewer>
             <TextBox x:Name="messageBox" Grid.Row="2" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Width="445" KeyDown="MBKeyDown" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="MediumPurple" BorderThickness="5" Background="GhostWhite"/>
-            <DockPanel LastChildFill="True" Grid.Row="3" Margin="10,0,0,0" Background="MediumPurple">
+            <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0" Background="MediumPurple">
                 <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">
                     <Button.Template>
                         <ControlTemplate>

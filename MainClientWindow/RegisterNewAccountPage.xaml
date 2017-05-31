@@ -88,7 +88,7 @@
                     Height="350"
                     Width="350">
                 <Image x:Name="userAvatar"
-                       Source="icons\photoattachment.bmp"/>
+                       Source="icons\defaultAvatar.png"/>
             </Border>
             <Button Content="Upload Image"
                     Height="25"
