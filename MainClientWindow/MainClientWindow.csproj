@@ -135,7 +135,9 @@
     <Resource Include="icons\photoattachment.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icons\icon.ico" />
+    <Resource Include="icons\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
