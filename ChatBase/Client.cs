@@ -208,8 +208,19 @@ namespace ChatBase {
                     Room room = user.CurRoom;
                     User sender;
                     
+                    Console.WriteLine("OWNER: " + p.Args["Owner"]);
+
+                    foreach(User u in users) {
+                        Console.WriteLine("USERS IN DB: " + u.ScreenName);
+}
+
                     if (p.Args["Owner"] != "") {
-                        sender = users.Where(u => u.ScreenName == p.Args["Owner"]).Single();
+                        try {
+                            sender = users.Where(u => u.ScreenName == p.Args["Owner"]).Single();
+                        }
+                        catch (System.InvalidOperationException ex) {
+                            sender = new User("UNKOWN");
+                        }
                     }
                     else {
                         sender = new User("SERVER");
@@ -219,7 +230,6 @@ namespace ChatBase {
                         room = rooms.Where(r => r.Name == p.Args["Room"]).ElementAt(0);
                     }
                     ServerMessage = new Message(sender, room, p.Content, DateTime.Now);
-                    Console.WriteLine(ServerMessage.MessageTimeStamp);
                     break;
                 case PacketType.Goodbye:
                     Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
@@ -254,14 +264,18 @@ namespace ChatBase {
                 case PacketType.UserResponse:
                     string[] userNames = p.Content.Split(',');
 
-                    Console.WriteLine(userNames[0]);
-
                     foreach (string userName in userNames) {
                         if (userName != "" && userName != " " && userName != "\n") {
+                            bool taken = false;
+                            foreach (User u in users) {
+                                if (u.ScreenName == userName) {
+                                    taken = true;
+                                }
+                            }
 
-                            // TODO: check if user already in
-
-                            users.Add(new User(userName));
+                            if (!taken) {
+                                users.Add(new User(userName));
+                            }
                         }
                     }
 
@@ -291,7 +305,7 @@ namespace ChatBase {
                     }
                     break;
                 case PacketType.UserJoined:
-                    Console.WriteLine("USER JOINED: " + p.Content);
+                    Console.WriteLine(":::: " + p.Content);
                     users.Add(new User(p.Content));
                     break;
                 case PacketType.JoinRoomResponse:

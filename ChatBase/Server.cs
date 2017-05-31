@@ -257,7 +257,7 @@ namespace ChatBase {
             string roomList= "";
 
             foreach (Room r in rooms) {
-                roomList = r.Name + ",";
+                roomList += r.Name + ",";
             }
 
             roomList = roomList.Substring(0, roomList.Length - 1);
@@ -273,10 +273,12 @@ namespace ChatBase {
             string userList = "";
 
             foreach (User u in users) {
-                userList = u.ScreenName + ",";
+                userList += u.ScreenName + ",";
             }
 
             userList = userList.Substring(0, userList.Length - 1);
+
+            Console.WriteLine("SENDING STUFFS " + userList);
 
             SendPacket(Constants.USER_RESPONSE_PACKET.AlterContent(userList), client.GetStream());
         }
@@ -286,7 +288,7 @@ namespace ChatBase {
         /// </summary>
         /// <param name="u"></param>
         public void UserJoined(User u) {
-            users.Add(new User("Client " + u.ScreenName));
+            users.Add(new User(u.ScreenName));
 
             foreach (TcpClient cl in clients) {
                 SendPacket(Constants.USER_JOINED_PACKET.AlterContent(u.ScreenName), cl.GetStream());

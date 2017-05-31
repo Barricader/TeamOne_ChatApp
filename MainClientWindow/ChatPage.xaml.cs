@@ -169,6 +169,8 @@ namespace MainClientWindow {
                     }
                 }
 
+                mainclient.user.CurRoom = temp;
+
                 foreach (ChatBase.Models.Room r in roomList) {
                     if (r.Name == roomName) {
                         r.NewMessages = 0;
@@ -192,10 +194,6 @@ namespace MainClientWindow {
             }
 
             mainclient.user.CurRoom = temp;
-
-            Console.WriteLine(mainclient.user.CurRoom);
-
-            Console.WriteLine(temp.Name);
 
             foreach (ChatBase.Models.Room r in roomList) {
                 if (r.Name == roomName) {
