@@ -137,5 +137,10 @@
   <ItemGroup>
     <Resource Include="icons\icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\defaultAvatar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
