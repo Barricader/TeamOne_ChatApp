@@ -135,15 +135,6 @@
     <Resource Include="icons\photoattachment.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Emojis\1f60a.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Emojis\1f61c.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Emojis\1f62c.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="icons\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

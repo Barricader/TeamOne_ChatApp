@@ -8,7 +8,7 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="LoginPage">
 
-    <StackPanel>
+    <StackPanel Background="MediumPurple">
         <Grid 
         HorizontalAlignment="Center"
         Width="150"
@@ -34,12 +34,14 @@
                        Grid.Row="1"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Foreground="LightBlue"
+                       Foreground="GhostWhite"
                        Text="Enter Username Here"
                        Visibility="Visible"
                        />
             <TextBox Grid.Row="1"
                      Margin="1"
+                     BorderBrush="GhostWhite"
+                     BorderThickness="2"
                      x:Name="TextName"
                      Background="Transparent" 
                      TextChanged="TextBoxTextChanged"
@@ -49,26 +51,30 @@
                    Content="Password"/>
             <TextBlock
                 Grid.Row="3"
-                x:Name="PassHint"
+                x:Name="PassHint"               
                 Visibility="Visible"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
-                Foreground="LightBlue"
+                Foreground="GhostWhite"
                 Text="Enter Password Here"/>
             <PasswordBox Grid.Row="3"
                      x:Name="PasswordTextBox"
                      Margin="1"
                      Background="Transparent"
                      PasswordChar="*"
+                     BorderBrush="GhostWhite"
+                         BorderThickness="2"
                      PasswordBox.PasswordChanged="PasswordTextChanged"
                      />
             <Button Content="Login" 
                     Click="LoginButtonHandler_Click" 
-                    Grid.Row="4"/>
+                    Grid.Row="4"
+                    Background="CornflowerBlue"/>
             <Button Content="Register New Account"
                     Grid.Row="5"
                     Click="RegisterAccountButton_Click"
-                    Height="25"/>
+                    Height="25"
+                    Background="CornflowerBlue"/>
         </Grid>
     </StackPanel>
 </Page>
