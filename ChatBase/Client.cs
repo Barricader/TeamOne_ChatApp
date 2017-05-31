@@ -28,6 +28,7 @@ namespace ChatBase {
         private string broadcast = "";
         private string windowTitle = "";
         private string curMessage = "";
+        private string curRoom = "";
         private Message serverMessage = null;
         private bool isRunning = true;
 
@@ -55,6 +56,16 @@ namespace ChatBase {
             get => curMessage;
             set {
                 curMessage = value;
+                PropChanged();
+            }
+        }
+
+        public string CurRoom
+        {
+            get => curRoom;
+            set
+            {
+                curRoom = value;
                 PropChanged();
             }
         }
@@ -179,6 +190,17 @@ namespace ChatBase {
                 
                 SendPacket(p);
                 CurMessage = "";
+            }
+        }
+
+        public void RoomGenerationButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (CurRoom != null)
+            { 
+                Packet p = ROOM_CREATED_PACKET;
+                p.Content = CurRoom;
+                SendPacket(p);
+                CurRoom = "";
             }
         }
 
