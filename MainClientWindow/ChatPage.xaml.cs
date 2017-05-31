@@ -156,7 +156,19 @@ namespace MainClientWindow {
                 Grid notificationGrid = notificationLabel.Parent as Grid;
                 DockPanel notificationDock = notificationGrid.Parent as DockPanel;
 
+
                 string roomName = notificationDock.Children.OfType<Button>().FirstOrDefault().Content.ToString();
+
+                // TODO: consolidate to one method
+
+                ChatBase.Models.Room temp = null;
+
+                foreach (ChatBase.Models.Room r in mainclient.rooms) {
+                    if (r.Name == roomName) {
+                        temp = r;
+                    }
+                }
+
                 foreach (ChatBase.Models.Room r in roomList) {
                     if (r.Name == roomName) {
                         r.NewMessages = 0;
@@ -170,6 +182,21 @@ namespace MainClientWindow {
         private void SwitchRoomButton(object sender, RoutedEventArgs e) {
             Button roomButton = sender as Button;
             string roomName = roomButton.Content.ToString();
+
+            ChatBase.Models.Room temp = null;
+
+            foreach (ChatBase.Models.Room r in mainclient.rooms) {
+                if (r.Name == roomName) {
+                    temp = r;
+                }
+            }
+
+            mainclient.user.CurRoom = temp;
+
+            Console.WriteLine(mainclient.user.CurRoom);
+
+            Console.WriteLine(temp.Name);
+
             foreach (ChatBase.Models.Room r in roomList) {
                 if (r.Name == roomName) {
                     r.NewMessages = 0;

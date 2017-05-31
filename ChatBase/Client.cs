@@ -254,8 +254,12 @@ namespace ChatBase {
                 case PacketType.UserResponse:
                     string[] userNames = p.Content.Split(',');
 
+                    Console.WriteLine(userNames[0]);
+
                     foreach (string userName in userNames) {
                         if (userName != "" && userName != " " && userName != "\n") {
+
+                            // TODO: check if user already in
 
                             users.Add(new User(userName));
                         }
@@ -287,6 +291,7 @@ namespace ChatBase {
                     }
                     break;
                 case PacketType.UserJoined:
+                    Console.WriteLine("USER JOINED: " + p.Content);
                     users.Add(new User(p.Content));
                     break;
                 case PacketType.JoinRoomResponse:
