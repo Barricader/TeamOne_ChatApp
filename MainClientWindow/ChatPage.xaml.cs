@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ChatBase.Models;
-using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace MainClientWindow {
     /// <summary>
@@ -15,45 +15,30 @@ namespace MainClientWindow {
     public partial class Chat : Page {
         Client mainclient;
         public List<Message> testMessageList = new List<Message>();
-        public List<ChatBase.Models.Room> roomList = new List<ChatBase.Models.Room>();
+        public ObservableCollection<Room> roomList = new ObservableCollection<Room>();
 
         public List<Message> msgQueue = new List<Message>();
         
         public Chat() {
             InitializeComponent();
+
             mainclient = (Client)FindResource("client");
-            messageBox.KeyDown += mainclient.MessageBoxKeyDown;
-            mainclient.MsgReceived += GotMessage;
             DataContext = mainclient;
 
-            //roomList = mainclient.rooms;
-
-            ChatBase.Models.Room techRoom = new ChatBase.Models.Room("Tech");
-            ChatBase.Models.Room securityRoom = new ChatBase.Models.Room("Security");
-            ChatBase.Models.Room randomRoom = new ChatBase.Models.Room("Random");
-            
+            // Event listening
+            messageBox.KeyDown += mainclient.MessageBoxKeyDown;
+            mainclient.MsgReceived += GotMessage;
+            RoomGenerationButton.Click += mainclient.RoomGenerationButtonClick;
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
+            RoomsListView.ItemsSource = roomList;
 
-            //randomRoom.NewMessages = 3;
-            //securityRoom.NewMessages = 15;
-
-
-            //roomList.Add(techRoom);
-            //roomList.Add(securityRoom);
-            //roomList.Add(randomRoom);
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, techRoom, String.Format("Message{0}", i), DateTime.Now));
-            //}
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, securityRoom, String.Format("Message{0}", i), DateTime.Now));
-            //}
-
-            GeneratePage();
+            GeneratePage();     // TODO: remove this
         }
 
+        /// <summary>
+        /// Send all messages in the queue to the user's current room
+        /// </summary>
         private void ClearQueue() {
             foreach (Message m in msgQueue) {
                 m.OwningRoom = mainclient.user.CurRoom;
@@ -61,14 +46,14 @@ namespace MainClientWindow {
             }
         }
 
-        //private void CloseWindow() {
-        //    main.Close();
-        //}
-
+        /// <summary>
+        /// User received a message, display it to the correct room
+        /// </summary>
+        /// <param name="msg"></param>
         private void GotMessage(Message msg) {
             if (msg.OwningRoom == null) {
+                // Add to a queue if a the user does not belong to any rooms yet
                 msgQueue.Add(msg);
-                //msg.OwningRoom = roomList[0];
             }
             else {
                 testMessageList.Add(msg);
@@ -80,25 +65,13 @@ namespace MainClientWindow {
                     AddMessages(msg.OwningRoom);
                 }
             }
-            //get roomname and add notification
-            //room.NewMessages++;
-            /*
-            for (int i = 0; i < 5; i++)
-            {
-                testMessageList.Add(new Message(new User { FirstName = "Test", LastName = "User " + i }, roomList[0], String.Format("Message{0}", i), DateTime.Now));
-            }
-            */
         }
-
 
         private void GeneratePage() {
-            //int is rooms in db 
-            //AddRooms();
-            //int is connected users
             AddUsers(3);
-            //AddMessages(roomList[0]);
         }
-        private void AddMessages(ChatBase.Models.Room roomname) {
+
+        private void AddMessages(Room roomname) {
             List<Message> roomMessagesList = new List<Message>();
             var roomMessages = from m in testMessageList
                                where m.OwningRoom == roomname
@@ -106,31 +79,16 @@ namespace MainClientWindow {
             foreach (Message m in roomMessages) {
                 roomMessagesList.Add(m);
             }
-            //MessagesItemControl.ItemsSource = roomMessagesList;
+
             MessagesItemControl.Dispatcher.Invoke(() => MessagesItemControl.ItemsSource = roomMessagesList);
 
         }
 
-
-        private void AddSingleMessage(Message message) {
-            //AddMessage(roomList.IndexOf(mainclient.user.CurRoom));
-            //testMessageList.Add(new Message());
+        private void AddRoom(Room room) {
+            Application.Current.Dispatcher.Invoke(() => roomList.Add(room));
         }
 
-
-        private void AddRooms() {
-            //Roomnames cannot have commas in it.
-            //this will probably be a foreach looping through an array of rooms, populating each button with the room name
-            //there probably needs to be a notify method that will append a (1) after the roomname
-            RoomsListView.ItemsSource = mainclient.rooms;
-        }
-
-        private void AddRoom(ChatBase.Models.Room room) {
-            roomList.Add(room);
-            //RoomsListView.ItemsSource = roomList;
-            RoomsListView.Dispatcher.Invoke(() => RoomsListView.ItemsSource = roomList);
-        }
-
+        // TODO: remove any useless functions
         private void AddUsers(int connectedUsers) {
             for (int i = 0; i < connectedUsers; i++) {
                 AddSingleUser();
@@ -143,16 +101,6 @@ namespace MainClientWindow {
                 Name = "Button"
             };
             LeftStackBottom.Children.Add(newBtn);
-        }
-
-        private void SendMessage(string msg) {
-            Console.WriteLine("stdsag");
-        }
-
-        private void SendMessageButton_Click(object sender, RoutedEventArgs e) {
-            SendMessage(messageBox.Text);
-            //AddSingleMessage("Added Message");
-
         }
 
         private void FileAttachmentButtonHandler(object sender, RoutedEventArgs e) {
@@ -183,7 +131,7 @@ namespace MainClientWindow {
 
         private void RoomGenClickHandler(object sender, RoutedEventArgs e)
         {
-            AddRoom(new ChatBase.Models.Room(roomNameTextBox.Text));
+            //AddRoom(new ChatBase.Models.Room(roomNameTextBox.Text));
             //Will add new table to database
         }
 
@@ -202,21 +150,32 @@ namespace MainClientWindow {
                 Grid notificationGrid = notificationLabel.Parent as Grid;
                 DockPanel notificationDock = notificationGrid.Parent as DockPanel;
 
-                string roomName = notificationDock.Children.OfType<Button>().FirstOrDefault().Content.ToString();
-                foreach (ChatBase.Models.Room r in roomList) {
-                    if (r.Name == roomName) {
-                        r.NewMessages = 0;
-                        AddMessages(r);
-                    }
-                }
 
+                string roomName = notificationDock.Children.OfType<Button>().FirstOrDefault().Content.ToString();
+
+                UpdateMessages(roomName);
             }
         }
 
         private void SwitchRoomButton(object sender, RoutedEventArgs e) {
             Button roomButton = sender as Button;
             string roomName = roomButton.Content.ToString();
-            foreach (ChatBase.Models.Room r in roomList) {
+
+            UpdateMessages(roomName);
+        }
+
+        private void UpdateMessages(string roomName) {
+            Room temp = null;
+
+            foreach (Room r in mainclient.rooms) {
+                if (r.Name == roomName) {
+                    temp = r;
+                }
+            }
+
+            mainclient.user.CurRoom = temp;
+
+            foreach (Room r in roomList) {
                 if (r.Name == roomName) {
                     r.NewMessages = 0;
                     AddMessages(r);

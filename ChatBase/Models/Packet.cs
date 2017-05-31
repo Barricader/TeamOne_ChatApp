@@ -4,23 +4,21 @@ using System.Web.Script.Serialization;
 
 namespace ChatBase.Models {
     public enum PacketType {
+        Null,           // Should never happen
         Message,
         ClientID,
         Goodbye,
-        RequestRoom,
-        RequestMessage,
-        JoinRoomRequest,
-        JoinRoomResponse,
+        RequestAllRooms,
+        RequestCreateRoom,
         RequestUser,
         RequestLogin,
-        RoomResponse,
+        ResponseAllRooms,
+        ResponseAllUsers,
         UserJoined,
-        RoomCreated,
-        Null            // Should never happen
+        RoomCreated
     };
 
     public class Packet {
-        //public string Type { get; set; }
         public PacketType Type { get; set; }
         public string Content { get; set; }
         public Dictionary<string, string> Args { get; set; }

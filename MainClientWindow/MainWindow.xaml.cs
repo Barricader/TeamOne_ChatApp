@@ -1,7 +1,6 @@
 ﻿using ChatBase;
 using System;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace MainClientWindow {
     /// <summary>
@@ -16,17 +15,17 @@ namespace MainClientWindow {
             client.Start();
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
-            
+
             System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon() {
-                Icon = new System.Drawing.Icon("../../icons/icon.ico"),
+                Icon = Properties.Resources.iconthing,
                 Visible = true
             };
 
-            ni.Click +=
-                delegate (object sender, EventArgs args) {
-                    Show();
-                    WindowState = WindowState.Normal;
-                };
+            ni.Click += delegate (object sender, EventArgs args) {
+                Show();
+                WindowState = WindowState.Normal;
+            };
+
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
 
@@ -36,9 +35,8 @@ namespace MainClientWindow {
             Close();
         }
 
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            this.Hide();
+        private void Window_StateChanged(object sender, EventArgs e) {
+            Hide();
         }
     }
 }

@@ -73,7 +73,6 @@
     <Compile Include="RegisterNewAccountPage.xaml.cs">
       <DependentUpon>RegisterNewAccountPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Room.cs" />
     <Compile Include="Views\HintView.cs" />
     <Page Include="ChatPage.xaml">
       <SubType>Designer</SubType>
@@ -142,16 +141,14 @@
     <Resource Include="icons\photoattachment.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Emojis\1f60a.png" />
+    <Resource Include="icons\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Emojis\1f61c.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Emojis\1f62c.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="icons\icon.ico" />
+    <Resource Include="icons\defaultAvatar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

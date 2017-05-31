@@ -1,19 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBase", "ChatBase\ChatBase.csproj", "{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainClientWindow", "MainClientWindow\MainClientWindow.csproj", "{A47DC4A9-949E-40AD-A361-DB2A9F6CBBE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewServer", "NewServer\NewServer.csproj", "{20C34E38-59D4-409B-AA2D-D62156C79BDB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewChat", "NewChat\NewChat.csproj", "{4B89FBC2-D1DB-4DB0-8D1E-31BF5F879543}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterNewAccountWindow", "RegisterNewAccountWindow\RegisterNewAccountWindow.csproj", "{84B55951-EBBE-450D-B844-63BE25505FE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBTesting", "DBTesting\DBTesting.csproj", "{E1525E55-4D06-4545-94BC-13D93C33B465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewServer", "NewServer\NewServer.csproj", "{20C34E38-59D4-409B-AA2D-D62156C79BDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +27,6 @@ Global
 		{A47DC4A9-949E-40AD-A361-DB2A9F6CBBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A47DC4A9-949E-40AD-A361-DB2A9F6CBBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A47DC4A9-949E-40AD-A361-DB2A9F6CBBE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B89FBC2-D1DB-4DB0-8D1E-31BF5F879543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B89FBC2-D1DB-4DB0-8D1E-31BF5F879543}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B89FBC2-D1DB-4DB0-8D1E-31BF5F879543}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B89FBC2-D1DB-4DB0-8D1E-31BF5F879543}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84B55951-EBBE-450D-B844-63BE25505FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +35,10 @@ Global
 		{E1525E55-4D06-4545-94BC-13D93C33B465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1525E55-4D06-4545-94BC-13D93C33B465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1525E55-4D06-4545-94BC-13D93C33B465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

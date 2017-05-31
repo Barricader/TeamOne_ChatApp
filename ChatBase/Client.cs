@@ -25,25 +25,19 @@ namespace ChatBase {
         public List<User> users = new List<User>();
 
         // Variables that change UI
-        private string broadcast = "";
         private string windowTitle = "";
         private string curMessage = "";
+        private string curRoom = "";
         private Message serverMessage = null;
         private bool isRunning = true;
 
+        // Events
         public event PropertyChangedEventHandler PropertyChanged;
         public event WindowHandler WindowHandler;
         public event MessageReceived MsgReceived;
         public event RoomAdded RoomHandler;
         public event HasRoom HasRoomEvent;
 
-        public string Broadcast {
-            get => broadcast;
-            set {
-                broadcast = value;
-                PropChanged();
-            }
-        }
         public string WindowTitle {
             get => windowTitle;
             set {
@@ -51,6 +45,7 @@ namespace ChatBase {
                 PropChanged();
             }
         }
+
         public string CurMessage {
             get => curMessage;
             set {
@@ -59,12 +54,20 @@ namespace ChatBase {
             }
         }
 
+        public string CurRoom
+        {
+            get => curRoom;
+            set
+            {
+                curRoom = value;
+                PropChanged();
+            }
+        }
+
         public Message ServerMessage {
             get => serverMessage;
             set {
                 serverMessage = value;
-                //msgRcdEvent?.Invoke(serverMessage);
-                //msgReceived(serverMessage);
                 MsgReceived?.Invoke(serverMessage);
             }
         }
@@ -92,32 +95,36 @@ namespace ChatBase {
             int curTry = 0;
             bool succeeded = false;
 
-            // TODO: have main client UI show reconnect progress
+            // TODO: have main client UI show reconnect progress like a loading gif or something
             // Reconnect until we hit the max amount of tries
             while (curTry < RECONNECT_MAX_TRIES && !succeeded) {
                 try {
                     curTry++;
-                    Broadcast += "TRY " + curTry + ": Attempting to connect to " + serverEP + Environment.NewLine;
+                    //MessageFromServer("TRY " + curTry + ": Attempting to connect to " + serverEP);
+
                     client.Connect(serverEP);
                     succeeded = true;
-                } catch (SocketException ex) {
+                } catch (SocketException) {
                     // This means we failed to connect...
                     succeeded = false;
-                    Broadcast += "Failed to connect to " + serverEP + "... Trying again in " + SECONDS_BETWEEEN_TRIES + " seconds..." + Environment.NewLine;
+                    //MessageFromServer("Failed to connect to " + serverEP + "... Trying again in " + SECONDS_BETWEEEN_TRIES + " seconds...");
+
                     Thread.Sleep(SECONDS_BETWEEEN_TRIES * 1000);
                 }
             }
 
             if (curTry == RECONNECT_MAX_TRIES) {
-                Broadcast += "It seems that the you or the server is having connection issues, please try again later..." + Environment.NewLine;
+                //MessageFromServer("It seems that the you or the server is having connection issues, please try again later...");
+
                 Thread.Sleep(1000);
                 Window_Closed(null, null);
                 WindowHandler?.Invoke();
             }
-
-            Broadcast += "You have connected to: " + serverEP + Environment.NewLine;
             
-            SendPacket(REQUEST_ROOM_PACKET);
+            //MessageFromServer("You have connected to: " + serverEP);
+
+
+            SendPacket(REQUEST_ALL_ROOMS_PACKET);
         }
 
         /// <summary>
@@ -135,7 +142,7 @@ namespace ChatBase {
 
                 try {
                     bytes = stream.Read(data, 0, data.Length);  // Read stream
-                } catch (IOException ex) {
+                } catch (IOException) {
                     // Lost connection...
                     client.Close();
                     client = new TcpClient();
@@ -162,23 +169,26 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                //SendMessage(CurMessage);
-                //SendPacket(MESSAGE_TEMPLATE.AlterContent(CurMessage));
-
-                // TODO: probably don't want client to be able to kill connection with a message??
-                // TODO: change packet to GOODBYE???
-                //if (CurMessage == CLIENT_BYE_MESSAGE) {
-                //    // Close the client window if the kill message is sent
-                //    Window_Closed(null, null);
-                //    windowHandler?.Invoke();
-                //}
-
                 Packet p = MESSAGE_PACKET.AlterContent(CurMessage);
                 p.Args["Owner"] = user.ScreenName;
                 p.Args["Room"] = user.CurRoom.Name;
                 
                 SendPacket(p);
                 CurMessage = "";
+            }
+        }
+
+        /// <summary>
+        /// If a user creates a room, send a request to the server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void RoomGenerationButtonClick(object sender, System.Windows.RoutedEventArgs e) {
+            if (CurRoom != null) {
+                Packet p = REQUEST_CREATE_ROOM_PACKET;
+                p.Content = CurRoom;
+                SendPacket(p);
+                CurRoom = "";
             }
         }
 
@@ -193,25 +203,89 @@ namespace ChatBase {
                     user = new User("Client " + p.Content);
                     break;
                 case PacketType.Message:
-                    Broadcast += Environment.NewLine + p.Content;
                     Room room = user.CurRoom;
+                    User sender;
+
+                    if (p.Args["Owner"] != "") {
+                        try {
+                            sender = users.Where(u => u.ScreenName == p.Args["Owner"]).Single();
+                        }
+                        catch (InvalidOperationException) {
+                            sender = new User("UNKNOWN");   // If it doesn't have a valid owner, output UNKNOWN for debugging purposes
+                        }
+                    }
+                    else {
+                        // If it doesn't have an owner, it must have come from the server
+                        sender = new User("SERVER");
+                    }
+
                     if (p.Args["Room"] != "") {
+                        // If it doesn't have a room, default to the general room
                         room = rooms.Where(r => r.Name == p.Args["Room"]).ElementAt(0);
                     }
-                    ServerMessage = new Message(user, room, p.Content, new DateTime());  // TODO: get screen name and siplay in messages
+
+                    ServerMessage = new Message(sender, room, p.Content, DateTime.Now);
                     break;
                 case PacketType.Goodbye:
-                    Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
+                    MessageFromServer("Server has shutdown, closing connection...");
                     client.Close();
                     isRunning = false;
                     break;
-                case PacketType.RoomResponse:
+                case PacketType.ResponseAllRooms:
                     string[] roomNames = p.Content.Split(',');
 
                     foreach (string roomName in roomNames) {
                         if (roomName != "" && roomName != " " && roomName != "\n") {
-                            rooms.Add(new Room(roomName));
+                            bool taken = false;
+                            foreach (Room r in rooms) {
+                                if (r.Name == roomName) {
+                                    taken = true;
+                                }
+                            }
 
+                            if (!taken) {
+                                rooms.Add(new Room(roomName));
+
+                                RoomHandler?.Invoke(rooms[rooms.Count - 1]);
+                            }
+                        }
+                    }
+
+                    if (user.CurRoom == null) {
+                        user.CurRoom = rooms[0];
+                        HasRoomEvent?.Invoke();
+                    }
+                    break;
+                case PacketType.ResponseAllUsers:
+                    string[] userNames = p.Content.Split(',');
+
+                    foreach (string userName in userNames) {
+                        if (userName != "" && userName != " " && userName != "\n") {
+                            bool taken = false;
+                            foreach (User u in users) {
+                                if (u.ScreenName == userName) {
+                                    taken = true;
+                                }
+                            }
+
+                            if (!taken) {
+                                users.Add(new User(userName));
+                            }
+                        }
+                    }
+
+                    break;
+                case PacketType.RoomCreated:
+                    if (p.Content != "" && p.Content != " " && p.Content != "\n") {
+                        bool taken = false;
+                        foreach (Room r in rooms) {
+                            if (r.Name == p.Content) {
+                                taken = true;
+                            }
+                        }
+
+                        if (!taken) {
+                            rooms.Add(new Room(p.Content));
                             RoomHandler?.Invoke(rooms[rooms.Count - 1]);
                         }
                     }
@@ -221,23 +295,9 @@ namespace ChatBase {
                         HasRoomEvent?.Invoke();
                     }
                     break;
-                case PacketType.RoomCreated:
-                    // Handle new rooms here
-                    if (p.Content != "" && p.Content != " " && p.Content != "\n") {
-                        rooms.Add(new Room(p.Content));
-                        RoomHandler?.Invoke(rooms[rooms.Count - 1]);
-                    }
-
-                    if (user.CurRoom == null) {
-                        user.CurRoom = rooms[0];
-                    }
-                    break;
                 case PacketType.UserJoined:
-                    // Keep track of users here
-                    Console.WriteLine("NEW USER: " + p.Content);
-                    break;
-                case PacketType.JoinRoomResponse:
-                    user.CurRoom = rooms[int.Parse(p.Content)];
+                    users.Add(new User(p.Content));
+                    MessageFromServer(p.Content + " has joined the chat!");
                     break;
                 default:
                     Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
@@ -245,6 +305,10 @@ namespace ChatBase {
             }
         }
 
+        /// <summary>
+        /// Sends a packet to the server
+        /// </summary>
+        /// <param name="p">Packet to send</param>
         private void SendPacket(Packet p) {
             if (client.Connected) {
                 NetworkStream clientStream = client.GetStream();
@@ -255,6 +319,14 @@ namespace ChatBase {
                 clientStream.Write(buffer, 0, buffer.Length);
                 clientStream.Flush();
             }
+        }
+
+        /// <summary>
+        /// Send a message to the UI and have it look like it came from the server
+        /// </summary>
+        /// <param name="msg">Message to send</param>
+        private void MessageFromServer(String msg) {
+            ServerMessage = new Message(new User("SERVER"), rooms[0], msg, DateTime.Now);
         }
 
         /// <summary>
