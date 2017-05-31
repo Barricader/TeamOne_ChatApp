@@ -306,7 +306,9 @@ namespace ChatBase {
                 }
             }
 
-            if (!taken) {
+            // TODO: fix bad names
+
+            if (!taken && name != "" && name != " " && name != "\n") {
                 rooms.Add(new Room(name));
 
                 foreach (TcpClient cl in clients) {

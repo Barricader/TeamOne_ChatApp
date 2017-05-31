@@ -22,10 +22,6 @@ namespace ChatBase.Models {
             OwningRoom = room;
             Content = content;
             MessageTimeStamp = ts;
-            //TimeStamp = MessageTimeStamp.ToLongDateString();
-            //TimeStamp = MessageTimeStamp.ToLongTimeString();
-            string test = DateTimeFormatInfo.CurrentInfo.FullDateTimePattern;
-            Console.WriteLine(test);
             TimeStamp = MessageTimeStamp.ToString("MMMM d") + " at " + MessageTimeStamp.ToString("h:mm tt");
         }
         private User owner;

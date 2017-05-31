@@ -88,14 +88,6 @@ namespace MainClientWindow {
             //testMessageList.Add(new Message());
         }
 
-
-        private void AddRooms() {
-            //Roomnames cannot have commas in it.
-            //this will probably be a foreach looping through an array of rooms, populating each button with the room name
-            //there probably needs to be a notify method that will append a (1) after the roomname
-            RoomsListView.ItemsSource = mainclient.rooms;
-        }
-
         private void AddRoom(ChatBase.Models.Room room) {
 
             App.Current.Dispatcher.Invoke(() => roomList.Add(room));
@@ -145,7 +137,7 @@ namespace MainClientWindow {
 
         private void RoomGenClickHandler(object sender, RoutedEventArgs e)
         {
-            AddRoom(new ChatBase.Models.Room(roomNameTextBox.Text));
+            //AddRoom(new ChatBase.Models.Room(roomNameTextBox.Text));
             //Will add new table to database
         }
 

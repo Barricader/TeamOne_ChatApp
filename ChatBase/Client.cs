@@ -231,9 +231,18 @@ namespace ChatBase {
 
                     foreach (string roomName in roomNames) {
                         if (roomName != "" && roomName != " " && roomName != "\n") {
-                            rooms.Add(new Room(roomName));
+                            bool taken = false;
+                            foreach (Room r in rooms) {
+                                if (r.Name == roomName) {
+                                    taken = true;
+                                }
+                            }
 
-                           RoomHandler?.Invoke(rooms[rooms.Count - 1]);
+                            if (!taken) {
+                                rooms.Add(new Room(roomName));
+
+                                RoomHandler?.Invoke(rooms[rooms.Count - 1]);
+                            }
                         }
                     }
 
@@ -247,6 +256,7 @@ namespace ChatBase {
 
                     foreach (string userName in userNames) {
                         if (userName != "" && userName != " " && userName != "\n") {
+
                             users.Add(new User(userName));
                         }
                     }
@@ -259,8 +269,17 @@ namespace ChatBase {
                 case PacketType.RoomCreated:
                     // Handle new rooms here
                     if (p.Content != "" && p.Content != " " && p.Content != "\n") {
-                        rooms.Add(new Room(p.Content));
-                        RoomHandler?.Invoke(rooms[rooms.Count - 1]);
+                        bool taken = false;
+                        foreach (Room r in rooms) {
+                            if (r.Name == p.Content) {
+                                taken = true;
+                            }
+                        }
+
+                        if (!taken) {
+                            rooms.Add(new Room(p.Content));
+                            RoomHandler?.Invoke(rooms[rooms.Count - 1]);
+                        }
                     }
 
                     if (user.CurRoom == null) {
