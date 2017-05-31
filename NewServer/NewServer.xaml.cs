@@ -13,8 +13,13 @@ namespace NewServer {
 
             Closed += server.Window_Closed;
             Closing += server.Window_Closing;
+            server.WinHandler += CloseWindow;
 
             server.Start();
+        }
+
+        private void CloseWindow() {
+            Dispatcher.Invoke(() => Close());
         }
     }
 }

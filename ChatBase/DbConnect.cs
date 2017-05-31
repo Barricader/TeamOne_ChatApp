@@ -38,9 +38,9 @@ namespace Database
         }
         public void CreateUser()
         {
-            string user = "testUser";
-            string pass = "password";
-            string dbLocation = "localhost";
+            //string user = "testUser";
+            //string pass = "password";
+            //string dbLocation = "localhost";
             string createUser = "create user \'$user\'@'localhost' identified by \'$pass\'";
             cmd = new MySqlCommand(createUser, conn);
             MySqlDataReader rdr = cmd.ExecuteReader();

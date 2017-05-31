@@ -36,9 +36,6 @@ namespace ChatBase.Models {
         public override string ToString() {
             return $"Type: {Type}, Owner: {Owner}, Room: {OwningRoom}, Content: {Content}";
         }
-
-
-        // TODO: packet to message converter
     }
 
 }

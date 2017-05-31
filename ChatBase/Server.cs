@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using static ChatBase.Constants;
 
 namespace ChatBase {
     public class Server : INotifyPropertyChanged {
@@ -22,19 +23,20 @@ namespace ChatBase {
         private int nextClientID = 1;
         private List<bool> clientListening = new List<bool>();
         private bool isClosing = false;
-        private string messagesReceived = "";
+        private string logMessage = "";
 
-        // Room and user stuff
-        // TODO: implement users and rooms
+        // Rooms and users
         private List<Room> rooms = new List<Room>();
         private List<User> users = new List<User>();
 
+        // Events
         public event PropertyChangedEventHandler PropertyChanged;
+        public event WindowHandler WinHandler;
 
-        public string MessagesReceived {
-            get => messagesReceived;
+        public string LogMessage {
+            get => logMessage;
             set {
-                messagesReceived = value;
+                logMessage = value;
                 PropChanged();
             }
         }
@@ -58,14 +60,17 @@ namespace ChatBase {
             // TODO: make a delay between messages (AKA method that has a thread with a counter that counts milliseconds between messages)
             Thread.Sleep(0);
             CreateRoom("General");
-            //rooms.Add(new Room("General"));
         }
 
         /// <summary>
         /// Begin listening for client connections and create new TcpClients if one does connect
         /// </summary>
         private void ListenForClients() {
-            tcpListener.Start();
+            try {
+                tcpListener.Start();
+            } catch (SocketException) {
+                WinHandler?.Invoke();   // Already have a server running
+            }
 
             // Do not stop until the server is closed
             while (true) {
@@ -89,30 +94,35 @@ namespace ChatBase {
         private void ClientCommsHandler(object client) {
             Thread.Sleep(50);
 
+            // Initialize client
             TcpClient tcpClient = (TcpClient)client;
             NetworkStream clientStream = tcpClient.GetStream();
             int clientID = nextClientID++;
             clientListening.Add(true);
 
-            byte[] msg = new byte[Constants.BUFFER_SIZE];
+            byte[] msg = new byte[BUFFER_SIZE];
             int bytesRead;
 
             // Send client their clientID
-            Packet cidMessage = Constants.CLIENT_ID_PACKET.AlterContent(clientID.ToString());
+            Packet cidMessage = CLIENT_ID_PACKET.AlterContent(clientID.ToString());
             SendPacket(cidMessage, clientStream);
 
+            // Send all existing rooms to the client
             Thread.Sleep(150);
             SendRooms(tcpClient);
 
+            // Notify all existing users that a new user has joined
             Thread.Sleep(120);
             UserJoined(new User("Client " + clientID));
             users[clientID - 1].CurRoom = rooms[0];
 
+            // Welcome the new user
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
             string welcomeMessage = "You are client " + clientID + Environment.NewLine;
-            SendPacket(Constants.MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
+            SendPacket(MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
+            // Send all existing users to the new user
             Thread.Sleep(150);
             SendUsers(tcpClient);
 
@@ -122,7 +132,7 @@ namespace ChatBase {
 
                 try {
                     // Block until message received
-                    bytesRead = clientStream.Read(msg, 0, Constants.BUFFER_SIZE);
+                    bytesRead = clientStream.Read(msg, 0, BUFFER_SIZE);
                 } catch (SocketException sockEx) {
                     if (isClosing) {
                         // Don't do anything because the server is stopping
@@ -132,7 +142,7 @@ namespace ChatBase {
                         MessageBox.Show(sockEx.ToString());
                         break;
                     }
-                } catch (Exception ex) {
+                } catch (Exception) {
                     // TODO: get better exceptions
                     //MessageBox.Show(ex.ToString());
                     break;
@@ -163,25 +173,21 @@ namespace ChatBase {
                     WriteMessage(p.Content);
                     break;
                 case PacketType.Goodbye:
-                    Packet leaveMsg = Constants.MESSAGE_PACKET.AlterContent("Client " + clientID + " has left...");
-                    Broadcast(leaveMsg);
+                    Packet leaveMsg = MESSAGE_PACKET.AlterContent("Client " + clientID + " has left...");
+                    Broadcast(leaveMsg);            // Let all users know that a client has left
                     WriteMessage(leaveMsg.Content);
                     ConnClients--;
                     clients.Remove(tcpClient);
                     clientListening[clientID-1] = false;
                     break;
-                case PacketType.RequestRoom:
+                case PacketType.RequestAllRooms:
                     SendRooms(tcpClient);
                     WriteMessage("Sending rooms to client " + clientID);
                     break;
-                case PacketType.JoinRoomRequest:
-                    Packet joinRoomPacket = Constants.REQUEST_JOIN_ROOM.AlterContent("Client " + clientID + "Has Joined Room");
-                    WriteMessage(joinRoomPacket.Content);
-                    break;
-                case PacketType.RequestRoomCreation:
+                case PacketType.RequestCreateRoom:
                     //check with db here
                     CreateRoom(p.Content);
-                    WriteMessage("Sending room to client " + clientID);
+                    WriteMessage("Sending room " + p.Content + " to client " + clientID);
                     break;
                 default:
                     Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);
@@ -194,7 +200,7 @@ namespace ChatBase {
         /// </summary>
         /// <param name="msg"></param>
         private void WriteMessage(string msg) {
-            MessagesReceived += msg + Environment.NewLine;
+            LogMessage += msg + Environment.NewLine;
         }
 
         /// <summary>
@@ -215,8 +221,6 @@ namespace ChatBase {
         /// </summary>
         /// <param name="p">Packet to send</param>
         private void Broadcast(Packet p) {
-            // TODO: Add new arg called timestamp before sending messages to users
-            // Echo to all dudes
             foreach (TcpClient client in clients) {
                 SendPacket(p, client.GetStream());
             }
@@ -232,7 +236,7 @@ namespace ChatBase {
 
             // Send server bye message to clients so they know that the server is shutting down
             foreach (TcpClient cl in clients) {
-                SendPacket(Constants.SERVER_BYE_PACKET, cl.GetStream());
+                SendPacket(SERVER_BYE_PACKET, cl.GetStream());
                 cl.Close();
             }
             
@@ -262,7 +266,7 @@ namespace ChatBase {
 
             roomList = roomList.Substring(0, roomList.Length - 1);
 
-            SendPacket(Constants.ROOM_RESPONSE_PACKET.AlterContent(roomList), client.GetStream());
+            SendPacket(RESPONSE_ALL_ROOMS_PACKET.AlterContent(roomList), client.GetStream());
         }
 
         /// <summary>
@@ -278,9 +282,7 @@ namespace ChatBase {
 
             userList = userList.Substring(0, userList.Length - 1);
 
-            Console.WriteLine("SENDING STUFFS " + userList);
-
-            SendPacket(Constants.USER_RESPONSE_PACKET.AlterContent(userList), client.GetStream());
+            SendPacket(RESPONSE_ALL_USERS_PACKET.AlterContent(userList), client.GetStream());
         }
 
         /// <summary>
@@ -290,8 +292,8 @@ namespace ChatBase {
         public void UserJoined(User u) {
             users.Add(new User(u.ScreenName));
 
-            foreach (TcpClient cl in clients) {
-                SendPacket(Constants.USER_JOINED_PACKET.AlterContent(u.ScreenName), cl.GetStream());
+            foreach (TcpClient client in clients) {
+                SendPacket(USER_JOINED_PACKET.AlterContent(u.ScreenName), client.GetStream());
             }
         }
 
@@ -313,8 +315,8 @@ namespace ChatBase {
             if (!taken && name != "" && name != " " && name != "\n") {
                 rooms.Add(new Room(name));
 
-                foreach (TcpClient cl in clients) {
-                    SendPacket(Constants.ROOM_CREATED_PACKET.AlterContent(name), cl.GetStream());
+                foreach (TcpClient client in clients) {
+                    SendPacket(ROOM_CREATED_PACKET.AlterContent(name), client.GetStream());
                 }
             }
         }

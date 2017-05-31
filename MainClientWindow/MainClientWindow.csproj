@@ -67,7 +67,6 @@
     <Compile Include="RegisterNewAccountPage.xaml.cs">
       <DependentUpon>RegisterNewAccountPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Room.cs" />
     <Compile Include="Views\HintView.cs" />
     <Page Include="ChatPage.xaml">
       <SubType>Designer</SubType>

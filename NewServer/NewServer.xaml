@@ -33,7 +33,7 @@
                  TextWrapping="Wrap"
                  Height="auto"
                  Width="auto"
-                 Text="{Binding Path=MessagesReceived}"/>
+                 Text="{Binding Path=LogMessage}"/>
         </ScrollViewer>
     </Grid>
 </Window>
