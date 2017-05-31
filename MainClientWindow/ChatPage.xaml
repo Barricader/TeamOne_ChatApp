@@ -47,7 +47,6 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <Label Content="{Binding ElementName=RoomsListView, Path=SelectionBoxItem}" FontSize="30" Background="DarkGray" Height="40"></Label>
-                <Button Click="AddMessagesButtonHandler"  Content="Show 25 more messages..."></Button>
             </StackPanel>
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="MessagesStackPanel" VerticalAlignment="Bottom" Background="AliceBlue">
@@ -61,9 +60,9 @@
                                             <RowDefinition></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <DockPanel Grid.Row="0" Background="AliceBlue">
-                                            <Label Content="{Binding Path=Owner}"></Label>
-                                            <Label Content="at"/>
-                                            <Label Content="{Binding Path=MessageTimeStamp}"></Label>
+                                            <Label FontWeight="Bold" Content="{Binding Path=Owner.ScreenName}"></Label>
+                                            <!--<Label Content="at"/>-->
+                                            <Label Content="{Binding Path=TimeStamp}"></Label>
                                         </DockPanel>
                                         <Label Grid.Row="1" Background="AliceBlue" Content="{Binding Path=Content}" />
                                     </Grid>

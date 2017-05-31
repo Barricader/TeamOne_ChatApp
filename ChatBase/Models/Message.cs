@@ -1,6 +1,7 @@
 ﻿using ChatBase.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,16 @@ namespace ChatBase.Models {
     // TODO: emoji static class that links strings to images EX. ':smiley:' -> Image smiley
 
     public class Message {
-        public Message(User owner, Room room, string content, DateTime timestamp) {
+        public Message(User owner, Room room, string content, DateTime ts) {
             Owner = owner;
             OwningRoom = room;
             Content = content;
-            MessageTimeStamp = timestamp;
+            MessageTimeStamp = ts;
+            //TimeStamp = MessageTimeStamp.ToLongDateString();
+            //TimeStamp = MessageTimeStamp.ToLongTimeString();
+            string test = DateTimeFormatInfo.CurrentInfo.FullDateTimePattern;
+            Console.WriteLine(test);
+            TimeStamp = MessageTimeStamp.ToString("MMMM d") + " at " + MessageTimeStamp.ToString("h:mm tt");
         }
         private User owner;
         public User Owner { get { return owner; } private set { owner = value; } }
@@ -30,6 +36,7 @@ namespace ChatBase.Models {
         public string Content { get { return content; } set { content = value; } }
         public MessageType Type { get; set; }
         public DateTime MessageTimeStamp { get; set; }
+        public string TimeStamp { get; set; }
         public override string ToString() {
             return $"Type: {Type}, Owner: {Owner}, Room: {OwningRoom}, Content: {Content}";
         }

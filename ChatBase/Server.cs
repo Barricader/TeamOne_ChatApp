@@ -26,8 +26,8 @@ namespace ChatBase {
 
         // Room and user stuff
         // TODO: implement users and rooms
-        private List<ChatBase.Models.Room> rooms = new List<ChatBase.Models.Room>();
-        private List<ChatBase.Models.User> users = new List<ChatBase.Models.User>();
+        private List<Room> rooms = new List<Room>();
+        private List<User> users = new List<User>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -104,14 +104,17 @@ namespace ChatBase {
             Thread.Sleep(150);
             SendRooms(tcpClient);
 
+            Thread.Sleep(120);
+            UserJoined(new User("Client " + clientID));
+            users[clientID - 1].CurRoom = rooms[0];
+
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
             string welcomeMessage = "You are client " + clientID + Environment.NewLine;
             SendPacket(Constants.MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
-            Thread.Sleep(120);
-            UserJoined(new User("Client " + clientID));
-            users[clientID - 1].CurRoom = rooms[0];
+            Thread.Sleep(150);
+            SendUsers(tcpClient);
 
             // Listen for client response
             while (clientListening[clientID-1]) {
@@ -156,12 +159,8 @@ namespace ChatBase {
         private void ReadPacket(Packet p, TcpClient tcpClient, int clientID) {
             switch (p.Type) {
                 case PacketType.Message:
-                    Packet newPacket = Constants.MESSAGE_PACKET.AlterContent("Client " + clientID + " says: " + p.Content);
-                    newPacket.Args["Owner"] = p.Args["Owner"];
-                    Console.WriteLine(p.Args["Owner"]);
-                    newPacket.Args["Room"] = p.Args["Room"];
-                    Broadcast(newPacket);      // Broadcast message to all clients
-                    WriteMessage(newPacket.Content);
+                    Broadcast(p);      // Broadcast message to all clients
+                    WriteMessage(p.Content);
                     break;
                 case PacketType.Goodbye:
                     Packet leaveMsg = Constants.MESSAGE_PACKET.AlterContent("Client " + clientID + " has left...");
@@ -259,6 +258,22 @@ namespace ChatBase {
             roomList = roomList.Substring(0, roomList.Length - 1);
 
             SendPacket(Constants.ROOM_RESPONSE_PACKET.AlterContent(roomList), client.GetStream());
+        }
+
+        /// <summary>
+        /// Sends a list of online users to the client
+        /// </summary>
+        /// <param name="client"></param>
+        public void SendUsers(TcpClient client) {
+            string userList = "";
+
+            foreach (User u in users) {
+                userList = u.ScreenName + ",";
+            }
+
+            userList = userList.Substring(0, userList.Length - 1);
+
+            SendPacket(Constants.USER_RESPONSE_PACKET.AlterContent(userList), client.GetStream());
         }
 
         /// <summary>

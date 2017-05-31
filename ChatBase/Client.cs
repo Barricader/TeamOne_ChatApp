@@ -162,17 +162,6 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                //SendMessage(CurMessage);
-                //SendPacket(MESSAGE_TEMPLATE.AlterContent(CurMessage));
-
-                // TODO: probably don't want client to be able to kill connection with a message??
-                // TODO: change packet to GOODBYE???
-                //if (CurMessage == CLIENT_BYE_MESSAGE) {
-                //    // Close the client window if the kill message is sent
-                //    Window_Closed(null, null);
-                //    windowHandler?.Invoke();
-                //}
-
                 Packet p = MESSAGE_PACKET.AlterContent(CurMessage);
                 p.Args["Owner"] = user.ScreenName;
                 p.Args["Room"] = user.CurRoom.Name;
@@ -195,10 +184,20 @@ namespace ChatBase {
                 case PacketType.Message:
                     Broadcast += Environment.NewLine + p.Content;
                     Room room = user.CurRoom;
+                    User sender;
+                    
+                    if (p.Args["Owner"] != "") {
+                        sender = users.Where(u => u.ScreenName == p.Args["Owner"]).Single();
+                    }
+                    else {
+                        sender = new User("SERVER");
+                    }
+
                     if (p.Args["Room"] != "") {
                         room = rooms.Where(r => r.Name == p.Args["Room"]).ElementAt(0);
                     }
-                    ServerMessage = new Message(user, room, p.Content, new DateTime());  // TODO: get screen name and siplay in messages
+                    ServerMessage = new Message(sender, room, p.Content, DateTime.Now);
+                    Console.WriteLine(ServerMessage.MessageTimeStamp);
                     break;
                 case PacketType.Goodbye:
                     Broadcast += "Server has shutdown, closing connection..." + Environment.NewLine;
@@ -221,6 +220,20 @@ namespace ChatBase {
                         HasRoomEvent?.Invoke();
                     }
                     break;
+                case PacketType.UserResponse:
+                    string[] userNames = p.Content.Split(',');
+
+                    foreach (string userName in userNames) {
+                        if (userName != "" && userName != " " && userName != "\n") {
+                            users.Add(new User(userName));
+                        }
+                    }
+
+                    if (user.CurRoom == null) {
+                        user.CurRoom = rooms[0];
+                        HasRoomEvent?.Invoke();
+                    }
+                    break;
                 case PacketType.RoomCreated:
                     // Handle new rooms here
                     if (p.Content != "" && p.Content != " " && p.Content != "\n") {
@@ -233,8 +246,7 @@ namespace ChatBase {
                     }
                     break;
                 case PacketType.UserJoined:
-                    // Keep track of users here
-                    Console.WriteLine("NEW USER: " + p.Content);
+                    users.Add(new User(p.Content));
                     break;
                 case PacketType.JoinRoomResponse:
                     user.CurRoom = rooms[int.Parse(p.Content)];
