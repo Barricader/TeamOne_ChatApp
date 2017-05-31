@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ChatBase.Models;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace MainClientWindow {
     /// <summary>
@@ -15,7 +16,7 @@ namespace MainClientWindow {
     public partial class Chat : Page {
         Client mainclient;
         public List<Message> testMessageList = new List<Message>();
-        public List<ChatBase.Models.Room> roomList = new List<ChatBase.Models.Room>();
+        public ObservableCollection<ChatBase.Models.Room> roomList = new ObservableCollection<ChatBase.Models.Room>();
 
         public List<Message> msgQueue = new List<Message>();
         
@@ -29,7 +30,7 @@ namespace MainClientWindow {
 
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
-            
+            RoomsListView.ItemsSource = roomList;
             GeneratePage();
         }
 
@@ -96,15 +97,10 @@ namespace MainClientWindow {
         }
 
         private void AddRoom(ChatBase.Models.Room room) {
-            roomList.Add(room);
 
-            string roomstring = "";
-            foreach(ChatBase.Models.Room r in roomList)
-            {
-                roomstring += r.Name;
-            }
-            MessageBox.Show(roomstring);
-            RoomsListView.Dispatcher.Invoke(() => RoomsListView.ItemsSource = roomList);
+            App.Current.Dispatcher.Invoke(() => roomList.Add(room));
+            //RoomsListView.Dispatcher.Invoke(() => RoomsListView.ItemsSource = roomList);
+
         }
 
         private void AddUsers(int connectedUsers) {

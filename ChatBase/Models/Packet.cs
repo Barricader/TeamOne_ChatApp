@@ -9,6 +9,7 @@ namespace ChatBase.Models {
         Goodbye,
         RequestRoom,
         RequestMessage,
+        RequestRoomCreation,
         JoinRoomRequest,
         JoinRoomResponse,
         RequestUser,

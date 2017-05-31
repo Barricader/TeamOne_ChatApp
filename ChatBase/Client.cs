@@ -185,8 +185,8 @@ namespace ChatBase {
         public void RoomGenerationButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             if (CurRoom != null)
-            { 
-                Packet p = ROOM_CREATED_PACKET;
+            {
+                Packet p = REQUEST_ROOM_CREATION;
                 p.Content = CurRoom;
                 SendPacket(p);
                 CurRoom = "";
@@ -233,7 +233,7 @@ namespace ChatBase {
                         if (roomName != "" && roomName != " " && roomName != "\n") {
                             rooms.Add(new Room(roomName));
 
-                            RoomHandler?.Invoke(rooms[rooms.Count - 1]);
+                           RoomHandler?.Invoke(rooms[rooms.Count - 1]);
                         }
                     }
 

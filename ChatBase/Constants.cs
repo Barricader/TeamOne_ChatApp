@@ -16,6 +16,7 @@ namespace ChatBase {
         public static Packet CLIENT_ID_PACKET = new Packet(PacketType.ClientID, "");
         public static Packet REQUEST_ROOM_PACKET = new Packet(PacketType.RequestRoom, "");
         public static Packet REQUEST_JOIN_ROOM = new Packet(PacketType.JoinRoomRequest, "");
+        public static Packet REQUEST_ROOM_CREATION = new Packet(PacketType.RequestRoomCreation, "");
         /// <summary>
         /// Should have comma-delimited message ids
         /// </summary>

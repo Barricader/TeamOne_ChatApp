@@ -178,7 +178,8 @@ namespace ChatBase {
                     Packet joinRoomPacket = Constants.REQUEST_JOIN_ROOM.AlterContent("Client " + clientID + "Has Joined Room");
                     WriteMessage(joinRoomPacket.Content);
                     break;
-                case PacketType.RoomCreated:
+                case PacketType.RequestRoomCreation:
+                    //check with db here
                     CreateRoom(p.Content);
                     WriteMessage("Sending room to client " + clientID);
                     break;
