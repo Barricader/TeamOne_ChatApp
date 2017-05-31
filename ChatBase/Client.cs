@@ -297,6 +297,7 @@ namespace ChatBase {
                     break;
                 case PacketType.UserJoined:
                     users.Add(new User(p.Content));
+                    MessageFromServer(p.Content + " has joined the chat!");
                     break;
                 default:
                     Console.WriteLine("ERROR: wrong packet type........... Content: {0}", p.Content);

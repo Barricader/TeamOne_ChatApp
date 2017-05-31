@@ -21,11 +21,11 @@ namespace MainClientWindow {
                 Visible = true
             };
 
-            ni.Click +=
-                delegate (object sender, EventArgs args) {
-                    Show();
-                    WindowState = WindowState.Normal;
-                };
+            ni.Click += delegate (object sender, EventArgs args) {
+                Show();
+                WindowState = WindowState.Normal;
+            };
+
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
 
@@ -35,9 +35,8 @@ namespace MainClientWindow {
             Close();
         }
 
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            this.Hide();
+        private void Window_StateChanged(object sender, EventArgs e) {
+            Hide();
         }
     }
 }

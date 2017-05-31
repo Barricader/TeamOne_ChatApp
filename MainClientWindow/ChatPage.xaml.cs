@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ChatBase.Models;
-using System.Threading;
 using System.Collections.ObjectModel;
 
 namespace MainClientWindow {
@@ -16,24 +15,30 @@ namespace MainClientWindow {
     public partial class Chat : Page {
         Client mainclient;
         public List<Message> testMessageList = new List<Message>();
-        public ObservableCollection<ChatBase.Models.Room> roomList = new ObservableCollection<ChatBase.Models.Room>();
+        public ObservableCollection<Room> roomList = new ObservableCollection<Room>();
 
         public List<Message> msgQueue = new List<Message>();
         
         public Chat() {
             InitializeComponent();
+
             mainclient = (Client)FindResource("client");
+            DataContext = mainclient;
+
+            // Event listening
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
             mainclient.MsgReceived += GotMessage;
             RoomGenerationButton.Click += mainclient.RoomGenerationButtonClick;
-            DataContext = mainclient;
-
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
             RoomsListView.ItemsSource = roomList;
-            GeneratePage();
+
+            GeneratePage();     // TODO: remove this
         }
 
+        /// <summary>
+        /// Send all messages in the queue to the user's current room
+        /// </summary>
         private void ClearQueue() {
             foreach (Message m in msgQueue) {
                 m.OwningRoom = mainclient.user.CurRoom;
@@ -41,12 +46,13 @@ namespace MainClientWindow {
             }
         }
 
-        //private void CloseWindow() {
-        //    main.Close();
-        //}
-
+        /// <summary>
+        /// User received a message, display it to the correct room
+        /// </summary>
+        /// <param name="msg"></param>
         private void GotMessage(Message msg) {
             if (msg.OwningRoom == null) {
+                // Add to a queue if a the user does not belong to any rooms yet
                 msgQueue.Add(msg);
             }
             else {
@@ -61,15 +67,11 @@ namespace MainClientWindow {
             }
         }
 
-
         private void GeneratePage() {
-            //int is rooms in db 
-            //AddRooms();
-            //int is connected users
             AddUsers(3);
-            //AddMessages(roomList[0]);
         }
-        private void AddMessages(ChatBase.Models.Room roomname) {
+
+        private void AddMessages(Room roomname) {
             List<Message> roomMessagesList = new List<Message>();
             var roomMessages = from m in testMessageList
                                where m.OwningRoom == roomname
@@ -77,24 +79,16 @@ namespace MainClientWindow {
             foreach (Message m in roomMessages) {
                 roomMessagesList.Add(m);
             }
-            //MessagesItemControl.ItemsSource = roomMessagesList;
+
             MessagesItemControl.Dispatcher.Invoke(() => MessagesItemControl.ItemsSource = roomMessagesList);
 
         }
 
-
-        private void AddSingleMessage(Message message) {
-            //AddMessage(roomList.IndexOf(mainclient.user.CurRoom));
-            //testMessageList.Add(new Message());
+        private void AddRoom(Room room) {
+            Application.Current.Dispatcher.Invoke(() => roomList.Add(room));
         }
 
-        private void AddRoom(ChatBase.Models.Room room) {
-
-            App.Current.Dispatcher.Invoke(() => roomList.Add(room));
-            //RoomsListView.Dispatcher.Invoke(() => RoomsListView.ItemsSource = roomList);
-
-        }
-
+        // TODO: remove any useless functions
         private void AddUsers(int connectedUsers) {
             for (int i = 0; i < connectedUsers; i++) {
                 AddSingleUser();
@@ -159,25 +153,7 @@ namespace MainClientWindow {
 
                 string roomName = notificationDock.Children.OfType<Button>().FirstOrDefault().Content.ToString();
 
-                // TODO: consolidate to one method
-
-                ChatBase.Models.Room temp = null;
-
-                foreach (ChatBase.Models.Room r in mainclient.rooms) {
-                    if (r.Name == roomName) {
-                        temp = r;
-                    }
-                }
-
-                mainclient.user.CurRoom = temp;
-
-                foreach (ChatBase.Models.Room r in roomList) {
-                    if (r.Name == roomName) {
-                        r.NewMessages = 0;
-                        AddMessages(r);
-                    }
-                }
-
+                UpdateMessages(roomName);
             }
         }
 
@@ -185,9 +161,13 @@ namespace MainClientWindow {
             Button roomButton = sender as Button;
             string roomName = roomButton.Content.ToString();
 
-            ChatBase.Models.Room temp = null;
+            UpdateMessages(roomName);
+        }
 
-            foreach (ChatBase.Models.Room r in mainclient.rooms) {
+        private void UpdateMessages(string roomName) {
+            Room temp = null;
+
+            foreach (Room r in mainclient.rooms) {
                 if (r.Name == roomName) {
                     temp = r;
                 }
@@ -195,7 +175,7 @@ namespace MainClientWindow {
 
             mainclient.user.CurRoom = temp;
 
-            foreach (ChatBase.Models.Room r in roomList) {
+            foreach (Room r in roomList) {
                 if (r.Name == roomName) {
                     r.NewMessages = 0;
                     AddMessages(r);

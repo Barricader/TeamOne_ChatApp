@@ -10,8 +10,6 @@
             <cb:Client x:Key="client"/>
             <BooleanToVisibilityConverter x:Key="boolToVisibility"/>
             <converters:NewMessagestoVisConverter x:Key="NotificationToVisibility"/>
-
-            <BitmapImage x:Key="icon" UriSource="icons/icon.ico"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

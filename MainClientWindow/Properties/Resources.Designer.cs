@@ -61,15 +61,6 @@ namespace MainClientWindow.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string icontest {
-            get {
-                return ResourceManager.GetString("icontest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon iconthing {
