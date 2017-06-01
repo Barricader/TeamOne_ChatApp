@@ -53,7 +53,9 @@ namespace ChatBase {
         /// </summary>
         public void Start() {
             // Change to IpAddress.Any for internet communication
-            tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), Constants.PORT);
+            //tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), PORT);
+            // Spent a lot of the day figuring out how remote communication would work
+            tcpListener = new TcpListener(IPAddress.Any, PORT);
             listenThread = new Thread(new ThreadStart(ListenForClients));
             listenThread.Start();
 
