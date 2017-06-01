@@ -120,7 +120,7 @@ namespace ChatBase {
 
             // Welcome the new user
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
-            string welcomeMessage = "You are client " + clientID + Environment.NewLine;
+            string welcomeMessage = "You are client " + clientID;
             SendPacket(MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
