@@ -36,64 +36,133 @@ namespace ChatBase.Models
      * repeat this process for the other package
      * 
      */
-    class WindowsNotification
+    public class WindowsNotification
     {
-        private static string title;
+        //public WindowsNotification(int RoomID, string MessageTitle, string MessageContent, string ImageofSender)
+        //{
+        //    ConversationID = RoomID;
+        //    Title = MessageTitle;
+        //    Content = MessageContent;
+        //    ProfilePic = ImageofSender;
 
-        public static string Title
+        //    public ToastVisual visual = new ToastVisual()
+        //    {
+        //        BindingGeneric = new ToastBindingGeneric()
+        //        {
+        //            Children =
+        //    {
+        //        new AdaptiveText()
+        //        {
+        //            Text = Title
+        //        },
+        //        new AdaptiveText()
+        //        {
+        //            Text = Content
+        //        },
+        //        new AdaptiveImage()
+        //        {
+        //            Source = ProfilePic
+        //        }
+        //    },
+        //            AppLogoOverride = new ToastGenericAppLogo()
+        //            {
+        //                Source = Logo,
+        //                HintCrop = ToastGenericAppLogoCrop.Circle
+        //            }
+        //        }
+        //    };
+        //ToastActionsCustom actions = new ToastActionsCustom()
+        //{
+        //    Inputs =
+        //    {
+        //        new ToastTextBox("tbreply")
+        //        {
+        //            PlaceholderContent = "Type a repsonse"
+        //        }
+        //    },
+        //    Buttons =
+        //    {
+        //        new ToastButton("Reply", new QueryString()
+        //        {
+        //            {"action","reply" },
+        //            {"conversationId", ConversationID.ToString() }
+        //        }.ToString())
+        //        {
+        //            ActivationType = ToastActivationType.Background,
+        //            ImageUri = "Assets/Reply.png",
+        //            TextBoxId = "tbReply"
+        //        },
+        //        new ToastButton("View", new QueryString()
+        //        {
+        //            {"action","viewImage"},
+        //            {"imageUrl", ProfilePic}
+
+        //        }.ToString())
+        //    }
+        //};
+
+
+        //ToastContent toastContent = new ToastContent()
+        //{
+        //    Visual = visual,
+        //    Actions = actions,
+        //    Launch = new QueryString()
+        //        {
+        //            {"action","viewConversation" },
+        //            {"conversationId", ConversationId.Tostring() }
+        //        }
+
+        //};
+
+
+        private string title;
+
+        public string Title
         {
             get { return title; }
             set { title = value; }
         }
 
-        private static string content;
+        private string content;
 
-        public static string Content
+        public string Content
         {
             get { return content; }
             set { content = value; }
         }
 
-        private static string image;
+        private string profilePic = "/NotificationImages/TestProfileImage.png";
 
-        public static string Image
+        public string ProfilePic
         {
-            get { return image; }
-            set { image = value; }
+            get { return profilePic; }
+            set { profilePic = value; }
         }
 
-        private static string logo = "Images/TestLogo.png";
+        private string logo = "/NotificationImages/Logo.png";
 
-        public static string Logo
+        public string Logo
         {
             get { return logo; }
         }
+        private int conversationID;
 
-        ToastVisual visual = new ToastVisual()
+        public int ConversationID
         {
-            BindingGeneric = new ToastBindingGeneric()
-            {
-                Children =
-            {
-                new AdaptiveText()
-                {
-                    Text = Title
-                },
-                new AdaptiveText()
-                {
-                    Text = Content
-                },
-                new AdaptiveImage()
-                {
-                    Source = Image
-                }
-            },
-                AppLogoOverride = new ToastGenericAppLogo()
-                {
-                    Source = Logo,
-                    HintCrop = ToastGenericAppLogoCrop.Circle
-                }
-            }
-        };
+            get { return conversationID; }
+            set { conversationID = value; }
+        }
+
+
+
+
+
+
+
+
     }
 }
+
+
+
+

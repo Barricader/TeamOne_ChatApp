@@ -14,7 +14,7 @@ namespace ChatBase.Models {
         Link
     }
 
-    // TODO: emoji static class that links strings to images EX. ':smiley:' -> Image smiley
+    // TODO: emoji  class that links strings to images EX. ':smiley:' -> Image smiley
 
     public class Message {
         public Message(User owner, Room room, string content, DateTime ts) {
