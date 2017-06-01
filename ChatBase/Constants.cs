@@ -7,6 +7,7 @@ namespace ChatBase {
         public static int BUFFER_SIZE = 4096;
         public static int RECONNECT_MAX_TRIES = 10;
         public static int SECONDS_BETWEEEN_TRIES = 5;
+        public static int MAX_MESSAGE_SIZE = 180;
 
         public static Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } , { "Timestamp", "" } };
 
