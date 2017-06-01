@@ -19,7 +19,7 @@
                Margin="0 0 0 420"
                Width="200"
                Height="20"
-               Content="{Binding Path=ConnClients, Converter={StaticResource ResourceKey=connClientsConverter}}"
+               Content="{Binding Path=ConnClients, Converter={Resource ResourceKey=connClientsConverter}}"
                VerticalContentAlignment="Center"
                HorizontalContentAlignment="Center"
                Padding="0"/>

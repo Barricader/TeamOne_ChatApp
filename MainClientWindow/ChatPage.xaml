@@ -23,8 +23,8 @@
                         <DockPanel>
                             <Button Content="{Binding Path=Name}" Click="SwitchRoomButton" Width="290"/>
                             <Grid>
-                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding NewMessages, Converter={StaticResource NotificationToVisibility}}"></Ellipse>
-                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding NewMessages}" Visibility="{Binding NewMessages, Converter={StaticResource NotificationToVisibility}}" MouseDown="NotificationMouseDown"/>
+                                <Ellipse x:Name="NotificationEllipse" Height="20" Width="20" Fill="Red" Visibility="{Binding NewMessages, Converter={Resource NotificationToVisibility}}"></Ellipse>
+                                <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding NewMessages}" Visibility="{Binding NewMessages, Converter={Resource NotificationToVisibility}}" MouseDown="NotificationMouseDown"/>
                             </Grid>
                         </DockPanel>
                     </DataTemplate>
@@ -92,7 +92,7 @@
                     <Image Source="icons/emoji.bmp"/>
                 </ToggleButton>
             </DockPanel>
-            <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={StaticResource boolToVisibility}}"
+            <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={Resource boolToVisibility}}"
                   Background="MediumPurple">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"/>

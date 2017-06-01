@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Input;
-using static ChatBase.Constants;
+using  ChatBase.Constants;
 
 
 namespace ChatBase {
