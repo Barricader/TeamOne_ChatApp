@@ -203,5 +203,10 @@ namespace MainClientWindow {
         {
             messageBox.AppendText("\u2620");
         }
+
+        private void UserSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("UserSettingsPage.xaml", UriKind.RelativeOrAbsolute));
+        }
     }
 }
