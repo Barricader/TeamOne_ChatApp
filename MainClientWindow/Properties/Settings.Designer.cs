@@ -17,9 +17,9 @@ namespace MainClientWindow.Properties
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {
 
-        private  Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
 
-        public  Settings Default
+        public static Settings Default
         {
             get
             {

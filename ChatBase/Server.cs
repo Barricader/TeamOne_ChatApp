@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using  ChatBase.Constants;
+using static ChatBase.Constants;
 
 namespace ChatBase {
     public class Server : INotifyPropertyChanged {

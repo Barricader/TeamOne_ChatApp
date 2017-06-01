@@ -9,7 +9,7 @@ namespace DBTesting
 {
     class Testing
     {
-         void Main(string[] args)
+        static void Main(string[] args)
         {
             string user = "testUsername";
             string pass = "password";

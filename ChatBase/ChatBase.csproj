@@ -67,8 +67,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="NotificationImages\Logo.png" />
-    <EmbeddedResource Include="NotificationImages\TestProfileImage.png" />
+    <Resource Include="Images\TestLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
