@@ -210,5 +210,10 @@ namespace MainClientWindow {
                 // TODO: change border to red to let user know that this is the max, also make visible a label that say "Max message size is 180"
             }
         }
+
+        private void UserSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("UserSettingsPage.xaml", UriKind.RelativeOrAbsolute));
+        }
     }
 }
