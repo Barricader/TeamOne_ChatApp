@@ -73,6 +73,9 @@
     <Compile Include="RegisterNewAccountPage.xaml.cs">
       <DependentUpon>RegisterNewAccountPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserSettingsPage.xaml.cs">
+      <DependentUpon>UserSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HintView.cs" />
     <Page Include="ChatPage.xaml">
       <SubType>Designer</SubType>
@@ -95,6 +98,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RegisterNewAccountPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

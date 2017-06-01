@@ -251,6 +251,7 @@ namespace ChatBase {
                         }
                     }
 
+                    // TODO: fix this shit
                     if (user.CurRoom == null) {
                         user.CurRoom = rooms[0];
                         HasRoomEvent?.Invoke();

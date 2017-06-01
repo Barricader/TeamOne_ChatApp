@@ -53,7 +53,9 @@ namespace ChatBase {
         /// </summary>
         public void Start() {
             // Change to IpAddress.Any for internet communication
-            tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), Constants.PORT);
+            //tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), PORT);
+            // Spent a lot of the day figuring out how remote communication would work
+            tcpListener = new TcpListener(IPAddress.Any, PORT);
             listenThread = new Thread(new ThreadStart(ListenForClients));
             listenThread.Start();
 
@@ -118,7 +120,7 @@ namespace ChatBase {
 
             // Welcome the new user
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
-            string welcomeMessage = "You are client " + clientID + Environment.NewLine;
+            string welcomeMessage = "You are client " + clientID;
             SendPacket(MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 

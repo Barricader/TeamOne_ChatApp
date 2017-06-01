@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 
 namespace ChatBase {
-    public  class Constants {
-        public  int PORT = 4040;
-        public  int BUFFER_SIZE = 4096;
-        public  int RECONNECT_MAX_TRIES = 10;
-        public  int SECONDS_BETWEEEN_TRIES = 5;
+    public static class Constants {
+        public static int PORT = 4040;
+        public static int BUFFER_SIZE = 4096;
+        public static int RECONNECT_MAX_TRIES = 10;
+        public static int SECONDS_BETWEEEN_TRIES = 5;
 
         public  Dictionary<string, string> MESSAGE_ARGS = new Dictionary<string, string> { { "Room", "" }, { "Owner", "" } , { "Timestamp", "" } };
 
