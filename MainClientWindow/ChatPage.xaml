@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MainClientWindow"
       xmlns:exten="clr-namespace:MainClientWindow.Converters"
+      xmlns:rules="clr-namespace:ChatBase.Rules;assembly=ChatBase"
       mc:Ignorable="d" 
       d:DesignHeight="567.808" d:DesignWidth="1064.369"
       Title="Chat" >
@@ -44,7 +45,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="8*" />
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
@@ -65,7 +66,7 @@
                                             <Label FontFamily="Arial" FontSize="15" FontWeight="Bold" Content="{Binding Path=Owner.ScreenName}"></Label>
                                             <Label FontFamily="Arial" FontSize="12" Content="{Binding Path=TimeStamp}"></Label>
                                         </DockPanel>
-                                        <TextBlock Grid.Row="1" Margin="2" exten:TextBlockExtension.FormattedText="{Binding Path=Content}" Background="AliceBlue"/>
+                                        <TextBlock Grid.Row="1" Margin="2" Text="{Binding Path=Content}" Background="AliceBlue"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
@@ -73,7 +74,28 @@
                     </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
-            <TextBox x:Name="messageBox" Grid.Row="2" TextChanged="MessageBoxTextChanged" HorizontalAlignment="Left" Margin="10,10,0,0" Height="65" TextWrapping="Wrap" Width="445" KeyDown="MBKeyDown" MaxLength="180" Text="{Binding Path=CurMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="MediumPurple" BorderThickness="5" Background="GhostWhite"/>
+            <TextBox x:Name="messageBox" Grid.Row="2" TextChanged="MessageBoxTextChanged" AllowDrop="True" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="14"
+                     Height="70" TextWrapping="Wrap" Width="500" KeyDown="MBKeyDown" MaxLength="180" BorderBrush="Black" BorderThickness="1" Background="GhostWhite"
+                     FontFamily="Arial">
+                <TextBox.Style>
+                    <Style x:Name="TextBoxFullError" TargetType="{x:Type TextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter Property="BorderThickness" Value="4" />
+                                <Setter Property="BorderBrush" Value="Red" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+                <TextBox.Text>
+                    <Binding Path="CurMessage" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <rules:MaxCharsRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <!-- Error label here -->
             <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0" Background="MediumPurple">
                 <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">
                     <Button.Template>

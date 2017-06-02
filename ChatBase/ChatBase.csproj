@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ChatBase</RootNamespace>
     <AssemblyName>ChatBase</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Models\Packet.cs" />
     <Compile Include="Models\WindowsNotification.cs" />
+    <Compile Include="Rules\MaxCharsRule.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
