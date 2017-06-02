@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -23,27 +24,52 @@ namespace MainClientWindow.Converters
         { obj.SetValue(FormattedTextProperty, value); }
 
         public static readonly DependencyProperty FormattedTextProperty =
-            DependencyProperty.Register("FormattedText", typeof(string), typeof(TextBlockExtension),
+            DependencyProperty.RegisterAttached("FormattedText", typeof(string), typeof(TextBlockExtension),
             new PropertyMetadata(string.Empty, (sender, e) =>
             {
                 string text = e.NewValue as string;
-                Console.WriteLine(text);
                 var textBl = sender as TextBlock;
                 if (textBl != null)
                 {
                     textBl.Inlines.Clear();
-                    Regex regx = new Regex(@"(http|https)://[^\s]+", RegexOptions.IgnoreCase);
+                    Regex regx = new Regex(@"((http|https)://[^\s]+)");
                     var str = regx.Split(text);
+                    foreach (string stri in str)
+                    {
+                        Console.WriteLine(stri);
+                    }
                     for (int i = 0; i < str.Length; i++)
-                        if (i % 2 == 0)
-                            textBl.Inlines.Add(new Run { Text = str[i] });
-                        else
+                        if (str[i] != "http" || str[i] != "https")
                         {
-                            Hyperlink link = new Hyperlink { NavigateUri = new Uri(str[i]), Foreground = Application.Current.Resources["PhoneAccentBrush"] as SolidColorBrush };
-                            link.Inlines.Add(new Run { Text = str[i] });
-                            textBl.Inlines.Add(link);
+                            if (i % 2 == 0)
+                                textBl.Inlines.Add(new Run { Text = str[i] });
+                            else
+                            {
+                                Uri outUri;
+
+                                if (Uri.TryCreate(str[i], UriKind.Absolute, out outUri)
+                                   && (outUri.Scheme == Uri.UriSchemeHttp || outUri.Scheme == Uri.UriSchemeHttps))
+                                {
+                                    //Do something with your validated Absolute URI...
+                                    Hyperlink link = new Hyperlink { NavigateUri = new Uri(str[i]) };
+                                    link.RequestNavigate += HyperLink_ClickHandler;
+                                    link.Inlines.Add(new Run { Text = str[i] });
+                                    textBl.Inlines.Add(link);
+                                }
+
+                            }
                         }
                 }
             }));
+
+        private static void HyperLink_ClickHandler(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is Hyperlink)
+            {
+                Process.Start((e.OriginalSource as Hyperlink).NavigateUri.ToString());
+                e.Handled = true;
+            }
+
+        }
     }
 }
