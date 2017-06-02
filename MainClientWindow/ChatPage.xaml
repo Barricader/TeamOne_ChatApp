@@ -116,40 +116,41 @@
                 <ToggleButton HorizontalAlignment="Left" Height="50" Width="50" Click="EmojiAttachmentHandler" x:Name="emojiButton">
                     <Image Source="icons/emoji.bmp"/>
                 </ToggleButton>
-            </DockPanel>
-            <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={StaticResource boolToVisibility}}"
-                  Background="MediumPurple">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                </Grid.ColumnDefinitions>
-                <ToggleButton Content="&#x263a;"
+                <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={StaticResource boolToVisibility}}"
+                  Background="MediumPurple"
+                      Margin="10, 0, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <ToggleButton Content="&#x263a;"
                               Background="CornflowerBlue"
                               FontSize="24"
                               Height="50"
                               Grid.Column="0"
                               Click="Emoji1ToggleButton_Click"/>
-                <ToggleButton Content="&#x2639;"
+                    <ToggleButton Content="&#x2639;"
                               Background="CornflowerBlue"
                               Height="50"
                               FontSize="24"
                               Grid.Column="1"
                               Click="Emoji2ToggleButton_Click"/>
-                <ToggleButton Content="&#x2764;"
+                    <ToggleButton Content="&#x2764;"
                               Background="CornflowerBlue"
                               Height="50"
                               FontSize="24"
                               Grid.Column="2"
                               Click="Emoji3ToggleButton_Click"/>
-                <ToggleButton Content="&#x2620;"                            
+                    <ToggleButton Content="&#x2620;"                            
                               Background="CornflowerBlue"
                               Height="50"
                               FontSize="24"
                               Grid.Column="3"
                               Click="Emoji4ToggleButton_Click"/>
-            </Grid>
+                </Grid>
+            </DockPanel>
         </Grid>
     </Grid>
 
