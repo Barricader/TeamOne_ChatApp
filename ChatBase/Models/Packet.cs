@@ -64,7 +64,7 @@ namespace ChatBase.Models {
         /// <returns>If conversion was successful then return true, else return false</returns>
         public static bool JsonToPacket(string json, out Packet packet) {
             // Heal string if first { is not there
-            if (json[0] == '"') {
+            if (json[0] == '"' || json[0] == ' ') {
                 json = "{" + json;
             }
 

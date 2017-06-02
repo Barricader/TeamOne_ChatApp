@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Models\Packet.cs" />
     <Compile Include="Models\WindowsNotification.cs" />
+    <Compile Include="Rules\MaxCharsRule.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
