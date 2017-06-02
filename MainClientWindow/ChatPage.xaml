@@ -95,6 +95,8 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
+            <Label x:Name="msgError" Grid.Row="2" HorizontalAlignment="Left" Visibility="Hidden" Foreground="#C0D00000"
+                   Content="Maximum message length is 180 characters" Margin="440,87,0,0"/>
             <!-- Error label here -->
             <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0" Background="MediumPurple">
                 <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">
