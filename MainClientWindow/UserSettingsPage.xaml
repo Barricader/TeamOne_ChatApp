@@ -8,88 +8,96 @@
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="UserSettingsPage">
 
-    <Grid>
+    <Grid Background="MediumPurple">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="50*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1">
-            <Label Content="User Settings"
-                   FontSize="18"                  
+        <ScrollViewer Grid.Column="1"
+                      CanContentScroll="False">
+            <StackPanel Grid.Column="1">
+                <Label Content="User Settings"
+                   FontSize="24"                  
                    HorizontalAlignment="Center"
                    Margin="20"/>
-            <ToggleButton Content="Change Username"
+                <ToggleButton Content="Change Username"
                           Width="183"
                           Height="30"
                           FontSize="18"
                           Margin="20"
-                          x:Name="ChangeUsername"/>
-            <Label Content="New Username"
+                          x:Name="ChangeUsername"
+                              Background="CornflowerBlue"/>
+                <Label Content="New Username"
                    FontSize="18"
                    HorizontalAlignment="Center"
                    Margin="5"
                    Visibility="{Binding ElementName=ChangeUsername, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <TextBox Height="30"
+                <TextBox Height="30"
                      Width="300"
                      FontSize="18"
                      Margin="5"
+                         x:Name="NewUsername"
+                         Background="GhostWhite"
                      Visibility="{Binding ElementName=ChangeUsername, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <ToggleButton Content="Apply"
-                          Width="183"
-                          Height="30"
-                          FontSize="18"
-                          Margin="5"
-                          Click="NewUsernameToggleButton_Click"
-                          Visibility="{Binding ElementName=ChangeUsername, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <ToggleButton Content="Change Password"
+                <ToggleButton Content="Apply Username"
                           Width="183"
                           Height="30"
                           FontSize="18"
                           Margin="20"
+                          Click="NewUsernameToggleButton_Click"
+                              Background="CornflowerBlue"
+                          Visibility="{Binding ElementName=ChangeUsername, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
+                <ToggleButton Content="Change Password"
+                          Width="183"
+                          Height="30"
+                          FontSize="18"
+                          Margin="20"
+                              Background="CornflowerBlue"
                           x:Name="ChangePassword"/>
-            <Label Content="New Password"
+                <Label Content="New Password"
                    FontSize="18"
                    HorizontalAlignment="Center"
                    Margin="5"
                    Visibility="{Binding ElementName=ChangePassword, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <TextBox Height="30"
+                <TextBox Height="30"
                      Width="300"
                      FontSize="18"
                      Margin="5"
                      x:Name="NewPassword"
+                         Background="GhostWhite"
                      Visibility="{Binding ElementName=ChangePassword, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <Label Content="Confirm Password"
+                <Label Content="Confirm Password"
                    FontSize="18"
                    HorizontalAlignment="Center"
                    Margin="5"
                    Visibility="{Binding ElementName=ChangePassword, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <TextBox Height="30"
+                <TextBox Height="30"
                      Width="300"
                      FontSize="18"
                      Margin="5"
                      x:Name="ConfirmPassword"
+                         Background="GhostWhite"
                      Visibility="{Binding ElementName=ChangePassword, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <ToggleButton Content="Apply"
+                <ToggleButton Content="Apply Password"
                           Width="183"
                           Height="30"
                           FontSize="18"
-                          Margin="5"
+                          Margin="20"
+                              Background="CornflowerBlue"
                           Click="NewPasswordToggleButton_Click"
                           Visibility="{Binding ElementName=ChangePassword, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-            <Label Content="Error Message Here"
-                   FontSize="18"
-                   HorizontalAlignment="Center"                  
-                   x:Name="ErrorMessage"/>
-            <ToggleButton Content="Cancel"
+                <ToggleButton Content="Cancel"
                           Width="183"
                           Height="30"
                           FontSize="18"
+                              Background="CornflowerBlue"
                           Click="CancelToggleButton_Click"
                           Margin="20"/>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
         <StackPanel Grid.Column="0">
             <Label Content="Avatar"
-                   FontSize="18"
+                   FontSize="24"
                    Margin="25 5"
                    HorizontalAlignment="Center"/>
             <Border BorderBrush="GhostWhite"
@@ -105,6 +113,11 @@
                     Margin="25 50 25 0"
                     Click="UploadImageButton_Click"
                     Background="CornflowerBlue"/>
+            <Label Foreground="Red"                      
+                       FontSize="24"
+                       HorizontalAlignment="Center"                  
+                   x:Name="ErrorMessage"
+                   Margin="25"/>
         </StackPanel>
     </Grid>
 </Page>
