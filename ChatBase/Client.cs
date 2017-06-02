@@ -123,8 +123,8 @@ namespace ChatBase {
             
             //MessageFromServer("You have connected to: " + serverEP);
 
-
-            SendPacket(REQUEST_ALL_ROOMS_PACKET);
+            //SendPacket(REQUEST_ALL_ROOMS_PACKET);
+            SendPacket(PacketFactory.CreatePacket<RequestAllRoomsPacket>());
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace ChatBase {
                 // If a message was recieved then do stuff
                 if (response.Length > 0) {
                     // If the response is a valid packet, read it
-                    if (Packet.JsonToPacket(response, out Packet tempPacket)) {
+                    if (PacketFactory.JsonToPacket(response, out IPacket tempPacket)) {
                         ReadPacket(tempPacket);
                     }
                 }
@@ -169,9 +169,9 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                Packet p = MESSAGE_PACKET.AlterContent(CurMessage);
-                p.Args["Owner"] = user.ScreenName;
-                p.Args["Room"] = user.CurRoom.Name;
+                MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage) as MessagePacket;
+                p.Owner = user.ScreenName;
+                p.Room = user.CurRoom.Name;
                 
                 SendPacket(p);
                 CurMessage = "";
@@ -185,7 +185,7 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void RoomGenerationButtonClick(object sender, System.Windows.RoutedEventArgs e) {
             if (CurRoom != null) {
-                Packet p = REQUEST_CREATE_ROOM_PACKET;
+                RequestCreateRoomPacket p = PacketFactory.CreatePacket<RequestCreateRoomPacket>() as RequestCreateRoomPacket;
                 p.Content = CurRoom;
                 SendPacket(p);
                 CurRoom = "";
@@ -196,19 +196,20 @@ namespace ChatBase {
         /// Read a received Packet and perform action based on type
         /// </summary>
         /// <param name="json">Json string of Packet</param>
-        private void ReadPacket(Packet p) {
+        private void ReadPacket(IPacket p) {
             switch (p.Type) {
                 case PacketType.ClientID:
                     WindowTitle = "Connected to " + serverEP.Address + " | Client " + p.Content;
                     user = new User("Client " + p.Content);
                     break;
                 case PacketType.Message:
+                    MessagePacket msgPacket = p as MessagePacket;
                     Room room = user.CurRoom;
                     User sender;
 
-                    if (p.Args["Owner"] != "") {
+                    if (msgPacket.Owner != "" && msgPacket.Owner != null) {
                         try {
-                            sender = users.Where(u => u.ScreenName == p.Args["Owner"]).Single();
+                            sender = users.Where(u => u.ScreenName == msgPacket.Owner).Single();
                         }
                         catch (InvalidOperationException) {
                             sender = new User("UNKNOWN");   // If it doesn't have a valid owner, output UNKNOWN for debugging purposes
@@ -219,9 +220,9 @@ namespace ChatBase {
                         sender = new User("SERVER");
                     }
 
-                    if (p.Args["Room"] != "") {
+                    if (msgPacket.Room != "" && msgPacket.Room != null) {
                         // If it doesn't have a room, default to the general room
-                        room = rooms.Where(r => r.Name == p.Args["Room"]).ElementAt(0);
+                        room = rooms.Where(r => r.Name == msgPacket.Room).ElementAt(0);
                     }
 
                     ServerMessage = new Message(sender, room, p.Content, DateTime.Now);
@@ -251,7 +252,7 @@ namespace ChatBase {
                         }
                     }
 
-                    // TODO: fix this shit
+                    // TODO: fix this stuff
                     if (user.CurRoom == null) {
                         user.CurRoom = rooms[0];
                         HasRoomEvent?.Invoke();
@@ -310,7 +311,7 @@ namespace ChatBase {
         /// Sends a packet to the server
         /// </summary>
         /// <param name="p">Packet to send</param>
-        private void SendPacket(Packet p) {
+        private void SendPacket(IPacket p) {
             if (client.Connected) {
                 NetworkStream clientStream = client.GetStream();
                 string json = p.ToJsonString();
@@ -336,7 +337,7 @@ namespace ChatBase {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void Window_Closed(object sender, EventArgs e) {
-            SendPacket(CLIENT_BYE_PACKET);
+            SendPacket(PacketFactory.CreatePacket<GoodByePacket>().AlterContent("Client"));
 
             listenThread.Abort();
             client.Close();

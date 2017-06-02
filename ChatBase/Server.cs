@@ -106,8 +106,7 @@ namespace ChatBase {
             int bytesRead;
 
             // Send client their clientID
-            Packet cidMessage = CLIENT_ID_PACKET.AlterContent(clientID.ToString());
-            SendPacket(cidMessage, clientStream);
+            SendPacket(PacketFactory.CreatePacket<ClientIDPacket>().AlterContent(clientID.ToString()), clientStream);
 
             // Send all existing rooms to the client
             Thread.Sleep(150);
@@ -120,8 +119,7 @@ namespace ChatBase {
 
             // Welcome the new user
             Thread.Sleep(150);  // Need to wait a bit because it will be one big message if we don't
-            string welcomeMessage = "You are client " + clientID;
-            SendPacket(MESSAGE_PACKET.AlterContent(welcomeMessage), clientStream);
+            SendPacket(PacketFactory.CreatePacket<MessagePacket>().AlterContent("You are client " + clientID), clientStream);
             WriteMessage("Client " + clientID + " has connected!");
 
             // Send all existing users to the new user
@@ -152,8 +150,8 @@ namespace ChatBase {
 
                 // Convert bytes to string and display string
                 string message = Encoding.UTF8.GetString(msg, 0, bytesRead);
-
-                if (Packet.JsonToPacket(message, out Packet tempPacket)) {
+                
+                if (PacketFactory.JsonToPacket(message, out IPacket tempPacket)) {
                     ReadPacket(tempPacket, tcpClient, clientID);
                 }
                 else {
@@ -168,19 +166,19 @@ namespace ChatBase {
         /// Read a received Packet and perform action based on type
         /// </summary>
         /// <param name="json">Json string of Packet</param>
-        private void ReadPacket(Packet p, TcpClient tcpClient, int clientID) {
+        private void ReadPacket(IPacket p, TcpClient tcpClient, int clientID) {
             switch (p.Type) {
                 case PacketType.Message:
                     Broadcast(p);      // Broadcast message to all clients
                     WriteMessage(p.Content);
                     break;
                 case PacketType.Goodbye:
-                    Packet leaveMsg = MESSAGE_PACKET.AlterContent("Client " + clientID + " has left...");
+                    MessagePacket leaveMsg = PacketFactory.CreatePacket<MessagePacket>().AlterContent("Client " + clientID + " has left...") as MessagePacket;
                     Broadcast(leaveMsg);            // Let all users know that a client has left
                     WriteMessage(leaveMsg.Content);
                     ConnClients--;
                     clients.Remove(tcpClient);
-                    clientListening[clientID-1] = false;
+                    clientListening[clientID - 1] = false;
                     break;
                 case PacketType.RequestAllRooms:
                     SendRooms(tcpClient);
@@ -210,7 +208,7 @@ namespace ChatBase {
         /// </summary>
         /// <param name="packet">Packet to send</param>
         /// <param name="clientStream">Client to send to</param>
-        private void SendPacket(Packet packet, NetworkStream clientStream) {
+        private void SendPacket(IPacket packet, NetworkStream clientStream) {
             string json = packet.ToJsonString();
 
             byte[] buffer = Encoding.UTF8.GetBytes(json);
@@ -222,7 +220,7 @@ namespace ChatBase {
         /// Send packet to all connected clients
         /// </summary>
         /// <param name="p">Packet to send</param>
-        private void Broadcast(Packet p) {
+        private void Broadcast(IPacket p) {
             foreach (TcpClient client in clients) {
                 SendPacket(p, client.GetStream());
             }
@@ -238,7 +236,7 @@ namespace ChatBase {
 
             // Send server bye message to clients so they know that the server is shutting down
             foreach (TcpClient cl in clients) {
-                SendPacket(SERVER_BYE_PACKET, cl.GetStream());
+                SendPacket(PacketFactory.CreatePacket<GoodByePacket>().AlterContent("Server"), cl.GetStream());
                 cl.Close();
             }
             
@@ -267,8 +265,8 @@ namespace ChatBase {
             }
 
             roomList = roomList.Substring(0, roomList.Length - 1);
-
-            SendPacket(RESPONSE_ALL_ROOMS_PACKET.AlterContent(roomList), client.GetStream());
+            
+            SendPacket(PacketFactory.CreatePacket<ResponseAllRoomsPacket>().AlterContent(roomList), client.GetStream());
         }
 
         /// <summary>
@@ -283,8 +281,8 @@ namespace ChatBase {
             }
 
             userList = userList.Substring(0, userList.Length - 1);
-
-            SendPacket(RESPONSE_ALL_USERS_PACKET.AlterContent(userList), client.GetStream());
+            
+            SendPacket(PacketFactory.CreatePacket<ResponseAllUsersPacket>().AlterContent(userList), client.GetStream());
         }
 
         /// <summary>
@@ -295,7 +293,7 @@ namespace ChatBase {
             users.Add(new User(u.ScreenName));
 
             foreach (TcpClient client in clients) {
-                SendPacket(USER_JOINED_PACKET.AlterContent(u.ScreenName), client.GetStream());
+                SendPacket(PacketFactory.CreatePacket<UserJoinedPacket>().AlterContent(u.ScreenName), client.GetStream());
             }
         }
 
@@ -318,7 +316,7 @@ namespace ChatBase {
                 rooms.Add(new Room(name));
 
                 foreach (TcpClient client in clients) {
-                    SendPacket(ROOM_CREATED_PACKET.AlterContent(name), client.GetStream());
+                    SendPacket(PacketFactory.CreatePacket<RoomCreatedPacket>().AlterContent(name), client.GetStream());
                 }
             }
         }
