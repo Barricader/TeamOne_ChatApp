@@ -38,43 +38,56 @@ namespace ChatBase.Models
      */
     class WindowsNotification
     {
-        private static string title;
+        private string title;
 
-        public static string Title
+        public string Title
         {
             get { return title; }
             set { title = value; }
         }
 
-        private static string content;
+        private string content;
 
-        public static string Content
+        public string Content
         {
             get { return content; }
             set { content = value; }
         }
 
-        private static string image;
+        private string profilePic = "/NotificationImages/TestProfileImage.png";
 
-        public static string Image
+        public string ProfilePic
         {
-            get { return image; }
-            set { image = value; }
+            get { return profilePic; }
+            set { profilePic = value; }
         }
 
-        private static string logo = "Images/TestLogo.png";
+        private string logo = "/NotificationImages/Logo.png";
 
-        public static string Logo
+        public string Logo
         {
             get { return logo; }
         }
+        private int conversationID;
 
-        ToastVisual visual = new ToastVisual()
+        public int ConversationID
         {
-            BindingGeneric = new ToastBindingGeneric()
+            get { return conversationID; }
+            set { conversationID = value; }
+        }
+        public WindowsNotification(int RoomID, string MessageTitle, string MessageContent, string ImageofSender)
+        {
+            ConversationID = RoomID;
+            Title = MessageTitle;
+            Content = MessageContent;
+            ProfilePic = ImageofSender;
+
+            ToastVisual visual = new ToastVisual()
             {
-                Children =
-            {
+                BindingGeneric = new ToastBindingGeneric()
+                {
+                    Children =
+                    {
                 new AdaptiveText()
                 {
                     Text = Title
@@ -85,15 +98,80 @@ namespace ChatBase.Models
                 },
                 new AdaptiveImage()
                 {
-                    Source = Image
+                    Source = ProfilePic
+                }
+                    },
+                    AppLogoOverride = new ToastGenericAppLogo()
+                    {
+                        Source = Logo,
+                        HintCrop = ToastGenericAppLogoCrop.Circle
+                    }
+                }
+            };
+
+            ToastActionsCustom actions = new ToastActionsCustom()
+            {
+                Inputs =
+            {
+                new ToastTextBox("tbreply")
+                {
+                    PlaceholderContent = "Type a repsonse"
                 }
             },
-                AppLogoOverride = new ToastGenericAppLogo()
+                Buttons =
+            {
+                new ToastButton("Reply", new QueryString()
                 {
-                    Source = Logo,
-                    HintCrop = ToastGenericAppLogoCrop.Circle
-                }
+                    {"action","reply" },
+                    {"conversationId", ConversationID.ToString() }
+                }.ToString())
+                {
+                    ActivationType = ToastActivationType.Background,
+                    ImageUri = "Assets/Reply.png", // get png
+                    TextBoxId = "tbReply"
+                },
+                new ToastButton("View", new QueryString()
+                {
+                    {"action","viewImage"},
+                    {"imageUrl", ProfilePic}
+
+                }.ToString())
             }
-        };
+            };
+
+
+            ToastContent toastContent = new ToastContent()
+            {
+                Visual = visual,
+                Actions = actions,
+                Launch = new QueryString()
+                {
+                    {"action","viewConversation" },
+                    {"ConversationID", ConversationID.ToString() }
+                }.ToString()
+            };
+            //var toast = new ToastNotification();
+            //ToastNotificationManager.CreateToastNotifier.Show(toast);
+        }
+
+            
+
+        
+    
     }
+
+
+
+
+    
+
 }
+
+
+
+
+
+
+
+
+

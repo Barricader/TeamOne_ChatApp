@@ -53,7 +53,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Packet.cs" />
+    <Compile Include="Models\Packets.cs" />
+    <Compile Include="Models\PacketFactory.cs" />
+    <Compile Include="Models\PacketType.cs" />
     <Compile Include="Models\WindowsNotification.cs" />
     <Compile Include="Rules\MaxCharsRule.cs" />
     <Compile Include="Server.cs" />
@@ -71,5 +73,11 @@
   <ItemGroup>
     <Resource Include="Images\TestLogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Windows.UI.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+  </PropertyGroup>
 </Project>
