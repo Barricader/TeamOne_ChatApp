@@ -206,8 +206,11 @@ namespace MainClientWindow {
 
         private void MessageBoxTextChanged(object sender, TextChangedEventArgs e) {
             if (messageBox.Text.Length == Constants.MAX_MESSAGE_SIZE) {
-                Console.WriteLine("OMG");
-                // TODO: change border to red to let user know that this is the max, also make visible a label that say "Max message size is 180"
+                // TODO: make visible a label that say "Max message size is 180"
+                msgError.Visibility = Visibility.Visible;
+            }
+            else {
+                msgError.Visibility = Visibility.Hidden;
             }
         }
 
