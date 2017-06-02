@@ -173,7 +173,7 @@ namespace ChatBase {
                     WriteMessage(p.Content);
                     break;
                 case PacketType.Goodbye:
-                    MessagePacket leaveMsg = PacketFactory.CreatePacket<MessagePacket>().AlterContent("Client " + clientID + " has left...") as MessagePacket;
+                    MessagePacket leaveMsg = PacketFactory.CreatePacket<MessagePacket>().AlterContent("Client " + clientID + " has left...");
                     Broadcast(leaveMsg);            // Let all users know that a client has left
                     WriteMessage(leaveMsg.Content);
                     ConnClients--;

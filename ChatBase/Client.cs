@@ -169,7 +169,7 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage) as MessagePacket;
+                MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage);
                 p.Owner = user.ScreenName;
                 p.Room = user.CurRoom.Name;
                 

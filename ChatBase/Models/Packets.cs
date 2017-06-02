@@ -13,13 +13,10 @@ namespace ChatBase.Models {
         public string Content { get; set; }
         public PacketType Type { get; set; }
 
+        // Abstract the above
+
         public string ToJsonString() {
-            JavaScriptSerializer jss = new JavaScriptSerializer();
-            string jsonString = "";
-
-            jsonString = jss.Serialize(this);
-
-            return jsonString;
+            return new JavaScriptSerializer().Serialize(this);
         }
 
         public Packet AlterContent(string content) {
@@ -36,6 +33,12 @@ namespace ChatBase.Models {
 
         public MessagePacket() {
             Type = PacketType.Message;
+        }
+
+        public new MessagePacket AlterContent(string content) {
+            Content = content;
+
+            return this;
         }
     }
 
