@@ -69,5 +69,11 @@
   <ItemGroup>
     <Resource Include="Images\TestLogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Windows.UI.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+  </PropertyGroup>
 </Project>
