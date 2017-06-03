@@ -12,7 +12,7 @@ using System.Threading;
 using System.Windows.Input;
 using static ChatBase.Constants;
 
-
+// TODO: move to models
 namespace ChatBase {
     public class Client : INotifyPropertyChanged {
         // Variables that allow listening to server
@@ -22,6 +22,7 @@ namespace ChatBase {
 
         public User user;
         public List<Room> rooms = new List<Room>();
+        public List<Message> messages = new List<Message>();
         public List<User> users = new List<User>();
 
         // Variables that change UI
@@ -169,7 +170,7 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage) as MessagePacket;
+                MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage);
                 p.Owner = user.ScreenName;
                 p.Room = user.CurRoom.Name;
                 

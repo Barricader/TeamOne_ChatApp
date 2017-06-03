@@ -8,7 +8,8 @@
       xmlns:rules="clr-namespace:ChatBase.Rules;assembly=ChatBase"
       mc:Ignorable="d" 
       d:DesignHeight="567.808" d:DesignWidth="1064.369"
-      Title="Chat" >
+      Title="Chat"
+      KeepAlive="True">
     <Grid Background="MediumPurple">
         <Grid.RowDefinitions>
             <RowDefinition Height="0*"/>
@@ -37,7 +38,6 @@
             <TextBox x:Name="roomNameTextBox" Text="{Binding Path=CurRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Height="20" Background="GhostWhite"></TextBox>
             <Button x:Name="RoomGenerationButton" Width="150" Content="New Room" Click="RoomGenClickHandler" Background="CornflowerBlue"/>
             <Image Height="300" Width="300" Source="icons/defaultAvatar.png"/>
-            <Button Width="150" Content="Log Out" Click="LogoutButtonClickHandler" Background="CornflowerBlue"/>
             <Button Width="150" Content="User Settings" Click="UserSettingsButton_Click" Background="CornflowerBlue"/>
         </StackPanel>
 

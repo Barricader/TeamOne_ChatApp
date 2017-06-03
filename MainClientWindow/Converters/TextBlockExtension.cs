@@ -32,17 +32,20 @@ namespace MainClientWindow.Converters
                 if (textBl != null)
                 {
                     textBl.Inlines.Clear();
-                    Regex regx = new Regex(@"((http|https)://[^\s]+)");
+                    Regex regx = new Regex(@"(https?://[^\s]+)");
                     var str = regx.Split(text);
+                        Console.WriteLine("--");
                     foreach (string stri in str)
                     {
                         Console.WriteLine(stri);
                     }
+                    
                     for (int i = 0; i < str.Length; i++)
-                        if (str[i] != "http" || str[i] != "https")
-                        {
                             if (i % 2 == 0)
+                            {
                                 textBl.Inlines.Add(new Run { Text = str[i] });
+
+                            }
                             else
                             {
                                 Uri outUri;
@@ -58,7 +61,6 @@ namespace MainClientWindow.Converters
                                 }
 
                             }
-                        }
                 }
             }));
 
