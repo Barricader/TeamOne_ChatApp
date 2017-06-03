@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows;
 using static ChatBase.Constants;
 
+// TODO: move to models
 namespace ChatBase {
     public class Server : INotifyPropertyChanged {
         // Variables to allow listening

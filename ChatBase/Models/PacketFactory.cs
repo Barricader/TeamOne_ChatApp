@@ -98,6 +98,8 @@ namespace ChatBase.Models {
             } catch (ArgumentException ex) {
                 // Incorrect json format
                 result = false;
+                // Set a default type to not break things
+                tempPacket = new MessagePacket();
                 Console.WriteLine("TYPE_ERROR: " + ex);
             }
 

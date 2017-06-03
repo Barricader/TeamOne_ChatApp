@@ -12,7 +12,7 @@ using System.Threading;
 using System.Windows.Input;
 using static ChatBase.Constants;
 
-
+// TODO: move to models
 namespace ChatBase {
     public class Client : INotifyPropertyChanged {
         // Variables that allow listening to server
@@ -22,6 +22,7 @@ namespace ChatBase {
 
         public User user;
         public List<Room> rooms = new List<Room>();
+        public List<Message> messages = new List<Message>();
         public List<User> users = new List<User>();
 
         // Variables that change UI

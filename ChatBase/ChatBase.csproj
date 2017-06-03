@@ -61,7 +61,6 @@
     <Compile Include="Server.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DbConnect.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\User.cs" />

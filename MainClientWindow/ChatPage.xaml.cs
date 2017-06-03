@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ChatBase.Models;
 using System.Collections.ObjectModel;
+using System.Windows.Navigation;
 
 namespace MainClientWindow {
     /// <summary>
@@ -25,6 +26,19 @@ namespace MainClientWindow {
             mainclient = (Client)FindResource("client");
             DataContext = mainclient;
 
+            // Stuff for reloading page
+            for (int i = 0; i < mainclient.rooms.Count; i++) {
+                roomList.Add(mainclient.rooms[i]);
+            }
+
+            for (int i = 0; i < mainclient.messages.Count; i++) {
+                testMessageList.Add(mainclient.messages[i]);
+            }
+
+            if (roomList.Count > 0) {
+                UpdateMessages(mainclient.user.CurRoom.Name);
+            }
+
             // Event listening
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
             mainclient.MsgReceived += GotMessage;
@@ -32,8 +46,6 @@ namespace MainClientWindow {
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
             RoomsListView.ItemsSource = roomList;
-
-            GeneratePage();     // TODO: remove this
         }
 
         /// <summary>
@@ -57,6 +69,7 @@ namespace MainClientWindow {
             }
             else {
                 testMessageList.Add(msg);
+                mainclient.messages.Add(msg);
 
                 if (msg.OwningRoom.Name != mainclient.user.CurRoom.Name) {
                     msg.OwningRoom.NewMessages++;
@@ -67,10 +80,6 @@ namespace MainClientWindow {
             }
         }
 
-        private void GeneratePage() {
-            AddUsers(3);
-        }
-
         private void AddMessages(Room roomname) {
             List<Message> roomMessagesList = new List<Message>();
             var roomMessages = from m in testMessageList
@@ -78,6 +87,7 @@ namespace MainClientWindow {
                                select m;
             foreach (Message m in roomMessages) {
                 roomMessagesList.Add(m);
+                //mainclient.messages.Add(m);
             }
 
             MessagesItemControl.Dispatcher.Invoke(() => MessagesItemControl.ItemsSource = roomMessagesList);
