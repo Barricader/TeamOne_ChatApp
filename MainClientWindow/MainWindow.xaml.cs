@@ -11,6 +11,7 @@ namespace MainClientWindow {
         public MainWindow() {
             InitializeComponent();
 
+          
             Client client = (Client)FindResource("client");
             //client.Start();
 
@@ -25,9 +26,9 @@ namespace MainClientWindow {
                 Show();
                 WindowState = WindowState.Normal;
             };
-
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
+            
 
         }
 
