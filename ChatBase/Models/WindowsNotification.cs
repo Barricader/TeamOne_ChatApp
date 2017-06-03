@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Windows.UI.Notifications;
+using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.QueryStringDotNET;
 
@@ -150,8 +150,9 @@ namespace ChatBase.Models
                     {"ConversationID", ConversationID.ToString() }
                 }.ToString()
             };
-            //var toast = new ToastNotification();
+            //var toast = new ToastNotification(toastContent.GetXml());
             //ToastNotificationManager.CreateToastNotifier.Show(toast);
+            
         }
 
             
