@@ -66,7 +66,7 @@
     <Compile Include="ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\BooltoVisConverter.cs" />
+    <Compile Include="Converters\NotBooltoVisConverter.cs" />
     <Compile Include="Converters\TextBlockExtension.cs" />
     <Compile Include="Converters\NewMessagestoVisConverter.cs" />
     <Compile Include="LoginPage.xaml.cs">

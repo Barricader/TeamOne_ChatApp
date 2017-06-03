@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ChatBase.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Navigation;
+using System.Text.RegularExpressions;
 
 namespace MainClientWindow {
     /// <summary>
@@ -227,6 +228,22 @@ namespace MainClientWindow {
         private void UserSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("UserSettingsPage.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void ServerIPClick(object sender, RoutedEventArgs e) {
+            string ipRegex = "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])";
+            
+            Regex regex = new Regex(ipRegex);
+
+            bool isIPAddress = regex.IsMatch(tbServerIP.Text);
+
+            if (isIPAddress) {
+                // start server
+                mainclient.Start(tbServerIP.Text);
+            }
+            else {
+                serverIPError.Visibility = Visibility.Visible;
+            }
         }
     }
 }

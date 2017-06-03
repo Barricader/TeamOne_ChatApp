@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 
-namespace MainClientWindow.Converters
-{
+namespace MainClientWindow.Converters {
     public class TextBlockExtension : DependencyObject
     {
         //setting this class to non static and inheriting the DependencyObject compiles but the code inside doesnt seem to be getting hit

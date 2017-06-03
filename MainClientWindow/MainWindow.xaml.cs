@@ -12,7 +12,7 @@ namespace MainClientWindow {
             InitializeComponent();
 
             Client client = (Client)FindResource("client");
-            client.Start();
+            //client.Start();
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
 
