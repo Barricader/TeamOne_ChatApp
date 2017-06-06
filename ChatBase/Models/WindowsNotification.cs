@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.QueryStringDotNET;
-
+using Windows.Data.Xml.Dom;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace ChatBase.Models
 {
@@ -82,80 +85,24 @@ namespace ChatBase.Models
             Content = MessageContent;
             ProfilePic = ImageofSender;
 
-            ToastVisual visual = new ToastVisual()
+        
+            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText03);
+            XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+            for (int i = 0; i < stringElements.Length; i++)
             {
-                BindingGeneric = new ToastBindingGeneric()
-                {
-                    Children =
-                    {
-                new AdaptiveText()
-                {
-                    Text = Title
-                },
-                new AdaptiveText()
-                {
-                    Text = Content
-                },
-                new AdaptiveImage()
-                {
-                    Source = ProfilePic
-                }
-                    },
-                    AppLogoOverride = new ToastGenericAppLogo()
-                    {
-                        Source = Logo,
-                        HintCrop = ToastGenericAppLogoCrop.Circle
-                    }
-                }
-            };
-
-            ToastActionsCustom actions = new ToastActionsCustom()
-            {
-                Inputs =
-            {
-                new ToastTextBox("tbreply")
-                {
-                    PlaceholderContent = "Type a repsonse"
-                }
-            },
-                Buttons =
-            {
-                new ToastButton("Reply", new QueryString()
-                {
-                    {"action","reply" },
-                    {"conversationId", ConversationID.ToString() }
-                }.ToString())
-                {
-                    ActivationType = ToastActivationType.Background,
-                    ImageUri = "Assets/Reply.png", // get png
-                    TextBoxId = "tbReply"
-                },
-                new ToastButton("View", new QueryString()
-                {
-                    {"action","viewImage"},
-                    {"imageUrl", ProfilePic}
-
-                }.ToString())
+                stringElements[i].AppendChild(toastXml.CreateTextNode("Line " + i));
             }
-            };
+            string imagePath = "file:///" + Path.GetFullPath("/Images/TestLogo.png");
+            XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
+            imageElements[0].Attributes.GetNamedItem("xrc").NodeValue = imagePath;
+            ToastNotification toast = new ToastNotification(toastXml);
+            ToastNotificationManager.CreateToastNotifier("one").Show(toast);
 
 
-            ToastContent toastContent = new ToastContent()
-            {
-                Visual = visual,
-                Actions = actions,
-                Launch = new QueryString()
-                {
-                    {"action","viewConversation" },
-                    {"ConversationID", ConversationID.ToString() }
-                }.ToString()
-            };
-            //var toast = new ToastNotification(toastContent.GetXml());
-            //ToastNotificationManager.CreateToastNotifier.Show(toast);
-            
+
         }
 
-            
+        
 
         
     

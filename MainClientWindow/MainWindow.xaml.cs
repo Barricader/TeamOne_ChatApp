@@ -13,7 +13,7 @@ namespace MainClientWindow {
 
           
             Client client = (Client)FindResource("client");
-            //client.Start();
+            client.Start();
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
 
@@ -39,5 +39,6 @@ namespace MainClientWindow {
         private void Window_StateChanged(object sender, EventArgs e) {
             Hide();
         }
+        
     }
 }
