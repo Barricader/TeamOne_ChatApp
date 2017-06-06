@@ -34,35 +34,33 @@ namespace MainClientWindow.Converters
                     textBl.Inlines.Clear();
                     Regex regx = new Regex(@"(https?://[^\s]+)");
                     var str = regx.Split(text);
-                        Console.WriteLine("--");
-                    foreach (string stri in str)
-                    {
-                        Console.WriteLine(stri);
-                    }
-                    
-                    for (int i = 0; i < str.Length; i++)
-                            if (i % 2 == 0)
-                            {
-                                textBl.Inlines.Add(new Run { Text = str[i] });
-
-                            }
-                            else
-                            {
-                                Uri outUri;
-
-                                if (Uri.TryCreate(str[i], UriKind.Absolute, out outUri)
-                                   && (outUri.Scheme == Uri.UriSchemeHttp || outUri.Scheme == Uri.UriSchemeHttps))
-                                {
-                                    //Do something with your validated Absolute URI...
-                                    Hyperlink link = new Hyperlink { NavigateUri = new Uri(str[i]) };
-                                    link.RequestNavigate += HyperLink_ClickHandler;
-                                    link.Inlines.Add(new Run { Text = str[i] });
-                                    textBl.Inlines.Add(link);
-                                }
-
-                            }
+                    ParseValidateUrls(textBl, str);
                 }
             }));
+
+        private static void ParseValidateUrls(TextBlock textBl, string[] str)
+        {
+            for (int i = 0; i < str.Length; i++)
+                if (i % 2 == 0)
+                {
+                    textBl.Inlines.Add(new Run { Text = str[i] });
+                }
+                else
+                {
+                    Uri outUri;
+
+                    if (Uri.TryCreate(str[i], UriKind.Absolute, out outUri)
+                        && (outUri.Scheme == Uri.UriSchemeHttp || outUri.Scheme == Uri.UriSchemeHttps))
+                    {
+                        //Do something with your validated Absolute URI...
+                        Hyperlink link = new Hyperlink { NavigateUri = new Uri(str[i]) };
+                        link.RequestNavigate += HyperLink_ClickHandler;
+                        link.Inlines.Add(new Run { Text = str[i] });
+                        textBl.Inlines.Add(link);
+                    }
+
+                }
+        }
 
         private static void HyperLink_ClickHandler(object sender, RoutedEventArgs e)
         {

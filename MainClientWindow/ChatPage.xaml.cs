@@ -7,19 +7,24 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ChatBase.Models;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
-namespace MainClientWindow {
+namespace MainClientWindow
+{
     /// <summary>
     /// Interaction logic for Chat.xaml
     /// </summary>
-    public partial class Chat : Page {
+    public partial class Chat : Page
+    {
         Client mainclient;
         public List<Message> testMessageList = new List<Message>();
         public ObservableCollection<Room> roomList = new ObservableCollection<Room>();
 
         public List<Message> msgQueue = new List<Message>();
-        
-        public Chat() {
+        public Chat()
+        {
             InitializeComponent();
 
             mainclient = (Client)FindResource("client");
@@ -39,8 +44,10 @@ namespace MainClientWindow {
         /// <summary>
         /// Send all messages in the queue to the user's current room
         /// </summary>
-        private void ClearQueue() {
-            foreach (Message m in msgQueue) {
+        private void ClearQueue()
+        {
+            foreach (Message m in msgQueue)
+            {
                 m.OwningRoom = mainclient.user.CurRoom;
                 GotMessage(m);
             }
@@ -50,33 +57,41 @@ namespace MainClientWindow {
         /// User received a message, display it to the correct room
         /// </summary>
         /// <param name="msg"></param>
-        private void GotMessage(Message msg) {
-            if (msg.OwningRoom == null) {
+        private void GotMessage(Message msg)
+        {
+            if (msg.OwningRoom == null)
+            {
                 // Add to a queue if a the user does not belong to any rooms yet
                 msgQueue.Add(msg);
             }
-            else {
+            else
+            {
                 testMessageList.Add(msg);
 
-                if (msg.OwningRoom.Name != mainclient.user.CurRoom.Name) {
+                if (msg.OwningRoom.Name != mainclient.user.CurRoom.Name)
+                {
                     msg.OwningRoom.NewMessages++;
                 }
-                else {
+                else
+                {
                     AddMessages(msg.OwningRoom);
                 }
             }
         }
 
-        private void GeneratePage() {
+        private void GeneratePage()
+        {
             AddUsers(3);
         }
 
-        private void AddMessages(Room roomname) {
+        private void AddMessages(Room roomname)
+        {
             List<Message> roomMessagesList = new List<Message>();
             var roomMessages = from m in testMessageList
                                where m.OwningRoom == roomname
                                select m;
-            foreach (Message m in roomMessages) {
+            foreach (Message m in roomMessages)
+            {
                 roomMessagesList.Add(m);
             }
 
@@ -84,34 +99,104 @@ namespace MainClientWindow {
 
         }
 
-        private void AddRoom(Room room) {
+        private void AddRoom(Room room)
+        {
             Application.Current.Dispatcher.Invoke(() => roomList.Add(room));
         }
 
         // TODO: remove any useless functions
-        private void AddUsers(int connectedUsers) {
-            for (int i = 0; i < connectedUsers; i++) {
+        private void AddUsers(int connectedUsers)
+        {
+            for (int i = 0; i < connectedUsers; i++)
+            {
                 AddSingleUser();
             }
         }
 
-        private void AddSingleUser() {
-            Button newBtn = new Button() {
+        private void AddSingleUser()
+        {
+            Button newBtn = new Button()
+            {
                 Content = "USERNAME",
                 Name = "Button"
             };
             LeftStackBottom.Children.Add(newBtn);
         }
 
-        private void FileAttachmentButtonHandler(object sender, RoutedEventArgs e) {
+        private void FileAttachmentButtonHandler(object sender, RoutedEventArgs e)
+        {
             //will initiate a window that will push a file to the server from the client
+            Stream myStream = null;
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a zipfile";
+            op.Filter = "Zip File|*.zip";
+            if (op.ShowDialog() == true)
+            {
+                var size = new FileInfo(op.FileName).Length;
+                if (size < 4194304)
+                {
+                    try
+                    {
+                        if ((myStream = op.OpenFile()) != null)
+                        {
+                            using (myStream)
+                            {
+                                mainclient.SerializeAndSendFile(myStream, "zip");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Size must be under 4MB!");
+                }
+
+            }
         }
 
-        private void ImageAttachmentButtonHandler(object sender, RoutedEventArgs e) {
+        private void ImageAttachmentButtonHandler(object sender, RoutedEventArgs e)
+        {
             //will initiate a window that will push an image file to the server from the client
-        }
+            Stream myStream = null;
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                var size = new FileInfo(op.FileName).Length;
+                if (size < 4194304)
+                {
+                    try
+                    {
+                        if ((myStream = op.OpenFile()) != null)
+                        {
+                            using (myStream)
+                            {
+                                mainclient.SerializeAndSendFile(myStream, "zip");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: Failed to open file. Original error: " + ex.Message);
+                    }
 
-        private void EmojiAttachmentHandler(object sender, RoutedEventArgs e) {
+                }
+                else
+                {
+                    MessageBox.Show("Size must be under 4MB!");
+                }
+            }
+        }
+        private void EmojiAttachmentHandler(object sender, RoutedEventArgs e)
+        {
             //https://github.com/shine-calendar/EmojiBox
             //Haven't looked into this but it might be super useful
 
@@ -121,11 +206,13 @@ namespace MainClientWindow {
             //This emoji thing is taking a lot longer than I thought
         }
 
-        private void AddMessagesButtonHandler(object sender, RoutedEventArgs e) {
+        private void AddMessagesButtonHandler(object sender, RoutedEventArgs e)
+        {
             //Will ping server for 25 more messages based on button pressed.
         }
 
-        private void LogoutButtonClickHandler(object sender, RoutedEventArgs e) {
+        private void LogoutButtonClickHandler(object sender, RoutedEventArgs e)
+        {
             this.NavigationService.Navigate(new Uri("LoginPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
@@ -135,7 +222,8 @@ namespace MainClientWindow {
             //Will add new table to database
         }
 
-        private void ClearRoom() {
+        private void ClearRoom()
+        {
             MessagesStackPanel.Children.Clear();
         }
 
@@ -143,8 +231,10 @@ namespace MainClientWindow {
         {
         }
 
-        private void NotificationMouseDown(object sender, MouseButtonEventArgs e) {
-            if (e.LeftButton == MouseButtonState.Pressed) {
+        private void NotificationMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 //Man theres gotta be an easier way to do this.
                 Label notificationLabel = sender as Label;
                 Grid notificationGrid = notificationLabel.Parent as Grid;
@@ -157,26 +247,32 @@ namespace MainClientWindow {
             }
         }
 
-        private void SwitchRoomButton(object sender, RoutedEventArgs e) {
+        private void SwitchRoomButton(object sender, RoutedEventArgs e)
+        {
             Button roomButton = sender as Button;
             string roomName = roomButton.Content.ToString();
 
             UpdateMessages(roomName);
         }
 
-        private void UpdateMessages(string roomName) {
+        private void UpdateMessages(string roomName)
+        {
             Room temp = null;
 
-            foreach (Room r in mainclient.rooms) {
-                if (r.Name == roomName) {
+            foreach (Room r in mainclient.rooms)
+            {
+                if (r.Name == roomName)
+                {
                     temp = r;
                 }
             }
 
             mainclient.user.CurRoom = temp;
 
-            foreach (Room r in roomList) {
-                if (r.Name == roomName) {
+            foreach (Room r in roomList)
+            {
+                if (r.Name == roomName)
+                {
                     r.NewMessages = 0;
                     AddMessages(r);
                 }
@@ -204,12 +300,15 @@ namespace MainClientWindow {
             messageBox.AppendText("\u2620");
         }
 
-        private void MessageBoxTextChanged(object sender, TextChangedEventArgs e) {
-            if (messageBox.Text.Length == Constants.MAX_MESSAGE_SIZE) {
+        private void MessageBoxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (messageBox.Text.Length == Constants.MAX_MESSAGE_SIZE)
+            {
                 // TODO: make visible a label that say "Max message size is 180"
                 msgError.Visibility = Visibility.Visible;
             }
-            else {
+            else
+            {
                 msgError.Visibility = Visibility.Hidden;
             }
         }

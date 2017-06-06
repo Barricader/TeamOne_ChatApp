@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Windows.Input;
@@ -191,6 +192,26 @@ namespace ChatBase {
                 CurRoom = "";
             }
         }
+
+        public void SerializeAndSendFile(Stream file, string filetype)
+        {
+            if (!file.GetType().IsSerializable)
+            {
+                Console.WriteLine("not serializable");
+            } else
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    new BinaryFormatter().Serialize(stream,file);
+                    MessagePacket p = PacketFactory.CreatePacket<MessagePacket>() as MessagePacket;
+                    p.Content = filetype + ":" + Convert.ToBase64String(stream.ToArray());
+                    Console.WriteLine(p.Content);
+                    SendPacket(p);
+                }
+            }
+
+        }
+
 
         /// <summary>
         /// Read a received Packet and perform action based on type
