@@ -9,18 +9,21 @@ using ChatBase.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Navigation;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
 
 namespace MainClientWindow {
     /// <summary>
     /// Interaction logic for Chat.xaml
     /// </summary>
     public partial class Chat : Page {
+        //public Image img;
+        static public BitmapImage Img { get; set; }
         Client mainclient;
         public List<Message> testMessageList = new List<Message>();
         public ObservableCollection<Room> roomList = new ObservableCollection<Room>();
 
         public List<Message> msgQueue = new List<Message>();
-        
+
         public Chat() {
             InitializeComponent();
 
@@ -47,6 +50,8 @@ namespace MainClientWindow {
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
             RoomsListView.ItemsSource = roomList;
+            Img = new BitmapImage(new Uri("icons/defaultAvatar.png", UriKind.Relative));
+            userAvatarChatPage.Source = Img;
         }
 
         /// <summary>
@@ -226,10 +231,10 @@ namespace MainClientWindow {
         }
 
         private void UserSettingsButton_Click(object sender, RoutedEventArgs e)
-        {
+        {            
             this.NavigationService.Navigate(new Uri("UserSettingsPage.xaml", UriKind.RelativeOrAbsolute));
         }
-
+       
         private void ServerIPClick(object sender, RoutedEventArgs e) {
             string ipRegex = "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])";
             
