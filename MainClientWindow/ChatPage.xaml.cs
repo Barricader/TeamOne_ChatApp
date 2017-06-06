@@ -9,6 +9,8 @@ using ChatBase.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Navigation;
 using System.Text.RegularExpressions;
+using Microsoft.Win32;
+using System.IO;
 
 // TODO: hide everything before connected to server
 
