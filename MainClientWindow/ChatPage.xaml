@@ -112,7 +112,7 @@
                                             <Label FontFamily="Arial" FontSize="15" FontWeight="Bold" Content="{Binding Path=Owner.ScreenName}"></Label>
                                             <Label FontFamily="Arial" FontSize="12" Content="{Binding Path=TimeStamp}"></Label>
                                         </DockPanel>
-                                        <RichTextBox IsDocumentEnabled="True" IsReadOnly="True" BorderThickness="0" Grid.Row="1" Margin="2" exten:TextBlockExtension.FormattedText="{Binding Path=Content}" Background="AliceBlue"/>
+                                        <RichTextBox IsDocumentEnabled="True" FontFamily="Arial" FontSize="14" IsReadOnly="True" BorderThickness="0" Grid.Row="1" Margin="2" exten:TextBlockExtension.FormattedText="{Binding Path=Content}" Background="AliceBlue"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
