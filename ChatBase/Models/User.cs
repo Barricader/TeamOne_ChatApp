@@ -11,6 +11,7 @@ namespace ChatBase.Models {
         public string ConfirmPassword { get; set; }     // ?????????
         public BitmapImage Avatar { get; set; }
         public Room CurRoom { get; set; }
+        public string Role { get; set; }
 
         public User() {
 
@@ -19,15 +20,6 @@ namespace ChatBase.Models {
         public User(string screenName) {
             ScreenName = screenName;
         }
-        //public User(string firstName, string lastName, int age, string gender, string screenName, string password)
-        //{
-        //    FirstName = firstName;
-        //    LastName = lastName;
-        //    Age = age;
-        //    Gender = gender;
-        //    ScreenName = screenName;
-        //    Password = password;
-        //}
 
         public override string ToString() {
             //I'm not sure how to do this? I need to bind it to chatpage.xaml and it calls this methoad.  All I want is the First + Last name

@@ -39,5 +39,6 @@ namespace MainClientWindow
             notifier.ShowError("stuff error");
             notifier.Dispose();
         }
+        
     }
 }
