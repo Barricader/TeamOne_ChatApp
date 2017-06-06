@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Navigation;
 using System.Text.RegularExpressions;
 
+// TODO: hide everything before connected to server
+
 namespace MainClientWindow {
     /// <summary>
     /// Interaction logic for Chat.xaml
