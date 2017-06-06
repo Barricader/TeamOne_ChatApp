@@ -28,16 +28,20 @@ namespace MainClientWindow
 
         private void CancelToggleButton_Click(object sender, RoutedEventArgs e)
         {
+            //this.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
             this.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
+            //Console.WriteLine("XD");
+            // Do something here to load state ?
         }
 
         private void UploadImageButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog op = new OpenFileDialog();
-            op.Title = "Select a picture";
-            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+            OpenFileDialog op = new OpenFileDialog() {
+                Title = "Select a picture",
+                Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
               "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
-              "Portable Network Graphic (*.png)|*.png";
+              "Portable Network Graphic (*.png)|*.png"
+            };
             if (op.ShowDialog() == true)
             {
                 //set user avatar here

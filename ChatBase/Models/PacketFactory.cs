@@ -1,10 +1,23 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
 namespace ChatBase.Models {
     // Based on Keith Ball's example in his ScratchPad project
     public static class PacketFactory {
+        // Makes it easy to convert from PackeType to the class representation
+        private static Dictionary<PacketType, Type> typeToClass = new Dictionary<PacketType, Type> {
+            { PacketType.Message, typeof(MessagePacket) },
+            { PacketType.ClientID, typeof(ClientIDPacket) },
+            { PacketType.Goodbye, typeof(GoodByePacket) },
+            { PacketType.RequestAllRooms, typeof(RequestAllRoomsPacket) },
+            { PacketType.RequestCreateRoom, typeof(RequestCreateRoomPacket) },
+            { PacketType.RequestUser, typeof(RequestUserPacket) },
+            { PacketType.ResponseAllRooms, typeof(ResponseAllRoomsPacket) },
+            { PacketType.ResponseAllUsers, typeof(ResponseAllUsersPacket) },
+            { PacketType.UserJoined, typeof(UserJoinedPacket) },
+            { PacketType.RoomCreated, typeof(RoomCreatedPacket) }
+        };
 
         /// <summary>
         /// Traditional factory
@@ -69,7 +82,7 @@ namespace ChatBase.Models {
         /// <param name="json">Json string to convert</param>
         /// <param name="packet">IPacket object to use</param>
         /// <returns>If conversion was successful then return true, else return false</returns>
-        public static bool JsonToPacket(string json, out IPacket packet) {
+        public static bool JsonToPacket<T>(string json, out T packet) where T : IPacket {
             JavaScriptSerializer jss = new JavaScriptSerializer();
             bool result = true;
 
@@ -78,33 +91,27 @@ namespace ChatBase.Models {
                 json = "{" + json;
             }
 
-            // Get type
+            //Get type
             MessagePacket tempPacket = null;
             try {
                 tempPacket = jss.Deserialize<MessagePacket>(json);
             } catch (ArgumentException ex) {
                 // Incorrect json format
                 result = false;
+                // Set a default type to not break things
+                tempPacket = new MessagePacket();
                 Console.WriteLine("TYPE_ERROR: " + ex);
             }
 
-            // Create the correct packet based on the type in the json
-            PacketType type = tempPacket.Type;
-            IPacket p2 = CreatePacket(type);
-
-            IPacket p = null;
-            packet = null;
-
             try {
-                p = (IPacket)jss.Deserialize(json, p2.GetType());
+                Type t = typeToClass[tempPacket.Type];
+                packet = (T)jss.Deserialize(json, t);
             } catch (ArgumentException ex) {
                 // Incorrect json format
                 result = false;
-                Console.WriteLine("ERROR: " + ex);
-            }
+                packet = default(T);
 
-            if (result) {
-                packet = p;
+                Console.WriteLine("ERROR: " + ex);
             }
 
             return result;

@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace LoginWindow.Converters
-{
-    class BooltoVisConverter : IValueConverter
+namespace MainClientWindow.Converters {
+    class NotBooltoVisConverter : IValueConverter
     {
        
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -18,7 +12,7 @@ namespace LoginWindow.Converters
             bool flag = (bool) value;
             
             
-            return (flag ? Visibility.Visible : Visibility.Hidden);
+            return (!flag ? Visibility.Visible : Visibility.Hidden);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

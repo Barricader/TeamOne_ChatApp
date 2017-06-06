@@ -7,9 +7,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ChatBase.Models;
 using System.Collections.ObjectModel;
-using Microsoft.Win32;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Navigation;
+using System.Text.RegularExpressions;
+
+// TODO: hide everything before connected to server
 
 namespace MainClientWindow
 {
@@ -30,6 +31,19 @@ namespace MainClientWindow
             mainclient = (Client)FindResource("client");
             DataContext = mainclient;
 
+            // Stuff for reloading page
+            for (int i = 0; i < mainclient.rooms.Count; i++) {
+                roomList.Add(mainclient.rooms[i]);
+            }
+
+            for (int i = 0; i < mainclient.messages.Count; i++) {
+                testMessageList.Add(mainclient.messages[i]);
+            }
+
+            if (roomList.Count > 0) {
+                UpdateMessages(mainclient.user.CurRoom.Name);
+            }
+
             // Event listening
             messageBox.KeyDown += mainclient.MessageBoxKeyDown;
             mainclient.MsgReceived += GotMessage;
@@ -37,8 +51,6 @@ namespace MainClientWindow
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
             RoomsListView.ItemsSource = roomList;
-
-            GeneratePage();     // TODO: remove this
         }
 
         /// <summary>
@@ -67,6 +79,7 @@ namespace MainClientWindow
             else
             {
                 testMessageList.Add(msg);
+                mainclient.messages.Add(msg);
 
                 if (msg.OwningRoom.Name != mainclient.user.CurRoom.Name)
                 {
@@ -79,13 +92,7 @@ namespace MainClientWindow
             }
         }
 
-        private void GeneratePage()
-        {
-            AddUsers(3);
-        }
-
-        private void AddMessages(Room roomname)
-        {
+        private void AddMessages(Room roomname) {
             List<Message> roomMessagesList = new List<Message>();
             var roomMessages = from m in testMessageList
                                where m.OwningRoom == roomname
@@ -93,6 +100,7 @@ namespace MainClientWindow
             foreach (Message m in roomMessages)
             {
                 roomMessagesList.Add(m);
+                //mainclient.messages.Add(m);
             }
 
             MessagesItemControl.Dispatcher.Invoke(() => MessagesItemControl.ItemsSource = roomMessagesList);
@@ -316,6 +324,22 @@ namespace MainClientWindow
         private void UserSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("UserSettingsPage.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void ServerIPClick(object sender, RoutedEventArgs e) {
+            string ipRegex = "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])";
+            
+            Regex regex = new Regex(ipRegex);
+
+            bool isIPAddress = regex.IsMatch(tbServerIP.Text);
+
+            if (isIPAddress) {
+                // start server
+                mainclient.Start(tbServerIP.Text);
+            }
+            else {
+                serverIPError.Visibility = Visibility.Visible;
+            }
         }
     }
 }

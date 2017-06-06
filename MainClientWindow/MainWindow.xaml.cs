@@ -11,8 +11,9 @@ namespace MainClientWindow {
         public MainWindow() {
             InitializeComponent();
 
+          
             Client client = (Client)FindResource("client");
-            client.Start();
+            //client.Start();
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
 
@@ -25,9 +26,9 @@ namespace MainClientWindow {
                 Show();
                 WindowState = WindowState.Normal;
             };
-
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
+            
 
         }
 

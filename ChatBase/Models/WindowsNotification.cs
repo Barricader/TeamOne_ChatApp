@@ -150,8 +150,9 @@ namespace ChatBase.Models
                     {"ConversationID", ConversationID.ToString() }
                 }.ToString()
             };
-            //var toast = new ToastNotification();
+            //var toast = new ToastNotification(toastContent.GetXml());
             //ToastNotificationManager.CreateToastNotifier.Show(toast);
+            
         }
 
             

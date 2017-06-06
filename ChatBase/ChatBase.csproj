@@ -44,12 +44,16 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Windows">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\Windows.winmd</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -57,11 +61,11 @@
     <Compile Include="Models\PacketFactory.cs" />
     <Compile Include="Models\PacketType.cs" />
     <Compile Include="Models\WindowsNotification.cs" />
+    <Compile Include="Rules\IPRule.cs" />
     <Compile Include="Rules\MaxCharsRule.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DbConnect.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\User.cs" />

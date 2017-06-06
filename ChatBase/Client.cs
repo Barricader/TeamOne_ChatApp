@@ -13,24 +13,27 @@ using System.Threading;
 using System.Windows.Input;
 using static ChatBase.Constants;
 
-
+// TODO: move to models
 namespace ChatBase {
     public class Client : INotifyPropertyChanged {
         // Variables that allow listening to server
         private TcpClient client = new TcpClient();
-        private IPEndPoint serverEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), PORT);
+        private IPEndPoint serverEP;
         private Thread listenThread;
 
         public User user;
         public List<Room> rooms = new List<Room>();
+        public List<Message> messages = new List<Message>();
         public List<User> users = new List<User>();
 
         // Variables that change UI
         private string windowTitle = "";
         private string curMessage = "";
         private string curRoom = "";
+        private string serverIP = "";
         private Message serverMessage = null;
         private bool isRunning = true;
+        private bool connectedToServer;
 
         // Events
         public event PropertyChangedEventHandler PropertyChanged;
@@ -55,6 +58,22 @@ namespace ChatBase {
             }
         }
 
+        public string ServerIP {
+            get => serverIP;
+            set {
+                serverIP = value;
+                PropChanged();
+            }
+        }
+
+        public bool ConnectedToServer {
+            get => connectedToServer;
+            set {
+                connectedToServer = value;
+                PropChanged();
+            }
+        }
+
         public string CurRoom
         {
             get => curRoom;
@@ -73,10 +92,27 @@ namespace ChatBase {
             }
         }
 
+        public Client() {
+            ConnectedToServer = false;
+            ServerIP = "127.0.0.1";
+        }
+
         /// <summary>
         /// Start the listening thread that initializes the server
         /// </summary>
         public void Start() {
+            listenThread = new Thread(new ThreadStart(Init));
+            listenThread.Start();
+        }
+
+        /// <summary>
+        /// Start the listening thread that initializes the server
+        /// </summary>
+        public void Start(string ip) {
+            serverEP = new IPEndPoint(IPAddress.Parse(ip), PORT);
+
+            // TODO: show errors and reconnect tries and stuff
+
             listenThread = new Thread(new ThreadStart(Init));
             listenThread.Start();
         }
@@ -105,6 +141,7 @@ namespace ChatBase {
 
                     client.Connect(serverEP);
                     succeeded = true;
+                    ConnectedToServer = true;
                 } catch (SocketException) {
                     // This means we failed to connect...
                     succeeded = false;
@@ -147,6 +184,7 @@ namespace ChatBase {
                     // Lost connection...
                     client.Close();
                     client = new TcpClient();
+                    ConnectedToServer = false;
                     Reconnect();
                     stream = client.GetStream();
                 }
@@ -170,12 +208,18 @@ namespace ChatBase {
         /// <param name="e"></param>
         public void MessageBoxKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Return) {
-                MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage) as MessagePacket;
-                p.Owner = user.ScreenName;
-                p.Room = user.CurRoom.Name;
-                
-                SendPacket(p);
-                CurMessage = "";
+                if (client.Connected) {
+                    MessagePacket p = PacketFactory.CreatePacket<MessagePacket>().AlterContent(CurMessage);
+                    p.Owner = user.ScreenName;
+                    p.Room = user.CurRoom.Name;
+
+                    SendPacket(p);
+                    CurMessage = "";
+                }
+                else {
+                    //ServerMessage = new Message(new User);
+                    // Send error message
+                }
             }
         }
 
@@ -360,7 +404,9 @@ namespace ChatBase {
         public void Window_Closed(object sender, EventArgs e) {
             SendPacket(PacketFactory.CreatePacket<GoodByePacket>().AlterContent("Client"));
 
-            listenThread.Abort();
+            if (listenThread != null) {
+                listenThread.Abort();
+            }
             client.Close();
         }
 
