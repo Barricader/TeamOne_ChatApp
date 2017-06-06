@@ -10,6 +10,7 @@ using Windows.Data.Xml.Dom;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Windows.UI.Notifications;
 
 namespace ChatBase.Models
 {
@@ -39,51 +40,13 @@ namespace ChatBase.Models
      * repeat this process for the other package
      * 
      */
-    class WindowsNotification
+   public  class WindowsNotification
     {
-        private string title;
-
-        public string Title
+        
+        
+        public WindowsNotification()
         {
-            get { return title; }
-            set { title = value; }
-        }
-
-        private string content;
-
-        public string Content
-        {
-            get { return content; }
-            set { content = value; }
-        }
-
-        private string profilePic = "/NotificationImages/TestProfileImage.png";
-
-        public string ProfilePic
-        {
-            get { return profilePic; }
-            set { profilePic = value; }
-        }
-
-        private string logo = "/NotificationImages/Logo.png";
-
-        public string Logo
-        {
-            get { return logo; }
-        }
-        private int conversationID;
-
-        public int ConversationID
-        {
-            get { return conversationID; }
-            set { conversationID = value; }
-        }
-        public WindowsNotification(int RoomID, string MessageTitle, string MessageContent, string ImageofSender)
-        {
-            ConversationID = RoomID;
-            Title = MessageTitle;
-            Content = MessageContent;
-            ProfilePic = ImageofSender;
+            
 
         
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText03);
