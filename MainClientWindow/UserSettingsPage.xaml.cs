@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using ChatBase;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace MainClientWindow
     /// Interaction logic for UserSettingsPage.xaml
     /// </summary>
     public partial class UserSettingsPage : Page
-    {
+    {       
+        //static public BitmapImage Img { get; set; }
         public UserSettingsPage()
         {
             InitializeComponent();
@@ -34,7 +36,7 @@ namespace MainClientWindow
             // Do something here to load state ?
         }
 
-        private void UploadImageButton_Click(object sender, RoutedEventArgs e)
+        public void UploadImageButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog() {
                 Title = "Select a picture",
@@ -45,7 +47,9 @@ namespace MainClientWindow
             if (op.ShowDialog() == true)
             {
                 //set user avatar here
-                userAvatar.Source = new BitmapImage(new Uri(op.FileName));
+                //Img = new BitmapImage(new Uri(op.FileName));
+                userAvatar.Source = new BitmapImage(new Uri(op.FileName));    
+                Chat.Img = new BitmapImage(new Uri(op.FileName));
             }
         }
 
