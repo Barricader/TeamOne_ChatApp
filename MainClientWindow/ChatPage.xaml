@@ -36,10 +36,10 @@
             </ItemsControl>
         </StackPanel>
         <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom" Margin="0,-20,0,0" Grid.RowSpan="2">
-            <TextBox x:Name="roomNameTextBox" Text="{Binding Path=CurRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Height="20" Background="GhostWhite"></TextBox>
-            <Button x:Name="RoomGenerationButton" Width="150" Content="New Room" Click="RoomGenClickHandler" Background="CornflowerBlue"/>
-            <Image Height="300" Width="300" Source="icons/defaultAvatar.png" x:Name="userAvatarChatPage"/>
-            <Button Width="150" Content="User Settings" Click="UserSettingsButton_Click" Background="CornflowerBlue"/>
+            <TextBox x:Name="roomNameTextBox" Text="{Binding Path=CurRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Height="20" Background="GhostWhite" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}"/>
+            <Button x:Name="RoomGenerationButton" Width="150" Content="New Room" Click="RoomGenClickHandler" Background="CornflowerBlue" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}"/>
+            <Image Height="300" Width="300" Source="icons/defaultAvatar.png" x:Name="userAvatarChatPage" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}"/>
+            <Button Width="150" Content="User Settings" Click="UserSettingsButton_Click" Background="CornflowerBlue" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}"/>
             <StackPanel>
                 <ItemsControl x:Name="ConnectedUsersView">
                     <ItemsControl.ItemTemplate>
@@ -63,7 +63,7 @@
             </StackPanel>
             
             <TextBox x:Name="tbServerIP" Grid.Row="1" Width="180" Height="30" FontFamily="Arial" FontSize="20" BorderThickness="1"
-                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" MaxLength="15" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}">
+                     HorizontalContentAlignment="Center" Margin="0 0 315 0" VerticalContentAlignment="Center" MaxLength="15" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}">
                 <TextBox.Style>
                     <Style x:Name="FullError" TargetType="{x:Type TextBox}">
                         <Style.Triggers>
@@ -99,12 +99,12 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Label Grid.Row="1" Width="200" Height="40" Content="Server IP" FontFamily="Arial" FontSize="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0 0 0 80" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}"/>
-            <Button Grid.Row="1" Width="100" Height="30" Content="Connect" FontFamily="Arial" FontSize="16" Margin="0 100 0 0" Click="ServerIPClick" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}"/>
+            <Label Grid.Row="1" Width="200" Height="40" Content="Server IP" FontFamily="Arial" FontSize="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0 0 315 80" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}"/>
+            <Button Grid.Row="1" Width="100" Height="30" Content="Connect" FontFamily="Arial" FontSize="16" Margin="0 100 315 0" Click="ServerIPClick" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}"/>
             <Label x:Name="serverIPError" Grid.Row="1" Visibility="Hidden" Foreground="#C0D00000" Width="200" Height="30" FontSize="16"
-                   HorizontalContentAlignment="Center" Content="Invalid IP Address" Margin="0 160 0 0"/>
+                   HorizontalContentAlignment="Center" Content="Invalid IP Address" Margin="0 160 315 0"/>
             <Label x:Name="ipHint" Grid.Row="1" Width="400" Height="30" FontSize="16" HorizontalContentAlignment="Center" Content="Neumont Network: Try 10.10.14.75"
-                   Margin="0 0 0 160" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}"/>
+                   Margin="0 0 315 160" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource notBoolToVisibility}}"/>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="GhostWhite" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}">
                 <StackPanel x:Name="MessagesStackPanel" VerticalAlignment="Bottom" Background="AliceBlue">
@@ -131,7 +131,7 @@
             </ScrollViewer>
             <TextBox x:Name="messageBox" Grid.Row="2" TextChanged="MessageBoxTextChanged" AllowDrop="True" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="14"
                      Height="70" TextWrapping="Wrap" Width="500" KeyDown="MBKeyDown" MaxLength="180" BorderBrush="Black" BorderThickness="1" Background="GhostWhite"
-                     FontFamily="Arial">
+                     FontFamily="Arial" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}">
                 <TextBox.Style>
                     <Style x:Name="TextBoxFullError" TargetType="{x:Type TextBox}">
                         <Style.Triggers>
@@ -153,21 +153,21 @@
             <Label x:Name="msgError" Grid.Row="2" HorizontalAlignment="Left" Visibility="Hidden" Foreground="#C0D00000"
                    Content="Maximum message length is 180 characters" Margin="440,87,0,0"/>
             <DockPanel LastChildFill="True" Grid.Row="3" Margin="15,0,0,0" Background="MediumPurple">
-                <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler">
+                <Button HorizontalAlignment="Left" Height="50" Width="50" Click="FileAttachmentButtonHandler" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="icons/attachment.bmp"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button HorizontalAlignment="Left" Height="50" Width="50" Margin="10,0,10,0" Click="ImageAttachmentButtonHandler">
+                <Button HorizontalAlignment="Left" Height="50" Width="50" Margin="10,0,10,0" Click="ImageAttachmentButtonHandler" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="icons/photoattachment.bmp"/>
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <ToggleButton HorizontalAlignment="Left" Height="50" Width="50" Click="EmojiAttachmentHandler" x:Name="emojiButton">
+                <ToggleButton HorizontalAlignment="Left" Height="50" Width="50" Click="EmojiAttachmentHandler" x:Name="emojiButton" Visibility="{Binding Path=ConnectedToServer, Converter={StaticResource boolToVisibility}}">
                     <Image Source="icons/emoji.bmp"/>
                 </ToggleButton>
                 <Grid Visibility="{Binding ElementName=emojiButton, Path=IsChecked, Converter={StaticResource boolToVisibility}}"

@@ -5,10 +5,6 @@
             <BooleanToVisibilityConverter x:Key="boolToVisibility"/>
             <converters:NotBooltoVisConverter x:Key="notBoolToVisibility"/>
             <converters:NewMessagestoVisConverter x:Key="NotificationToVisibility"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml"/>
-                <ResourceDictionary Source="/WPFNotification;component/Assets/NotificationUI.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
