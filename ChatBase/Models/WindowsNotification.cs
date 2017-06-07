@@ -50,7 +50,7 @@ namespace ChatBase.Models
 
         
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText03);
-            XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+            XmlNodeList stringElements = toastXml.GetElementsByTagName("testing text");
             for (int i = 0; i < stringElements.Length; i++)
             {
                 stringElements[i].AppendChild(toastXml.CreateTextNode("Line " + i));
