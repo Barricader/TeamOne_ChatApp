@@ -58,6 +58,7 @@ namespace MainClientWindow
             mainclient.RoomHandler += AddRoom;
             mainclient.HasRoomEvent += ClearQueue;
             RoomsListView.ItemsSource = roomList;
+            ConnectedUsersView.ItemsSource = mainclient.users;
         }
 
         /// <summary>
@@ -120,23 +121,7 @@ namespace MainClientWindow
         }
 
         // TODO: remove any useless functions
-        private void AddUsers(int connectedUsers)
-        {
-            for (int i = 0; i < connectedUsers; i++)
-            {
-                AddSingleUser();
-            }
-        }
 
-        private void AddSingleUser()
-        {
-            Button newBtn = new Button()
-            {
-                Content = "USERNAME",
-                Name = "Button"
-            };
-            LeftStackBottom.Children.Add(newBtn);
-        }
 
         private void FileAttachmentButtonHandler(object sender, RoutedEventArgs e)
         {
