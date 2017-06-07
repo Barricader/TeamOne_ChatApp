@@ -49,7 +49,9 @@ namespace MainClientWindow
                 //set user avatar here
                 //Img = new BitmapImage(new Uri(op.FileName));
                 userAvatar.Source = new BitmapImage(new Uri(op.FileName));    
-                Chat.Img = new BitmapImage(new Uri(op.FileName));
+                //Chat.Img = new BitmapImage(new Uri(op.FileName));
+                // TODO: fix me
+                // TODO: search todos
             }
         }
 

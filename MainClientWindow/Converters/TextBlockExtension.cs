@@ -3,11 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace MainClientWindow.Converters {
+    enum RequestStatus {
+        NotFinished,
+        Failed,
+        Successful
+    }
+
     public class TextBlockExtension : DependencyObject {
         //setting this class to non static and inheriting the DependencyObject compiles but the code inside doesnt seem to be getting hit
         //but the code im borrowing (https://stackoverflow.com/questions/27734084/create-hyperlink-in-textblock-via-binding) from has the extension as static without any inheritance
@@ -16,6 +24,10 @@ namespace MainClientWindow.Converters {
         // https://www.nuget.org/packages/HtmlAgilityPack/
         // HTML parser
         // nuget cmd: Install-Package HtmlAgilityPack -Version 1.4.9.5
+
+        private static HtmlWeb web;
+        private static HtmlDocument document;
+        private static RequestStatus requestStatus;
 
         public static string GetFormattedText(DependencyObject obj) { return (string)obj.GetValue(FormattedTextProperty); }
 
@@ -29,6 +41,7 @@ namespace MainClientWindow.Converters {
                 var rtBox = sender as RichTextBox;
                 if (rtBox != null) {
                     FlowDocument flowDoc = rtBox.Document;
+                    flowDoc.Blocks.Clear();
 
                     Paragraph message = new Paragraph();
                     Paragraph metadata = new Paragraph();
@@ -36,8 +49,8 @@ namespace MainClientWindow.Converters {
                     message.Inlines.Clear();
                     metadata.Inlines.Clear();
 
-                    Regex regx = new Regex(@"(https?://[^\s]+)");
-                    var str = regx.Split(text);
+                    Regex regex = new Regex(@"(https?://[^\s]+)");
+                    var str = regex.Split(text);
 
                     for (int i = 0; i < str.Length; i++)
                         if (i % 2 == 0) {
@@ -55,24 +68,73 @@ namespace MainClientWindow.Converters {
                                 message.Inlines.Add(link);
                             }
 
-                            // Do metadata stuff
-                            HtmlWeb web = new HtmlWeb();
-                            HtmlDocument document = web.Load(str[i]);
-                            IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
+                            // Metadata stuff
+                            web = new HtmlWeb();
+                            requestStatus = RequestStatus.NotFinished;
+                            Thread timer = new Thread(() => StartTimer(2));
+                            Thread requestThread = new Thread(() => WebRequest(str[i]));
 
-                            foreach (HtmlNode hn in metaTags) {
-                                Console.WriteLine(hn.OuterHtml);
-                                // TODO: grab stuff from og: and what not
+                            timer.Start();
+                            requestThread.Start();
+
+                            while (requestStatus == RequestStatus.NotFinished) {}
+
+                            if (requestStatus == RequestStatus.Successful) {
+                                IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
+
+                                // TODO: check if good request
+
+                                foreach (HtmlNode hn in metaTags) {
+                                    string tagString = hn.OuterHtml;
+
+                                    if (tagString.Contains("name=\"description\"")) {
+                                        // Must be a description for the page, lets output it
+                                        regex = new Regex("(content=)(\".*\")");
+                                        string fullString = regex.Match(tagString).Groups[0].Value;
+                                        string content = fullString.Replace("content=\"", "").TrimEnd('"');
+
+                                        metadata.Inlines.Add(new Run { Text = content });
+                                    }
+                                }
                             }
                         }
 
-                    // TEST STRING: https://www.facebook.com/
+                    //FontFamily = "Arial" FontSize = "14"
 
+                    Thickness zero = new Thickness(0);
+                    FontFamily ff = new FontFamily("Arial");
+
+                    message.Padding = zero;
+                    message.Margin = zero;
+                    message.FontFamily = ff;
+                    message.FontSize = 14;
                     flowDoc.Blocks.Add(message);
-                    flowDoc.Blocks.Add(metadata);
+
+                    if (requestStatus == RequestStatus.Successful) {
+                        metadata.Padding = zero;
+                        metadata.Margin = zero;
+                        metadata.FontFamily = ff;
+                        metadata.FontSize = 14;
+                        metadata.BorderThickness = new Thickness(1);
+                        metadata.BorderBrush = new SolidColorBrush(Colors.Black);
+                        flowDoc.Blocks.Add(metadata);
+                    }
+
                     rtBox.Document = flowDoc;
                 }
             }));
+
+        private static void WebRequest(string url) {
+            document = web.Load(url);
+            requestStatus = RequestStatus.Successful;
+        }
+
+        private static void StartTimer(int seconds) {
+            Thread.Sleep(seconds * 1000);
+            if (requestStatus != RequestStatus.Successful) {
+                requestStatus = RequestStatus.Failed;
+            }
+        }
 
         private static void HyperLink_ClickHandler(object sender, RoutedEventArgs e) {
             if (e.OriginalSource is Hyperlink) {

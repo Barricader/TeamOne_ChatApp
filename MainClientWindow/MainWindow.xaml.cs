@@ -1,6 +1,7 @@
 ﻿using ChatBase;
 using System;
 using System.Windows;
+using ChatBase.Models;
 
 namespace MainClientWindow {
     /// <summary>
@@ -13,7 +14,7 @@ namespace MainClientWindow {
 
           
             Client client = (Client)FindResource("client");
-            client.Start();
+            //client.Start();
 
             mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
 
@@ -26,6 +27,7 @@ namespace MainClientWindow {
                 Show();
                 WindowState = WindowState.Normal;
             };
+            
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
             
