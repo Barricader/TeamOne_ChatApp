@@ -38,7 +38,7 @@
         <StackPanel x:Name="LeftStackBottom" Grid.Column="0" VerticalAlignment="Bottom" Margin="0,-20,0,0" Grid.RowSpan="2">
             <TextBox x:Name="roomNameTextBox" Text="{Binding Path=CurRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" Height="20" Background="GhostWhite"></TextBox>
             <Button x:Name="RoomGenerationButton" Width="150" Content="New Room" Click="RoomGenClickHandler" Background="CornflowerBlue"/>
-            <Image Height="300" Width="300" Source="icons/defaultAvatar.png" x:Name="userAvatarChatPage"/>
+            <Image Height="300" Width="300" x:Name="userAvatarChatPage" Source="{Binding Img}"/>
             <Button Width="150" Content="User Settings" Click="UserSettingsButton_Click" Background="CornflowerBlue"/>
         </StackPanel>
 
