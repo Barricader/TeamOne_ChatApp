@@ -58,7 +58,6 @@
     <Compile Include="Models\Packets.cs" />
     <Compile Include="Models\PacketFactory.cs" />
     <Compile Include="Models\PacketType.cs" />
-    <Compile Include="Models\WindowsNotification.cs" />
     <Compile Include="Rules\IPRule.cs" />
     <Compile Include="Rules\MaxCharsRule.cs" />
     <Compile Include="Server.cs" />

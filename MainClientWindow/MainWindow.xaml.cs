@@ -13,9 +13,8 @@ namespace MainClientWindow {
             InitializeComponent();
 
             Client client = (Client)FindResource("client");
-
-            WindowsNotification wn = new WindowsNotification();
-            //mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
+            
+            mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
 
             System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon() {
                 Icon = Properties.Resources.iconthing,
