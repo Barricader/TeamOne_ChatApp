@@ -3,19 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace MainClientWindow.Converters {
-    enum RequestStatus {
-        NotFinished,
-        Failed,
-        Successful
-    }
-
     public class TextBlockExtension : DependencyObject {
         //setting this class to non static and inheriting the DependencyObject compiles but the code inside doesnt seem to be getting hit
         //but the code im borrowing (https://stackoverflow.com/questions/27734084/create-hyperlink-in-textblock-via-binding) from has the extension as static without any inheritance
@@ -24,10 +16,6 @@ namespace MainClientWindow.Converters {
         // https://www.nuget.org/packages/HtmlAgilityPack/
         // HTML parser
         // nuget cmd: Install-Package HtmlAgilityPack -Version 1.4.9.5
-
-        private static HtmlWeb web;
-        private static HtmlDocument document;
-        private static RequestStatus requestStatus;
 
         public static string GetFormattedText(DependencyObject obj) { return (string)obj.GetValue(FormattedTextProperty); }
 
@@ -41,7 +29,6 @@ namespace MainClientWindow.Converters {
                 var rtBox = sender as RichTextBox;
                 if (rtBox != null) {
                     FlowDocument flowDoc = rtBox.Document;
-                    flowDoc.Blocks.Clear();
 
                     Paragraph message = new Paragraph();
                     Paragraph metadata = new Paragraph();
@@ -49,8 +36,8 @@ namespace MainClientWindow.Converters {
                     message.Inlines.Clear();
                     metadata.Inlines.Clear();
 
-                    Regex regex = new Regex(@"(https?://[^\s]+)");
-                    var str = regex.Split(text);
+                    Regex regx = new Regex(@"(https?://[^\s]+)");
+                    var str = regx.Split(text);
 
                     for (int i = 0; i < str.Length; i++)
                         if (i % 2 == 0) {
@@ -80,21 +67,18 @@ namespace MainClientWindow.Converters {
                             while (requestStatus == RequestStatus.NotFinished) {}
 
                             if (requestStatus == RequestStatus.Successful) {
-                                if (document.DocumentNode.Element("html") != null && document.DocumentNode.Element("html").Element("head") != null
-                                    && document.DocumentNode.Element("html").Element("head").Elements("meta") != null) {
+                                IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
 
-                                    IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
+                                // TODO: check if good request
 
-                                    // TODO: check if good request
+                                foreach (HtmlNode hn in metaTags) {
+                                    string tagString = hn.OuterHtml;
 
-                                    foreach (HtmlNode hn in metaTags) {
-                                        string tagString = hn.OuterHtml;
-
-                                        if (tagString.Contains("name=\"description\"")) {
-                                            // Must be a description for the page, lets output it
-                                            regex = new Regex("(content=)(\".*\")");
-                                            string fullString = regex.Match(tagString).Groups[0].Value;
-                                            string content = fullString.Replace("content=\"", "").TrimEnd('"');
+                                    if (tagString.Contains("name=\"description\"")) {
+                                        // Must be a description for the page, lets output it
+                                        regex = new Regex("(content=)(\".*\")");
+                                        string fullString = regex.Match(tagString).Groups[0].Value;
+                                        string content = fullString.Replace("content=\"", "").TrimEnd('"');
 
                                             metadata.Inlines.Add(new Run { Text = content });
                                         }
@@ -111,17 +95,7 @@ namespace MainClientWindow.Converters {
                     message.FontFamily = ff;
                     message.FontSize = 14;
                     flowDoc.Blocks.Add(message);
-
-                    if (requestStatus == RequestStatus.Successful) {
-                        metadata.Padding = zero;
-                        metadata.Margin = zero;
-                        metadata.FontFamily = ff;
-                        metadata.FontSize = 14;
-                        metadata.BorderThickness = new Thickness(1);
-                        metadata.BorderBrush = new SolidColorBrush(Colors.Black);
-                        flowDoc.Blocks.Add(metadata);
-                    }
-
+                    flowDoc.Blocks.Add(metadata);
                     rtBox.Document = flowDoc;
                 }
             }));
