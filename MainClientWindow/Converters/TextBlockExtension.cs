@@ -40,6 +40,7 @@ namespace MainClientWindow.Converters {
 
                 var rtBox = sender as RichTextBox;
                 if (rtBox != null) {
+                    requestStatus = RequestStatus.NotFinished;
                     FlowDocument flowDoc = rtBox.Document;
                     flowDoc.Blocks.Clear();
 
@@ -69,8 +70,8 @@ namespace MainClientWindow.Converters {
                             }
 
                             // Metadata stuff
-                            web = new HtmlWeb();
                             requestStatus = RequestStatus.NotFinished;
+                            web = new HtmlWeb();
                             Thread timer = new Thread(() => StartTimer(2));
                             Thread requestThread = new Thread(() => WebRequest(str[i]));
 
@@ -104,6 +105,7 @@ namespace MainClientWindow.Converters {
                         }
 
                     //FontFamily = "Arial" FontSize = "14"
+                    // TODO metadata array
 
                     Thickness zero = new Thickness(0);
                     FontFamily ff = new FontFamily("Arial");
