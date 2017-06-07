@@ -34,6 +34,7 @@ namespace ChatBase {
         public event PropertyChangedEventHandler PropertyChanged;
         public event WindowHandler WinHandler;
 
+        
         public string LogMessage {
             get => logMessage;
             set {
@@ -328,6 +329,12 @@ namespace ChatBase {
         /// <param name="prop"></param>
         private void PropChanged([CallerMemberName] string prop = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+        public void searchMessage(User client, Room currentRoom, DateTime time)
+        {
+            string userinput = Console.ReadLine();
+            Message message = new Message(client, currentRoom, userinput, time.Date);
+            //currentRoom.Messages.Find(message)
         }
     }
 }
