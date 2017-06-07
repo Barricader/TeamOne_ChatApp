@@ -102,9 +102,7 @@ namespace MainClientWindow.Converters {
                                 }
                             }
                         }
-
-                    //FontFamily = "Arial" FontSize = "14"
-
+                    
                     Thickness zero = new Thickness(0);
                     FontFamily ff = new FontFamily("Arial");
 
@@ -129,8 +127,14 @@ namespace MainClientWindow.Converters {
             }));
 
         private static void WebRequest(string url) {
-            document = web.Load(url);
-            requestStatus = RequestStatus.Successful;
+            try {
+                document = web.Load(url);
+                requestStatus = RequestStatus.Successful;
+            } catch (System.Net.WebException) {
+                requestStatus = RequestStatus.Failed;
+            }
+
+            // TODO: do actual adding of metadata here if succcessful and what not
         }
 
         private static void StartTimer(int seconds) {
