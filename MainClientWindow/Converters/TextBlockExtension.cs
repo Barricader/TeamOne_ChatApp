@@ -80,20 +80,24 @@ namespace MainClientWindow.Converters {
                             while (requestStatus == RequestStatus.NotFinished) {}
 
                             if (requestStatus == RequestStatus.Successful) {
-                                IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
+                                if (document.DocumentNode.Element("html") != null && document.DocumentNode.Element("html").Element("head") != null
+                                    && document.DocumentNode.Element("html").Element("head").Elements("meta") != null) {
 
-                                // TODO: check if good request
+                                    IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
 
-                                foreach (HtmlNode hn in metaTags) {
-                                    string tagString = hn.OuterHtml;
+                                    // TODO: check if good request
 
-                                    if (tagString.Contains("name=\"description\"")) {
-                                        // Must be a description for the page, lets output it
-                                        regex = new Regex("(content=)(\".*\")");
-                                        string fullString = regex.Match(tagString).Groups[0].Value;
-                                        string content = fullString.Replace("content=\"", "").TrimEnd('"');
+                                    foreach (HtmlNode hn in metaTags) {
+                                        string tagString = hn.OuterHtml;
 
-                                        metadata.Inlines.Add(new Run { Text = content });
+                                        if (tagString.Contains("name=\"description\"")) {
+                                            // Must be a description for the page, lets output it
+                                            regex = new Regex("(content=)(\".*\")");
+                                            string fullString = regex.Match(tagString).Groups[0].Value;
+                                            string content = fullString.Replace("content=\"", "").TrimEnd('"');
+
+                                            metadata.Inlines.Add(new Run { Text = content });
+                                        }
                                     }
                                 }
                             }
