@@ -12,9 +12,7 @@ namespace MainClientWindow {
         public MainWindow() {
             InitializeComponent();
 
-          
             Client client = (Client)FindResource("client");
-            //client.Start();
 
             WindowsNotification wn = new WindowsNotification();
             //mainframe.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
@@ -31,8 +29,6 @@ namespace MainClientWindow {
             
             Closed += client.Window_Closed;
             client.WindowHandler += CloseWindow;
-            
-
         }
 
         public void CloseWindow() {
@@ -42,6 +38,5 @@ namespace MainClientWindow {
         private void Window_StateChanged(object sender, EventArgs e) {
             Hide();
         }
-        
     }
 }

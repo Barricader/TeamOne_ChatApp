@@ -76,10 +76,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\TestLogo.png" />
+    <Content Include="Windows.UI.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Windows.UI.dll" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

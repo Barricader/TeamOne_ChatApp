@@ -55,14 +55,34 @@ namespace MainClientWindow.Converters {
                                 message.Inlines.Add(link);
                             }
 
-                            // Do metadata stuff
-                            HtmlWeb web = new HtmlWeb();
-                            HtmlDocument document = web.Load(str[i]);
-                            IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
+                            // Metadata stuff
+                            web = new HtmlWeb();
+                            requestStatus = RequestStatus.NotFinished;
+                            Thread timer = new Thread(() => StartTimer(2));
+                            Thread requestThread = new Thread(() => WebRequest(str[i]));
 
-                            foreach (HtmlNode hn in metaTags) {
-                                Console.WriteLine(hn.OuterHtml);
-                                // TODO: grab stuff from og: and what not
+                            timer.Start();
+                            requestThread.Start();
+
+                            while (requestStatus == RequestStatus.NotFinished) {}
+
+                            if (requestStatus == RequestStatus.Successful) {
+                                IEnumerable<HtmlNode> metaTags = document.DocumentNode.Element("html").Element("head").Elements("meta");
+
+                                // TODO: check if good request
+
+                                foreach (HtmlNode hn in metaTags) {
+                                    string tagString = hn.OuterHtml;
+
+                                    if (tagString.Contains("name=\"description\"")) {
+                                        // Must be a description for the page, lets output it
+                                        regex = new Regex("(content=)(\".*\")");
+                                        string fullString = regex.Match(tagString).Groups[0].Value;
+                                        string content = fullString.Replace("content=\"", "").TrimEnd('"');
+
+                                        metadata.Inlines.Add(new Run { Text = content });
+                                    }
+                                }
                             }
                         }
 
