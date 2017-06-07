@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBase", "ChatBase\ChatBase.csproj", "{A27BCB9E-7EAD-428B-A29F-EEA2C13AD34D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainClientWindow", "MainClientWindow\MainClientWindow.csproj", "{A47DC4A9-949E-40AD-A361-DB2A9F6CBBE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewServer", "NewServer\NewServer.csproj", "{20C34E38-59D4-409B-AA2D-D62156C79BDB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestClientTests", "UnitTestClientTests\UnitTestClientTests.csproj", "{A46EA2BD-E30D-4ED2-9F06-35E8F871CBCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C34E38-59D4-409B-AA2D-D62156C79BDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A46EA2BD-E30D-4ED2-9F06-35E8F871CBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A46EA2BD-E30D-4ED2-9F06-35E8F871CBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A46EA2BD-E30D-4ED2-9F06-35E8F871CBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A46EA2BD-E30D-4ED2-9F06-35E8F871CBCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
