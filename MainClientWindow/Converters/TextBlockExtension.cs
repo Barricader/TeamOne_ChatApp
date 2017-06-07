@@ -80,19 +80,43 @@ namespace MainClientWindow.Converters {
                                         string fullString = regex.Match(tagString).Groups[0].Value;
                                         string content = fullString.Replace("content=\"", "").TrimEnd('"');
 
-                                        metadata.Inlines.Add(new Run { Text = content });
+                                            metadata.Inlines.Add(new Run { Text = content });
+                                        }
                                     }
                                 }
                             }
                         }
+                    
+                    Thickness zero = new Thickness(0);
+                    FontFamily ff = new FontFamily("Arial");
 
-                    // TEST STRING: https://www.facebook.com/
-
+                    message.Padding = zero;
+                    message.Margin = zero;
+                    message.FontFamily = ff;
+                    message.FontSize = 14;
                     flowDoc.Blocks.Add(message);
                     flowDoc.Blocks.Add(metadata);
                     rtBox.Document = flowDoc;
                 }
             }));
+
+        private static void WebRequest(string url) {
+            try {
+                document = web.Load(url);
+                requestStatus = RequestStatus.Successful;
+            } catch (System.Net.WebException) {
+                requestStatus = RequestStatus.Failed;
+            }
+
+            // TODO: do actual adding of metadata here if succcessful and what not
+        }
+
+        private static void StartTimer(int seconds) {
+            Thread.Sleep(seconds * 1000);
+            if (requestStatus != RequestStatus.Successful) {
+                requestStatus = RequestStatus.Failed;
+            }
+        }
 
         private static void HyperLink_ClickHandler(object sender, RoutedEventArgs e) {
             if (e.OriginalSource is Hyperlink) {

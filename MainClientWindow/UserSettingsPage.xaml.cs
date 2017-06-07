@@ -28,7 +28,7 @@ namespace MainClientWindow
             InitializeComponent();
         }
 
-        private void CancelToggleButton_Click(object sender, RoutedEventArgs e)
+        private void BackToggleButton_Click(object sender, RoutedEventArgs e)
         {
             //this.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
             this.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
@@ -49,7 +49,7 @@ namespace MainClientWindow
                 //set user avatar here
                 //Img = new BitmapImage(new Uri(op.FileName));
                 userAvatar.Source = new BitmapImage(new Uri(op.FileName));    
-                Chat.Img = new BitmapImage(new Uri(op.FileName));
+                Chat.Img.Source = new BitmapImage(new Uri(op.FileName));               
             }
         }
 
@@ -65,6 +65,7 @@ namespace MainClientWindow
             {
                 //Set new username here 
                 this.NavigationService.Navigate(new Uri("ChatPage.xaml", UriKind.RelativeOrAbsolute));
+                //Server.users[0].ScreenName = "test";
             }
         }
 

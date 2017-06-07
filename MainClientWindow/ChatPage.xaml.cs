@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 // TODO: hide everything before connected to server
 
@@ -21,6 +22,7 @@ namespace MainClientWindow
     /// </summary>
     public partial class Chat : Page
     {
+        static public Image Img { get; set; }
         Client mainclient;
         public List<Message> testMessageList = new List<Message>();
         public ObservableCollection<Room> roomList = new ObservableCollection<Room>();
@@ -29,6 +31,9 @@ namespace MainClientWindow
         public Chat()
         {
             InitializeComponent();
+
+            //Img.Source = userAvatarChatPage.Source;
+            userAvatarChatPage.Source = new BitmapImage(new Uri("icons/defaultAvatar.png", UriKind.Relative));
 
             mainclient = (Client)FindResource("client");
             DataContext = mainclient;

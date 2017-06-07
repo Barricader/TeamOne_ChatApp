@@ -53,7 +53,8 @@
                           FontSize="18"
                           Margin="20"
                               Background="CornflowerBlue"
-                          x:Name="ChangePassword"/>
+                          x:Name="ChangePassword"
+                              Visibility="Hidden"/>
                 <Label Content="New Password"
                    FontSize="18"
                    HorizontalAlignment="Center"
@@ -86,12 +87,12 @@
                               Background="CornflowerBlue"
                           Click="NewPasswordToggleButton_Click"
                           Visibility="{Binding ElementName=ChangePassword, Path=IsChecked, Converter={StaticResource boolToVisibility}}"/>
-                <ToggleButton Content="Cancel"
+                <ToggleButton Content="Back"
                           Width="183"
                           Height="30"
                           FontSize="18"
                               Background="CornflowerBlue"
-                          Click="CancelToggleButton_Click"
+                          Click="BackToggleButton_Click"
                           Margin="20"/>
             </StackPanel>
         </ScrollViewer>
